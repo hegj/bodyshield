@@ -1,0 +1,65 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item><!-- 设置没有标题 -->
+        <item name="android:textSize">20sp</item>   <!-- 设置文本大小 -->
+        <item name="android:textColor">@color/black</item><!-- 默认字体颜色 -->
+
+        <!-- 设置activity切换动画 -->
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+        <item name="android:configChanges">orientation|keyboardHidden|navigation</item>
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+
+    <style name="activityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_in_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_open_out_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_anim</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_close_out_anim</item>
+    </style>
+
+
+    <!-- 底部栏的元素  -->
+    <style name="tab_bar_item">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@color/transparent</item>
+        <item name="android:textColor">@drawable/color_tab_item</item>
+        <item name="android:drawableTop">@drawable/tab_bar_item_pressed</item>
+    </style>
+
+
+    <!-- top bar按钮效果 -->
+    <style name="common_title_button">
+        <item name="android:clickable">true</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@drawable/title_button_default_style</item>
+    </style>
+
+    <style name="NoBackgroundTheme" parent="android:Theme">
+        <item name="android:windowBackground">@null </item>
+    </style>
+
+    <!-- 模仿dialog的遮罩层属性 -->
+    <style name="mask_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="transparentFrameWindowStyle" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/photo_choose_bg</item>
+    </style>
+
+    <style name="main_menu_animstyle">
+        <item name="android:windowEnterAnimation">@anim/photo_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/photo_dialog_out_anim</item>
+    </style>
+</resources>

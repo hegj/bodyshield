@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmax.bodysheild.activity.DeviceActivity"
+    android:background="@drawable/device_list_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height"
+        android:background="@color/navigation_bar_background"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/relativeLayout">
+
+        <ImageButton
+            android:id="@+id/common_back_btn"
+            android:layout_width="@dimen/navigation_bar_setting_width"
+            android:layout_height="@dimen/navigation_bar_setting_height"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/setting"
+            android:background="@null"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ScanText"
+            android:id="@+id/scanTextBtn"
+            android:textColor="@color/navigation_bar_text"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deviceList"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true"
+        android:listSelector="@android:color/transparent"/>
+
+
+</RelativeLayout>

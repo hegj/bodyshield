@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/dialog_view" 
+	android:orientation="vertical"
+	android:layout_width="200dp"
+	android:layout_height="wrap_content"
+	android:gravity="center_horizontal"
+	android:background="@null">
+	<ImageView 
+		android:id="@+id/img"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:src="@mipmap/waiting_up"
+		/>
+	<TextView 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:textColor="@color/white"
+		android:text="@string/loading" />
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  背景  -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="20dp" />
+            <gradient
+                android:startColor="#529FD0"
+                android:centerColor="#529FD0"
+                android:centerY="0.75"
+                android:endColor="#529FD0"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+    <!--  第二进度条  -->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <corners android:radius="20dp" />
+                <gradient
+                    android:startColor="#529FD0"
+                    android:centerColor="#529FD0"
+                    android:centerY="0.75"
+                    android:endColor="#529FD0"
+                    android:angle="270"
+                    />
+            </shape>
+        </clip>
+    </item>
+    <!--  第一进度条  -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <!--<corners android:radius="20dp" />-->
+                <!--<gradient-->
+                    <!--android:startColor="#ffffff"-->
+                    <!--android:centerColor="#ffffff"-->
+                    <!--android:centerY="0.75"-->
+                    <!--android:endColor="#ffffff"-->
+                    <!--android:angle="270"-->
+                    <!--/>-->
+                !-- 填充颜色 -->
+                <solid android:color="#ffffff"/>
+                <!-- 线的宽度，颜色 -->
+                <stroke android:width="2dp" android:color="#529FD0"/>
+                <!-- 矩形的圆角半径 -->
+                <corners android:radius="20dp"/>
+            </shape>
+        </clip>
+    </item>
+</layer-list>

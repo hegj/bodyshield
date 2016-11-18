@@ -1,0 +1,9 @@
+.gradle
+/local.properties
+
+/build
+*.iml
+*.dex
+*.class
+/.idea/
+/gradlew.bat

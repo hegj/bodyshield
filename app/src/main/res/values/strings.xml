@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Bodyshield</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_device">DeviceActivity</string>
+
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">bodyshield Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="bluetooth_not_opened">bluetooth is not opended</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+    <string name="menu_chart">realTimeChart</string>
+    <string name="title_activity_device_scan">DeviceScanActivity</string>
+
+    <string name="ScanText">Scan</string>
+    <string name="hight_fever">High Fever</string>
+    <string name="low_fever">Low Fever</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="SaveText">Save</string>
+    <string name="User">User</string>
+    <string name="add_user">Add New User</string>
+    <string name="edit">Edit</string>
+
+    <!-- LoginActivity-->
+    <string name="login_please_input_name_warning">Please input your name</string>
+
+    <string name="press_for_exit">Press once more to exit</string>
+
+    <string name="device_default_user">guest</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <!-- loading-->
+    <string name="loading">Processing, please wait...</string>
+    
+    <string name="temp_unit_1"><Data><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></Data></string>
+    <string name="temp_unit_2"><Data><font color="gray"><b>℃/</b></font><font color="black"><b>℉</b></font></Data></string>
+    <string name="vibration_on"><Data><font color="black"><b>ON</b></font><font color="gray"><b>/OFF</b></font></Data></string>
+    <string name="vibration_off"><Data><font color="gray"><b>ON/</b></font><font color="black"><b>OFF</b></font></Data></string>
+    <string name="not_selected_user">Please select a user</string>
+    <string name="title_activity_user_guide">UserGuideActivity</string>
+    <string name="title_activity_feedback">FeedbackActivity</string>
+    <string name="title_activity_about_us">AboutUsActivity</string>
+
+    <!-- chart-->
+    <string name="temperature_chart_title">Temperature Data</string>
+    <string name="history_temperature_chart_title">History Temperature Data</string>
+    <string name="chart_time_unit">Time(min)</string>
+
+
+    <!-- setting page-->
+    <string name="setting_battery">Battery Level</string>
+    <string name="setting_temp_unit">Temp.Unit</string>
+    <string name="setting_alert_setting">Alert Setting</string>
+    <string name="setting_high_fever">High Fever</string>
+    <string name="setting_low_fever">Low Fever</string>
+    <string name="setting_volume">Volume</string>
+    <string name="setting_vibration">Vibration</string>
+    <string name="setting_alert_interval">Alert Interval</string>
+    <string name="setting_measure_interval">Measure Interval</string>
+    <string name="setting_user_guide">User Guide</string>
+    <string name="setting_Feedback">Feedback</string>
+    <string name="setting_about_us">About Us</string>
+    <string name="setting_every">Every </string>
+    <string name="setting_min">min</string>
+
+
+    <string name="img">Pictures</string>
+    <string name="tap">Take a picture</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="feedback_content">Please contact customer service:</string>
+    <string name="check_update">Check For Update</string>
+    <string name="checkResult1">Is the latest version</string>
+    <string name="checkResult2"><a href="http://www.apexto.com/download-center/show/2.html" style="color: white">Click to download the new version</a></string>
+    <string name="checkResult3">Please check the network</string>
+
+</resources>

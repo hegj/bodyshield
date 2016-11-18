@@ -1,0 +1,181 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bluebg"
+    android:orientation="vertical"
+    tools:context="com.cmax.bodysheild.activity.TemperatureInfoActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height"
+        android:background="@color/navigation_bar_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/navigation_bar_setting_width"
+            android:layout_height="@dimen/navigation_bar_setting_height"
+            android:background="@null"
+            android:src="@mipmap/jian"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/settingBtn_history"
+            android:layout_width="@dimen/navigation_bar_setting_width"
+            android:layout_height="@dimen/navigation_bar_setting_height"
+            android:layout_marginLeft="2dp"
+            android:background="@null"
+            android:src="@mipmap/setting"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="1">
+            <!--<ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/people"/>-->
+            <com.cmax.bodysheild.widget.CircleImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/userImageBtn_history"
+                android:src="@mipmap/people"
+                app:border_width="1dp"
+                app:border_color="#70C8EF"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="right|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_bg_2"
+                android:textColor="#F9FAFC"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:drawableLeft="@mipmap/user"
+                android:layout_marginBottom="4dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_bg_2"
+                    android:textColor="#F9FAFC"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@mipmap/temperature3"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_marginTop="4dp"/>
+                <ImageView
+                    android:id="@+id/synchronizedBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/temperature"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/refresh"/>
+            </RelativeLayout>
+            
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- 线 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#63C4E9">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bg_2"
+        android:orientation="horizontal"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical|center_horizontal" >
+        <TextView
+            android:id="@+id/showDate"
+            android:layout_width="wrap_content"
+            android:background="@null"
+            android:textColor="#A2DBF0"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@null" />
+        <TextView
+            android:id="@+id/showTime"
+            android:layout_width="wrap_content"
+            android:background="@null"
+            android:textColor="#A2DBF0"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_height="60dp"
+            android:textColor="#F8FCFE"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/history_temperature_chart_title"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <!--<ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/deg"/>-->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/historyTemperatureChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_height="60dp"
+        android:textColor="#A2DBF0"
+        android:gravity="center_vertical|right"
+        android:text="@string/chart_time_unit"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent" />
+</LinearLayout>

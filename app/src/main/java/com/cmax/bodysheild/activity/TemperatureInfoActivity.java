@@ -180,7 +180,7 @@ public class TemperatureInfoActivity extends FragmentActivity {
 
         Intent intent = new Intent(TemperatureInfoActivity.this, AlertService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-
+        isBind = true;
 //        bluetoothServiceConnection = new ServiceConnection() {
 //
 //            @Override
@@ -203,7 +203,7 @@ public class TemperatureInfoActivity extends FragmentActivity {
 //        bindService(intent2, bluetoothServiceConnection, Context.BIND_AUTO_CREATE);
 
 
-        isBind = true;
+
 //        SharedPreferencesUtil.setIntValue(Constant.KEY_TIME_FLAG,(int)new Date().getTime());
     }
 
@@ -257,6 +257,15 @@ public class TemperatureInfoActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (isRegister) {
+            unregisterReceiver(notificationReceiver);
+            isRegister = false;
+        }
+        if(isBind) {
+            unbindService(serviceConnection);
+//            unbindService(bluetoothServiceConnection);
+            isBind = false;
+        }
     }
 
     @Override

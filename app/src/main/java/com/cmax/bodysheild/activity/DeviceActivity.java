@@ -346,7 +346,10 @@ public class DeviceActivity extends BaseActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-
+		if(isBind) {
+			unbindService(serviceConnection);
+			isBind = false;
+		}
 	}
 
 	@Override

@@ -237,6 +237,10 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
         setCurrentUser();
 //        chart.clear();
         initYAxis();
+        if (!isBind){
+            bindService(new Intent(TemperatureHistoryInfoActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+            isBind = true;
+        }
         if (!isRegister) {
             final IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(MemoryRecordResponse.ACTION_MEMORY_RECORD);
@@ -281,6 +285,14 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     @Override
     protected void onStop() {
         super.onStop();
+        if (isRegister) {
+            unregisterReceiver(notificationReceiver);
+            isRegister = false;
+        }
+        if(isBind) {
+            unbindService(serviceConnection);
+            isBind = false;
+        }
     }
 
     @Override

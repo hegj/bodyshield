@@ -180,6 +180,15 @@ public class SettingActivity extends BaseActivity {
 //        if(mask != null){
 //            mask.hide();
 //        }
+        if(isBind){
+            unbindService(serviceConnection);
+            unbindService(alertServiceConnection);
+            isBind = false;
+        }
+        if (isRegister) {
+            unregisterReceiver(notificationReceiver);
+            isRegister = false;
+        }
     }
 
     @Override

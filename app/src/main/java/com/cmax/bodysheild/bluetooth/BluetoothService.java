@@ -137,8 +137,8 @@ public class BluetoothService extends Service implements BLEService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		disconnectAllDevices();
+		unregisterReceiver(notificationReceiver);
 	}
 
 	public class LocalBinder extends Binder {

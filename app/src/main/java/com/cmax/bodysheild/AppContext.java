@@ -18,7 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AppContext extends Application {
 
-    public static final AppModel appModel = AppModel.Product;
+   // public static final AppModel appModel = AppModel.Product;
+    public static final AppModel appModel = AppModel.Debug;
 
 	private static AppContext context;
 	private LineData xData;

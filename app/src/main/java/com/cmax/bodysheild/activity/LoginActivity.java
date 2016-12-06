@@ -67,6 +67,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
             userName.setText(currentUser.getUserName());
         }
         mCropParams = new CropParams(this);
+        // 测试所用
     }
 
     @Override

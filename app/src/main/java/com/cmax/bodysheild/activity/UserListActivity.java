@@ -183,9 +183,7 @@ public class UserListActivity extends BaseActivity {
 		}
 	}
 
-    @OnClick(R.id.editBtn)
-    void editUser(View v){
-        final Intent intent = new Intent(this, LoginActivity.class);
+    @OnClick(R.id.editBtn)    void editUser(View v){        final Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
         List<UserAdapter.UserSelected> users = userAdapter.getUsersList();
         boolean flag = false;

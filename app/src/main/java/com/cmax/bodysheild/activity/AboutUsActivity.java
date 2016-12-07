@@ -18,13 +18,7 @@ import com.cmax.bodysheild.bean.VersionMsg;
 import com.cmax.bodysheild.util.JsonUtil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,15 +86,15 @@ public class AboutUsActivity extends Activity {
     @OnClick(R.id.checkUpdateBtn)
     void checkUpdate(){
 //        handler.post(myRunnable);
-        Thread t = new Thread(myRunnable);
-        t.start();
+       /* Thread t = new Thread(myRunnable);
+        t.start();*/
     }
 
     private void sendMsg(){
 
     }
 
-
+/*
     private Runnable myRunnable = new Runnable() {
         @Override
         public void run() {
@@ -172,7 +166,7 @@ public class AboutUsActivity extends Activity {
                 e.printStackTrace();
             }
         }
-    };
+    };*/
 
     private String getVersionName() throws Exception
     {

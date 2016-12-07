@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.alert.AlertService;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.LogInterval;
 import com.cmax.bodysheild.bean.ble.MemoryStatus;

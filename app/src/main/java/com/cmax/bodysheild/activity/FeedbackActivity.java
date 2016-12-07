@@ -3,6 +3,7 @@ package com.cmax.bodysheild.activity;
 import android.os.Bundle;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.base.BaseActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

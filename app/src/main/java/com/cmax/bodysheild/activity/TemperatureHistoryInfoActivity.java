@@ -2,7 +2,6 @@ package com.cmax.bodysheild.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.MemoryRecord;

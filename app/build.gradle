@@ -1,21 +1,28 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 18
-    buildToolsVersion "22.0.1"
+
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     defaultConfig {
-        applicationId "com.cmax.bodysheild"
-        minSdkVersion 18
-        targetSdkVersion 18
-        versionCode 2
-        versionName "2.0"
+        applicationId rootProject.ext.android["applicationId"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        multiDexEnabled true
+        multiDexEnabled true
     }
 
     lintOptions {
         disable 'InvalidPackage'
+        abortOnError false
     }
-
+    dexOptions {
+        javaMaxHeapSize "3g"
+    }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
@@ -27,13 +34,58 @@ android {
         }
     }
 }
+
+repositories {
+    jcenter();
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral();
+    maven {
+        url "https://jitpack.io"
+    };
+
+    maven {
+        url "http://dl.bintray.com/lukaville/maven"
+    }
+
+}
+repositories {
+    mavenCentral()
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.5'
     compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.google.code.gson:gson:2.3'
     compile 'org.hybridsquad.android.photocropper:library:3.0.2'
+
+    compile rootProject.ext.dependencies["butterknife"]
+    compile rootProject.ext.dependencies["dagger"]
+    compile rootProject.ext.dependencies["rxjava"]
+    compile rootProject.ext.dependencies["rxandroid"]
+    apt rootProject.ext.dependencies["dagger-compiler"]
+    provided rootProject.ext.dependencies["javax-annotation"]
+    compile rootProject.ext.dependencies["gson"]
+    compile rootProject.ext.dependencies["retrofit-rxjava"]
+    compile rootProject.ext.dependencies["logging-interceptor"]
+    compile rootProject.ext.dependencies["stetho"]
+    compile rootProject.ext.dependencies["logger"]
+    apt rootProject.ext.dependencies["multidex"]
+    apt rootProject.ext.dependencies["design"]
+    compile rootProject.ext.dependencies["okhttp"]
+    compile rootProject.ext.dependencies["oklog3"]
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.mylhyl:acp:1.0.0' //权限管理，6.0必需
+/*
+
+     compile rootProject.ext.dependencies["stetho-okhttp3"]
+  compile rootProject.ext.dependencies["okhttp"]
+  compile rootProject.ext.dependencies["logging-interceptor"]
+ provided rootProject.ext.dependencies["auto-value-gson"]
+ compile rootProject.ext.dependencies["sqlbrite"]
+     apt rootProject.ext.dependencies["auto-value"]
+     provided rootProject.ext.dependencies["auto-value"]
+     apt rootProject.ext.dependencies["auto-value-gson"]*/
 }

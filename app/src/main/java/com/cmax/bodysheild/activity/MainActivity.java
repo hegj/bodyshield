@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.fragment.HomeFragment;
 import com.cmax.bodysheild.activity.fragment.MeFragment;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.util.Constant;
 
 import butterknife.ButterKnife;

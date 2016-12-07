@@ -33,10 +33,10 @@
     <string name="edit">编辑</string>
 
     <!-- LoginActivity-->
-    <string name="login_please_input_name_warning">请输入名称</string>
-
+    <string name="login_please_input_name_warning">请输入账号</string>
+    <string name="login_please_input_password_warning">请输入密码</string>
     <string name="press_for_exit">再按一次退出程序</string>
-
+    <string name="RegisterText">注册</string>
     <string name="device_default_user">guest</string>
     <string name="title_activity_setting">SettingActivity</string>
 
@@ -83,5 +83,5 @@
     <string name="checkResult1">已是最新版本</string>
     <string name="checkResult2"><a href="http://www.apexto.com/download-center/show/2.html" style="color: white">请点击下载最新版本</a></string>
     <string name="checkResult3">请检查网络连接</string>
-
+    <string name="login_text">登录</string>
 </resources>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.base.BaseActivity;
 
 import java.util.Locale;
 

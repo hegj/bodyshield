@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
@@ -70,27 +69,6 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
         // 测试所用
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @OnClick(R.id.backBtn)
     void finishActivity(View view){
@@ -267,8 +245,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
 
     @Override
     public void onPhotoCropped(Uri uri) {
-        // Original or Cropped uri
-        LogUtil.d(TAG, "onPhotoCropped:Crop Uri in path: " + uri.getPath());
+
         if (!mCropParams.compress){
             bitmap = BitmapUtil.decodeUriAsBitmap(this, uri);
             portrait.setImageBitmap(bitmap);

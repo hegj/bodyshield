@@ -7,7 +7,7 @@
               android:orientation="vertical"
               tools:context="com.cmax.bodysheild.activity.LoginActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_bar_height"
         android:background="@color/navigation_bar_background"
@@ -17,24 +17,24 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_alignParentLeft="true"
             android:id="@+id/backBtn"
             android:layout_width="@dimen/navigation_bar_setting_width"
             android:layout_height="@dimen/navigation_bar_setting_height"
-            android:background="@null"
+            android:layout_centerVertical="true"
             android:src="@mipmap/jian"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:layout_weight="1"/>
+
 
         <TextView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="left"
             android:id="@+id/saveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/SaveText"
+            android:text="@string/RegisterText"
             android:textColor="@color/white"/>
-    </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -69,8 +69,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
                 <EditText
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:id="@+id/userName"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:hint="@string/login_please_input_name_warning"
                     android:singleLine="true"
@@ -78,9 +80,42 @@
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
                     android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:textColorHint="#C1DEFD"
                     android:gravity="center"/>
             </LinearLayout>
+
+
+                <EditText
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/userPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="@string/login_please_input_password_warning"
+                    android:singleLine="true"
+                    android:background="@drawable/edittext_bg_1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#C1DEFD"
+                    android:gravity="center"/>
+
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edittext_bg_1"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"
+            android:text="@string/login_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
         </LinearLayout>
     </ScrollView>
 

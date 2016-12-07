@@ -26,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.adapter.DeviceAdapter;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
@@ -42,7 +43,6 @@ import com.cmax.bodysheild.util.SharedPreferencesUtil;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

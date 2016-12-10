@@ -360,6 +360,7 @@ public class DeviceActivity extends BaseActivity {
 			isBind = false;
 		}
 		unregisterReceiver(notificationReceiver);
+		Log.i(TAG,"destory");
 	}
 
 	@Override

@@ -84,4 +84,9 @@
     <string name="checkResult2"><a href="http://www.apexto.com/download-center/show/2.html" style="color: white">请点击下载最新版本</a></string>
     <string name="checkResult3">请检查网络连接</string>
     <string name="login_text">登录</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_device">DeviceActivity</string>
 </resources>

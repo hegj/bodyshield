@@ -115,64 +115,64 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (MemoryRecordResponse.ACTION_MEMORY_RECORD.equals(action)) {
-                MemoryRecord record = intent.getParcelableExtra(MemoryRecordResponse.EXTRA_MEMORY_RECORD);
-                if(record != null){
-                    String address = intent.getStringExtra(BluetoothService.EXTRA_ADDRESS);
-                    if (device.getAddress().equals(address)) {
-                        int recordIndex = record.getRecordIndex();
-                        if(record.getTimestamp() > timeFlag && recordIndex > 1) {
-                            Log.i(TAG, "缓存时间：" + timeFlag + "--记录时间： " + record.getTimestamp());
-                            HistoryData historyData = new HistoryData();
-                            historyData.setDeviceAddress(address);
-                            historyData.setTimestamp(record.getTimestamp());
-                            historyData.setUserId(currentUserName);
-                            historyData.setValue(record.getTempreature());
-                            dbManager.addHistory(historyData);
-                            if(recordsCount == recordIndex){
-                                SharedPreferencesUtil.setLongValue(Constant.KEY_TIME_FLAG,record.getTimestamp());
-                            }
-                            DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.RecordWithIndex);
-                            command.setRecordIndex(recordIndex-1);
-                            bleService.executeCommand(command);
-                            Log.i(TAG, "发送的index：" + (recordIndex-1) + "####接收的index：" + record.getRecordIndex());
-
-                        }else{
-                            timeFlag =  SharedPreferencesUtil.getLongValue(Constant.KEY_TIME_FLAG, record.getTimestamp());
-                            initChartData(FORMAT1.format(new Date()));
-                            if(mask != null){
-                                mask.hide();
-                            }
-                            Log.i(TAG,"同步历史数据完成！");
-                        }
-                    }
-                }
-            }
-
-
-            if (MemoryStatusResponse.ACTION_MEMORY_STATUS.equals(action)) {
-                String address = intent.getStringExtra(BluetoothService.EXTRA_ADDRESS);
-                if (device.getAddress().equals(address)){
-                    MemoryStatus status = MemoryStatusResponse.getResponseResult(intent);
-                    if (status != null) {
-                        recordsCount = status.getRecordsCount();
-                        Log.i(TAG,"历史记录总数："+recordsCount);
-                        if(recordsCount > 0){
+//            if (MemoryRecordResponse.ACTION_MEMORY_RECORD.equals(action)) {
+//                MemoryRecord record = intent.getParcelableExtra(MemoryRecordResponse.EXTRA_MEMORY_RECORD);
+//                if(record != null){
+//                    String address = intent.getStringExtra(BluetoothService.EXTRA_ADDRESS);
+//                    if (device.getAddress().equals(address)) {
+//                        int recordIndex = record.getRecordIndex();
+//                        if(record.getTimestamp() > timeFlag && recordIndex > 1) {
+//                            Log.i(TAG, "缓存时间：" + timeFlag + "--记录时间： " + record.getTimestamp());
+//                            HistoryData historyData = new HistoryData();
+//                            historyData.setDeviceAddress(address);
+//                            historyData.setTimestamp(record.getTimestamp());
+//                            historyData.setUserId(currentUserName);
+//                            historyData.setValue(record.getTempreature());
+//                            dbManager.addHistory(historyData);
+//                            if(recordsCount == recordIndex){
+//                                SharedPreferencesUtil.setLongValue(Constant.KEY_TIME_FLAG,record.getTimestamp());
+//                            }
+//                            DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.RecordWithIndex);
+//                            command.setRecordIndex(recordIndex-1);
+//                            bleService.executeCommand(command);
+//                            Log.i(TAG, "发送的index：" + (recordIndex-1) + "####接收的index：" + record.getRecordIndex());
+//
+//                        }else{
+//                            timeFlag =  SharedPreferencesUtil.getLongValue(Constant.KEY_TIME_FLAG, record.getTimestamp());
+//                            initChartData(FORMAT1.format(new Date()));
+//                            if(mask != null){
+//                                mask.hide();
+//                            }
+//                            Log.i(TAG,"同步历史数据完成！");
+//                        }
+//                    }
+//                }
+//            }
 
 
-                            DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.RecordWithIndex);
-                            command.setRecordIndex(recordsCount);
-                            bleService.executeCommand(command);
-                        }else {
-                            if(mask != null){
-                                mask.hide();
-                            }
-                            ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
-                            bleService.executeCommand(continuousDataCommand);
-                        }
-                    }
-                }
-            }
+//            if (MemoryStatusResponse.ACTION_MEMORY_STATUS.equals(action)) {
+//                String address = intent.getStringExtra(BluetoothService.EXTRA_ADDRESS);
+//                if (device.getAddress().equals(address)){
+//                    MemoryStatus status = MemoryStatusResponse.getResponseResult(intent);
+//                    if (status != null) {
+//                        recordsCount = status.getRecordsCount();
+//                        Log.i(TAG,"历史记录总数："+recordsCount);
+//                        if(recordsCount > 0){
+//
+//
+//                            DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.RecordWithIndex);
+//                            command.setRecordIndex(recordsCount);
+//                            bleService.executeCommand(command);
+//                        }else {
+//                            if(mask != null){
+//                                mask.hide();
+//                            }
+//                            ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
+//                            bleService.executeCommand(continuousDataCommand);
+//                        }
+//                    }
+//                }
+//            }
 
             if (BluetoothService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //设备断开
@@ -324,8 +324,8 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 
     @OnClick(R.id.backBtn)
     void backClick(){
-        ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
-        bleService.executeCommand(continuousDataCommand);
+//        ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
+//        bleService.executeCommand(continuousDataCommand);
         finish();
     }
 
@@ -400,25 +400,25 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 
 
 
-    @OnClick(R.id.synchronizedBtn)
-    public void synchronizeHistoryData(){
-        if(device != null){
-            if(bleService != null){
-                if(mask == null) {
-                    mask = new LoadingMask(TemperatureHistoryInfoActivity.this);
-                }
-                mask.show();
-                DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.MemoryStatus);
-                bleService.executeCommand(command);
-                et_showDate.setText(DATE_FORMAT.format(new Date()));
-                showTime.setText(FORMAT2.format(new Date()));
-                if(chart != null){
-                    chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
-                }
-            }
-
-        }
-    }
+//    @OnClick(R.id.synchronizedBtn)
+//    public void synchronizeHistoryData(){
+//        if(device != null){
+//            if(bleService != null){
+//                if(mask == null) {
+//                    mask = new LoadingMask(TemperatureHistoryInfoActivity.this);
+//                }
+//                mask.show();
+//                DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.MemoryStatus);
+//                bleService.executeCommand(command);
+//                et_showDate.setText(DATE_FORMAT.format(new Date()));
+//                showTime.setText(FORMAT2.format(new Date()));
+//                if(chart != null){
+//                    chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
+//                }
+//            }
+//
+//        }
+//    }
 
     @OnClick(R.id.settingBtn_history)
     public void setting(){

@@ -272,14 +272,14 @@ public class SettingActivity extends BaseActivity {
 //        mask.show();
         saveParams();
         /*发送设置测量间隔命令*/
-        LogIntervalCommand command = new LogIntervalCommand(device.getAddress(),LogIntervalCommand.ReqeustType.WriteModel);
-        command.writeInterval(measureIntervalValue * 2);
-        bleService.executeCommand(command);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        LogIntervalCommand command = new LogIntervalCommand(device.getAddress(),LogIntervalCommand.ReqeustType.WriteModel);
+//        command.writeInterval(measureIntervalValue * 2);
+//        bleService.executeCommand(command);
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
         bleService.executeCommand(continuousDataCommand);
 //        mask.hide();
@@ -458,27 +458,30 @@ public class SettingActivity extends BaseActivity {
                     if (status != null) {
                         batteryLevel.setText(status.getBatteryLevel() + "%");
                     }
-                    LogIntervalCommand logIntervalCommand = new LogIntervalCommand(device.getAddress(), LogIntervalCommand.ReqeustType.ReadModel);
-                    bleService.executeCommand(logIntervalCommand);
+//                    LogIntervalCommand logIntervalCommand = new LogIntervalCommand(device.getAddress(), LogIntervalCommand.ReqeustType.ReadModel);
+//                    bleService.executeCommand(logIntervalCommand);
+                    /*发送连续获取温度数据的命令*/
+                    ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
+                    bleService.executeCommand(continuousDataCommand);
                 }
             }
-            if (LogIntervalResponse.ACTION_LOG_INTERVAL.equals(action)) {
-
-                BluetoothDevice btDevice = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
-                if (device.getAddress().equalsIgnoreCase(btDevice.getAddress())) {
-                    LogInterval logInterval = LogIntervalResponse.getResponseResult(intent);
-                    if (logInterval != null) {
-                        measureInterval.setProgress(logInterval.getInterval() / 2);
-                        SharedPreferencesUtil.setIntValue(Constant.KEY_MEASURE_INTERVAL, logInterval.getInterval() / 2);
-//                        measureIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
-//                        measureInterval.setProgress(measureIntervalValue);
-                        Log.i(TAG, "测量间隔是(s)：" + logInterval.getInterval() * 30);
-                        /*发送连续获取温度数据的命令*/
-                        ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
-                        bleService.executeCommand(continuousDataCommand);
-                    }
-                }
-            }
+//            if (LogIntervalResponse.ACTION_LOG_INTERVAL.equals(action)) {
+//
+//                BluetoothDevice btDevice = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
+//                if (device.getAddress().equalsIgnoreCase(btDevice.getAddress())) {
+//                    LogInterval logInterval = LogIntervalResponse.getResponseResult(intent);
+//                    if (logInterval != null) {
+//                        measureInterval.setProgress(logInterval.getInterval() / 2);
+//                        SharedPreferencesUtil.setIntValue(Constant.KEY_MEASURE_INTERVAL, logInterval.getInterval() / 2);
+////                        measureIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
+////                        measureInterval.setProgress(measureIntervalValue);
+//                        Log.i(TAG, "测量间隔是(s)：" + logInterval.getInterval() * 30);
+//                        /*发送连续获取温度数据的命令*/
+//                        ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
+//                        bleService.executeCommand(continuousDataCommand);
+//                    }
+//                }
+//            }
         }
     };
 
@@ -486,7 +489,7 @@ public class SettingActivity extends BaseActivity {
         final IntentFilter intentFilter = new IntentFilter();
 
         intentFilter.addAction(MemoryStatusResponse.ACTION_MEMORY_STATUS);
-        intentFilter.addAction(LogIntervalResponse.ACTION_LOG_INTERVAL);
+//        intentFilter.addAction(LogIntervalResponse.ACTION_LOG_INTERVAL);
 
         return intentFilter;
     }

@@ -49,6 +49,7 @@ public class WelcomeActivity extends Activity {
                 case GOTO_MAIN_ACTIVITY:
                     Intent intent = new Intent();
                     intent.setClass(WelcomeActivity.this, DeviceActivity.class);
+                    intent.putExtra("autoScan",true);
                     startActivity(intent);
                     finish();
                     break;

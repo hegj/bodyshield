@@ -81,14 +81,14 @@ public class DeviceActivity extends BaseActivity {
 	private              long    exitTime    = 0;
 	private static final int     EXIT_TIME   = 2000;
 	private              boolean scanning    = false;
-	private boolean autoScan = false;
+//	private boolean autoScan = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
         ButterKnife.bind(this);
-		autoScan = getIntent().getBooleanExtra("autoScan",false);
+//		autoScan = getIntent().getBooleanExtra("autoScan",false);
 		deviceAdapter = new DeviceAdapter(DeviceActivity.this.getLayoutInflater(), deviceListView);
 		deviceListView.setAdapter(deviceAdapter);
 
@@ -105,10 +105,10 @@ public class DeviceActivity extends BaseActivity {
 				bleBinder = (BluetoothService.LocalBinder) service;
 				bleService = bleBinder.getBLEService();
 				loadHistoryList();
-				if(autoScan){
-					scanLeDevice(!scanning);
-					autoScan = false;
-				}
+//				if(autoScan){
+//					scanLeDevice(!scanning);
+//					autoScan = false;
+//				}
 			}
 		};
 		bindService(new Intent(DeviceActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);

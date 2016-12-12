@@ -42,8 +42,9 @@ public class PermissionUtils {
 
                         @Override
                         public void onDenied(List<String> permissions) {
+                            ToastUtils.showToast("被拒绝");
                             listener.onDenied(permissions);
-                           // MyToast.showFailToast("权限已经被拒绝");
+
                         }
                     });
         } else {

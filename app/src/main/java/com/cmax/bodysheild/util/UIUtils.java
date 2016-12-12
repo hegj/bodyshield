@@ -2,6 +2,8 @@ package com.cmax.bodysheild.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.util.TypedValue;
 
 import com.cmax.bodysheild.AppContext;
 
@@ -24,5 +26,13 @@ public class UIUtils {
      */
     public static Resources getResource() {
         return getContext().getResources();
+    }
+
+    public static int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getContext(). getResources().getDisplayMetrics());
+    }
+    public static Handler getMainThreadHandler() {
+        return AppContext.getMainHandler();
     }
 }

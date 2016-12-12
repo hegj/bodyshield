@@ -28,6 +28,7 @@ public abstract class BaseMvpActivity   <T extends BasePresenter> extends Fragme
         if (layoutId<=0){
             throw new NullPointerException("Please set Layout  ");
         }
+
         ActivityComponent activityComponent = DaggerActivityComponent.builder().appComponent(AppComponent.Instance.getAppComponent()).build();
         setActivityComponent(activityComponent);
         setContentView(layoutId);

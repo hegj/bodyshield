@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@mipmap/bluebg"
+    android:layout_height="match_parent">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height"
+        android:background="@color/navigation_bar_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/navigation_bar_setting_width"
+            android:layout_height="@dimen/navigation_bar_setting_height"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/jian"/>
+
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+
+           android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <EditText
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/login_please_input_name_warning"
+            android:singleLine="true"
+            android:background="@drawable/edittext_bg_1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textColorHint="#C1DEFD"
+            android:gravity="center"/>
+
+
+
+    <EditText
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/userPassword"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="@string/login_please_input_password_warning"
+        android:singleLine="true"
+        android:background="@drawable/edittext_bg_1"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textColorHint="#C1DEFD"
+        android:gravity="center"/>
+
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/edittext_bg_1"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:text="注册"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    </LinearLayout>
+</RelativeLayout>

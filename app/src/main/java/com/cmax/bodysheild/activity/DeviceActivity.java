@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -26,6 +27,8 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.adapter.DeviceAdapter;
+import com.cmax.bodysheild.activity.login.LoginActivity;
+import com.cmax.bodysheild.activity.login.LoginActivity2;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.Temperature;
@@ -37,9 +40,13 @@ import com.cmax.bodysheild.bluetooth.DeviceType;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
 import com.cmax.bodysheild.bluetooth.command.temperature.TimeDataCommand;
 import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
+import com.cmax.bodysheild.listeners.SimpleDialogListeners;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.LogUtil;
+import com.cmax.bodysheild.util.PermissionUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.UIUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -86,7 +93,6 @@ public class DeviceActivity extends BaseActivity {
 		deviceListView.setAdapter(deviceAdapter);
 
 		handler = new Handler();
-
 		serviceConnection = new ServiceConnection() {
 
 			@Override
@@ -98,7 +104,6 @@ public class DeviceActivity extends BaseActivity {
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				bleBinder = (BluetoothService.LocalBinder) service;
 				bleService = bleBinder.getBLEService();
-
 				loadHistoryList();
 				if(autoScan){
 					scanLeDevice(!scanning);
@@ -106,52 +111,11 @@ public class DeviceActivity extends BaseActivity {
 				}
 			}
 		};
-
 		bindService(new Intent(DeviceActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 		isBind = true;
-
-		// step 1. create a MenuCreator
-		SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-			@Override
-			public void create(SwipeMenu menu) {
-                int vt = menu.getViewType();
-                if(vt==0) {
-                    // create "delete" item
-                    SwipeMenuItem deleteItem = new SwipeMenuItem(
-                            getApplicationContext());
-                    // set item background
-                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                            0x3F, 0x25)));
-                    // set item width
-                    deleteItem.setWidth(dp2px(90));
-                    // set a icon
-                    deleteItem.setIcon(R.mipmap.ic_delete);
-                    // add to menu
-                    menu.addMenuItem(deleteItem);
-                }
-			}
-		};
-		// set creator
-		deviceListView.setMenuCreator(creator);
-
-		// step 2. listener item click event
-		deviceListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				switch (index) {
-					case 0:
-						delete(position);
-						break;
-				}
-				return true;
-			}
-		});
+		initListViewMenu();
 	}
-	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
-	}
+
 
 	private void delete(int position){
 		//Todo delete device
@@ -218,6 +182,46 @@ public class DeviceActivity extends BaseActivity {
 		}
 		deviceAdapter.notifyDataSetChanged();
 	}
+	private void initListViewMenu() {
+		// step 1. create a MenuCreator
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+			@Override
+			public void create(SwipeMenu menu) {
+				int vt = menu.getViewType();
+				if(vt==0) {
+					// create "delete" item
+					SwipeMenuItem deleteItem = new SwipeMenuItem(
+							getApplicationContext());
+					// set item background
+					deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+							0x3F, 0x25)));
+					// set item width
+					deleteItem.setWidth(UIUtils.dp2px(90));
+					// set a icon
+					deleteItem.setIcon(R.mipmap.ic_delete);
+					// add to menu
+					menu.addMenuItem(deleteItem);
+				}
+			}
+		};
+		// set creator
+		deviceListView.setMenuCreator(creator);
+
+		// step 2. listener item click event
+		deviceListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+				switch (index) {
+					case 0:
+						delete(position);
+						break;
+				}
+				return true;
+			}
+		});
+	}
+
 
 	/**
 	 * 点击扫描
@@ -230,22 +234,43 @@ public class DeviceActivity extends BaseActivity {
 
 	private void scanLeDevice(final boolean enable) {
 		if (enable) {
-			// Stops scanning after a pre-defined scan period.
-			handler.postDelayed(new Runnable() {
+			PermissionUtils.askLocationInfo(new PermissionUtils.PermissionListener() {
 				@Override
-				public void run() {
-					scanning = false;
-//					scanTextView.setText(R.string.ScanText);
-					// 停止扫描设备
-					bleService.scanLeDevice(!enable);
+				public void onGranted() {
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							scanning = false;
+							// 停止扫描设备
+							bleService.scanLeDevice(!enable);
 
+						}
+					}, SCAN_PERIOD);
+
+					scanning = true;
+					scanTextView.setText(R.string.menu_stop);
+					// 开始扫描设备
+					bleService.scanLeDevice(enable);
 				}
-			}, SCAN_PERIOD);
 
-			scanning = true;
-			scanTextView.setText(R.string.menu_stop);
-			// 开始扫描设备
-			bleService.scanLeDevice(enable);
+				@Override
+				public void onDenied(List<String> permissions) {
+					DialogUtils.createSimpleDialog(DeviceActivity.this,
+							"严重警告!", "由于您禁止了定位的权限,将会导致与设备连接不正常,设备将不会正常工作,请您点击设置去设置同意定位权限", "去设置", "取消", new SimpleDialogListeners() {
+								@Override
+								public void confirm() {
+									Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+									startActivityForResult(intent,0); //此为设置完成后返回到获取界面
+								}
+
+								@Override
+								public void cancel() {
+
+								}
+							});
+				}
+			});
+
 		} else {
 			scanning = false;
 //			scanTextView.setText(R.string.ScanText);

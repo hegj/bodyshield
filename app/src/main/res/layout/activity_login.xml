@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@mipmap/bluebg"
               android:orientation="vertical"
-              tools:context="com.cmax.bodysheild.activity.LoginActivity">
+             >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,15 +26,17 @@
 
 
         <TextView
+            android:id="@+id/tvRegister"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="left"
-            android:id="@+id/saveBtn"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/RegisterText"
             android:textColor="@color/white"/>
     </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -106,6 +108,7 @@
 
 
         <TextView
+            android:id="@+id/tvLogin"
             android:gravity="center"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"

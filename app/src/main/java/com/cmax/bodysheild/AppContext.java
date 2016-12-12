@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 
 import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.exception.CrashHandler;
 import com.cmax.bodysheild.inject.component.AppComponent;
+
 import com.cmax.bodysheild.inject.component.DaggerAppComponent;
 import com.cmax.bodysheild.inject.module.AppModule;
 import com.github.mikephil.charting.data.LineData;
@@ -27,7 +29,7 @@ public class AppContext extends MultiDexApplication {
 
 	private static AppContext context;
 	private LineData xData;
-
+    private static Handler mHandler;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -35,6 +37,7 @@ public class AppContext extends MultiDexApplication {
         CrashHandler catchHandler = CrashHandler.getInstance();
         catchHandler.init(getApplicationContext());
         AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
+        mHandler=new Handler();
     }
 	
 	public static AppContext getContext() {
@@ -77,5 +80,7 @@ public class AppContext extends MultiDexApplication {
         }
         xData.setHighlightEnabled(true);
     }
-
+    public static Handler getMainHandler() {
+        return mHandler;
+    }
 }

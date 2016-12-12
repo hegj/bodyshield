@@ -21,6 +21,7 @@ import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 
 import java.util.Date;
@@ -178,25 +179,21 @@ public class UserListActivity extends BaseActivity {
 			}
 			finish();
 		}else{
-			final Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
-			startActivity(intent);
+			IntentUtils.toLoginActivity(this,null,device);
 		}
 	}
 
-    @OnClick(R.id.editBtn)    void editUser(View v){        final Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
+    @OnClick(R.id.editBtn)    void editUser(View v){
         List<UserAdapter.UserSelected> users = userAdapter.getUsersList();
-        boolean flag = false;
-        for(UserAdapter.UserSelected u : users){
+		User user=null;
+		for(UserAdapter.UserSelected u : users){
             if(u.isSelected()){
-                intent.putExtra(CURRENT_USER,u.getUser());
-                flag = true;
+				user = u.getUser();
                 break;
             }
         }
-        if(flag){
-            startActivity(intent);
+        if(user!=null){
+			IntentUtils.toLoginActivity(this,user,device);
         } else{
             Toast.makeText(this, R.string.not_selected_user, Toast.LENGTH_SHORT).show();
         }

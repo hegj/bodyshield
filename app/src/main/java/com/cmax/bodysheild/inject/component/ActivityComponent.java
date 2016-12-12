@@ -1,7 +1,8 @@
 package com.cmax.bodysheild.inject.component;
 
 
-import com.cmax.bodysheild.activity.LoginActivity;
+
+import com.cmax.bodysheild.activity.login.LoginActivity2;
 
 import dagger.Component;
 
@@ -10,5 +11,5 @@ import dagger.Component;
  */
 @Component(dependencies = AppComponent.class)
 public interface ActivityComponent {
-    void inject(LoginActivity activity);
+    void inject(LoginActivity2 activity);
 }

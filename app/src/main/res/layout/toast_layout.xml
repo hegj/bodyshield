@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/toast_border"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="20dp"
+    >
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/toast_image"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/app_name"
+        android:layout_marginBottom="10dp"
+         />
+
+    <TextView
+        android:id="@+id/toast_text"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:textColor="#ffffff" />
+
+</LinearLayout><!-- From: file:/D:/ASprogects/qxinli-3/mytoast/src/main/res/layout/toast_layout.xml -->

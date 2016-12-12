@@ -13,6 +13,38 @@ public class User implements Parcelable {
 	String userName;
     String image;
 
+    public User(Parcel in) {
+        id = in.readString();
+        userName = in.readString();
+        image = in.readString();
+        password = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    public User() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    String password;
     public String getImage() {
         return image;
     }
@@ -48,29 +80,6 @@ public class User implements Parcelable {
 
 	}
 
-    public User(){}
-    protected User(Parcel in) {
-        id = in.readString();
-        userName = in.readString();
-        image = in.readString();
-    }
-    public static final Creator<User> CREATOR = new Creator<User>(){
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
-	@Override
-	public int hashCode() {
-		return userName.hashCode();
-	}
-
     @Override
     public int describeContents() {
         return 0;
@@ -81,5 +90,6 @@ public class User implements Parcelable {
         dest.writeString(id);
         dest.writeString(userName);
         dest.writeString(image);
+        dest.writeString(password);
     }
 }

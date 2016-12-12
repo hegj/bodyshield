@@ -244,6 +244,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode==10){
+            if (data!=null)
            currentUser= data.getParcelableExtra("Register");
         }else {
             CropHelper.handleResult(this, requestCode, resultCode, data);

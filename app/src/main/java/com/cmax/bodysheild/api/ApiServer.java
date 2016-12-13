@@ -1,6 +1,7 @@
 package com.cmax.bodysheild.api;
 
 import com.cmax.bodysheild.base.bean.BaseRequestData;
+import com.cmax.bodysheild.bean.UserProfileInfo;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,5 +14,11 @@ import rx.Observable;
 public interface ApiServer {
     @FormUrlEncoded
     @POST( Url.LOGIN)
-    Observable<BaseRequestData<Object>> login(@Field("username") String username, @Field("password") String password);
+    Observable<BaseRequestData<Object>> login(@Field("name") String username, @Field("password") String password);
+    @FormUrlEncoded
+    @POST( Url.REGISTER)
+    Observable<BaseRequestData<UserProfileInfo>> register(@Field("name") String username, @Field("password") String password);
+    @FormUrlEncoded
+    @POST( Url.IS_REGISTER)
+    Observable<BaseRequestData> isUserRegister(@Field("name") String username);
 }

@@ -314,7 +314,7 @@ public class DeviceActivity extends BaseActivity {
 					clazz = UserListActivity.class;
 					msg = Constant.NEW_DEVICE_FLAG;
 				}else {
-					clazz = LoginActivity.class;
+					clazz = LoginActivity2.class;
 				}
 
 			}else{

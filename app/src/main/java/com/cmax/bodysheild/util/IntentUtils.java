@@ -17,7 +17,7 @@ import com.cmax.bodysheild.bean.cache.User;
 
 public class IntentUtils {
     public static void toLoginActivity(Activity activity, User user, BLEDevice device) {
-        final Intent intent = new Intent(activity, LoginActivity.class);
+        final Intent intent = new Intent(activity, LoginActivity2.class);
         if (device != null)
             intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
         if (user != null)

@@ -36,7 +36,8 @@ public class AppContext extends MultiDexApplication {
 		context = this;
         CrashHandler catchHandler = CrashHandler.getInstance();
         catchHandler.init(getApplicationContext());
-        AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
+      //  AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
+
         mHandler=new Handler();
     }
 	

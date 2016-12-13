@@ -7,22 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
-import com.cmax.bodysheild.activity.TemperatureInfoActivity;
-import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.base.BaseMvpActivity;
-import com.cmax.bodysheild.bean.ble.BLEDevice;
-import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
-import com.cmax.bodysheild.util.LogUtil;
-import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.ToastUtils;
 
-import org.hybridsquad.android.library.CropHandler;
 import org.hybridsquad.android.library.CropHelper;
-import org.hybridsquad.android.library.CropParams;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -48,7 +39,7 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
 
     @Override
     protected void setActivityComponent(ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+       activityComponent.inject(this);
     }
 
     @Override
@@ -58,6 +49,7 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
         loginDialog.setMessage("登陆中,请稍后");
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
+        basePresenter =loginPresenter;
     }
 
     @Override
@@ -66,6 +58,11 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
         Bundle extras = getIntent().getExtras();
         loginPresenter.initIntentData(extras);
 
+    }
+
+    @Override
+    protected LoginPresenter setBasePresenter() {
+        return loginPresenter;
     }
 
     @Override
@@ -141,7 +138,7 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        CropHelper.handleResult(presenter, requestCode, resultCode, data);
+        CropHelper.handleResult(basePresenter, requestCode, resultCode, data);
         if (requestCode == 1) {
         }
     }

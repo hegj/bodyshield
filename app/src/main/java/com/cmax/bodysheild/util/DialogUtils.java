@@ -2,6 +2,7 @@ package com.cmax.bodysheild.util;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
@@ -98,5 +99,12 @@ public class DialogUtils {
 
         dialog.show();
         return dialog;
+    }
+
+    public static ProgressDialog showProgressDialog(Activity activity,String text){
+        ProgressDialog   loginDialog = new ProgressDialog(activity);
+        loginDialog.setMessage(text);
+        loginDialog.show();
+        return  loginDialog;
     }
 }

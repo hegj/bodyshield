@@ -7,10 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
 import com.cmax.bodysheild.base.view.IView;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
-import com.cmax.bodysheild.inject.component.AppComponent;
-import com.cmax.bodysheild.inject.component.DaggerActivityComponent;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -19,8 +15,8 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseMvpActivity   <T extends BasePresenter> extends FragmentActivity implements IView {
-    @Inject
-    protected  T presenter;
+   // @Inject
+    protected  T basePresenter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +24,22 @@ public abstract class BaseMvpActivity   <T extends BasePresenter> extends Fragme
         if (layoutId<=0){
             throw new NullPointerException("Please set Layout  ");
         }
-
-        ActivityComponent activityComponent = DaggerActivityComponent.builder().appComponent(AppComponent.Instance.getAppComponent()).build();
-        setActivityComponent(activityComponent);
+        basePresenter = setBasePresenter();
         setContentView(layoutId);
-        ButterKnife.bind(this);
+       // ActivityComponent activityComponent = DaggerActivityComponent.builder().appComponent(AppComponent.Instance.getAppComponent()).build();
+        //setActivityComponent(activityComponent);
         initView(savedInstanceState);
-        if (presenter!=null)
-            presenter.attachView(this);
+        if (basePresenter !=null) {
+            basePresenter.attachView(this);
+        }else {
+            throw new NullPointerException("Please set basePresenter parameters among initView method");
+        }
+        ButterKnife.bind(this);
         initData(savedInstanceState);
         initEvent(savedInstanceState);
     }
+
+    protected abstract T setBasePresenter();
 
     protected void initEvent(Bundle savedInstanceState) {
 
@@ -57,6 +58,6 @@ public abstract class BaseMvpActivity   <T extends BasePresenter> extends Fragme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (presenter!=null) presenter.detachView();
+        if (basePresenter !=null) basePresenter.detachView();
     }
 }

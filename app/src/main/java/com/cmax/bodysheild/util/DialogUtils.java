@@ -102,7 +102,7 @@ public class DialogUtils {
     }
 
     public static ProgressDialog showProgressDialog(Activity activity,String text){
-        ProgressDialog   loginDialog = new ProgressDialog(activity);
+        ProgressDialog   loginDialog = new ProgressDialog(activity,R.style.loading_dialog);
         loginDialog.setMessage(text);
         loginDialog.show();
         return  loginDialog;

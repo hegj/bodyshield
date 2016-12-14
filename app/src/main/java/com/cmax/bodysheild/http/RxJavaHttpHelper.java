@@ -3,8 +3,12 @@ package com.cmax.bodysheild.http;
 import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.http.rxexception.NetworkConnectionException;
 import com.cmax.bodysheild.http.rxexception.ServerException;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
 
+
+import org.json.JSONObject;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -25,14 +29,15 @@ public class RxJavaHttpHelper {
                         public Observable<T> call(BaseRequestData<T> tBaseRequestData) {
                             if (tBaseRequestData==null){
                                  return Observable.error(new NetworkConnectionException(""));
-                            }else if (tBaseRequestData.error_code ==0){
+                            }else if (tBaseRequestData.code ==0){
+
                                 //创建一个观察者
                                 if (tBaseRequestData==null){
                                     Logger.d("........");
                                 }
                                 return createObservable(tBaseRequestData.data);
                             }else {
-                                return Observable.error(new ServerException(tBaseRequestData.error_code,tBaseRequestData.message));
+                                return Observable.error(new ServerException(tBaseRequestData.code,tBaseRequestData.message));
                             }
                         }
                     });

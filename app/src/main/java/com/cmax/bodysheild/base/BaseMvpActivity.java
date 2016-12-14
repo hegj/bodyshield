@@ -31,9 +31,9 @@ public abstract class BaseMvpActivity   <T extends BasePresenter> extends Fragme
         initView(savedInstanceState);
         if (basePresenter !=null) {
             basePresenter.attachView(this);
-        }else {
+        }/*else {
             throw new NullPointerException("Please set basePresenter parameters among initView method");
-        }
+        }*/
         ButterKnife.bind(this);
         initData(savedInstanceState);
         initEvent(savedInstanceState);

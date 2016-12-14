@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseMvpActivity;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 
 import org.hybridsquad.android.library.CropHelper;
@@ -117,7 +118,7 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
 
     @OnClick(R.id.tvRegister)
     void register(View view){
-            loginPresenter.startLogin();
+        IntentUtils.toRegisterActivity(this);
     }
     @OnClick(R.id.tvLogin)
     void login(View view){

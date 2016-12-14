@@ -1,5 +1,6 @@
 package com.cmax.bodysheild.activity.login;
 
+import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.http.HttpMethods;
 import com.cmax.bodysheild.http.RxJavaHttpHelper;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
@@ -14,9 +15,9 @@ public class LoginModel {
 
     }
 
-    public   Observable<Object>   login(String userName, String password){
+    public   Observable<UserProfileInfo>   login(String userName, String password){
         return HttpMethods.getInstance().apiService.login(userName, password)
-                        .compose(RxJavaHttpHelper.<Object>handleResult())
-                .compose( RxSchedulersHelper.applyIoTransformer());
+                        .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
+                .compose( RxSchedulersHelper.<UserProfileInfo>applyIoTransformer());
     }
 }

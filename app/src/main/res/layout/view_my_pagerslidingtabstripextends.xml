@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+    xmlns:qxinli="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/rl_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <com.qxinli.android.kit.view.PagerSlidingTabStripExtends
+        android:layout_weight="3"
+        android:id="@+id/tabs_iew"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dis_80px"
+        qxinli:pstsSelectedTabTextColor="@color/base"
+        qxinli:pstsSelectedTabTextSize="@dimen/sp_28"
+        qxinli:pstsTabTextColor="@color/tab_title_naomal"
+        qxinli:pstsTabTextSize="@dimen/sp_28"
+        qxinli:allowWidthFull="true"
+        qxinli:pstsIndicatorColor="@color/base"
+        qxinli:pstsIndicatorHeight="2.5dp"
+        >
+
+    </com.qxinli.android.kit.view.PagerSlidingTabStripExtends>
+        <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_filter"
+         android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dis_80px">
+            <View
+                android:layout_marginBottom="@dimen/dis_10px"
+                android:layout_marginTop="@dimen/dis_10px"
+                android:layout_width="@dimen/dis_1px"
+                android:layout_height="match_parent"
+                android:background="@color/e4_gray"></View>
+            <TextView
+                android:textSize="@dimen/dis_28px"
+                android:id="@+id/tv_filter"
+                android:gravity="center"
+                android:textColor="@color/fd8149"
+                android:layout_weight="1"
+                android:text="筛选"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+     </LinearLayout>
+    <View style="@style/LineDeviderLandscape"/>
+
+    <com.qxinli.android.kit.view.ViewPagerCompat
+        android:id="@+id/tab_viewpage"
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.qxinli.android.kit.view.ViewPagerCompat>
+
+</LinearLayout>

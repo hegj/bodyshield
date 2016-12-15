@@ -20,7 +20,7 @@ public class RegisterModel {
     }
     public Observable<BaseRequestData>isRegister(String userName){
         return HttpMethods.getInstance().apiService.isUserRegister(userName)
-             //   .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
+             //  .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
                 .compose( RxSchedulersHelper.<BaseRequestData>applyIoTransformer());
     }
 }

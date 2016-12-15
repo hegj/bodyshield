@@ -9,12 +9,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FeedbackActivity extends BaseActivity {
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
-        ButterKnife.bind(this);
+    protected int getLayoutId() {
+        return R.layout.activity_feedback;
     }
 
     @OnClick(R.id.backBtn)

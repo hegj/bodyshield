@@ -44,29 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp">
-                <!--
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@mipmap/photo"
-                    android:id="@+id/portrait"/>
-                -->
-                <com.cmax.bodysheild.widget.CircleImageView
-                    android:id="@+id/portrait"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/photo"
-                    app:border_width="1dp"
-                    app:border_color="#70C8EF" />
-            </LinearLayout>
-            <LinearLayout
+             <LinearLayout
+                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
@@ -87,6 +66,25 @@
                     android:gravity="center"/>
             </LinearLayout>
 
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <EditText
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textColorHint="#C1DEFD"
+                    android:gravity="center"
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="password"/>
+            </android.support.design.widget.TextInputLayout>
 
                 <EditText
                     android:layout_marginLeft="30dp"

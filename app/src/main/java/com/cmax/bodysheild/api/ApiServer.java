@@ -14,7 +14,7 @@ import rx.Observable;
 public interface ApiServer {
     @FormUrlEncoded
     @POST( Url.LOGIN)
-    Observable<BaseRequestData<Object>> login(@Field("name") String username, @Field("password") String password);
+    Observable<BaseRequestData<UserProfileInfo>> login(@Field("name") String username, @Field("password") String password);
     @FormUrlEncoded
     @POST( Url.REGISTER)
     Observable<BaseRequestData<UserProfileInfo>> register(@Field("name") String username, @Field("password") String password);

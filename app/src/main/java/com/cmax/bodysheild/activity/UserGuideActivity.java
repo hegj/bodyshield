@@ -17,12 +17,15 @@ public class UserGuideActivity extends BaseActivity {
     @Bind(R.id.webView)
     WebView webView;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_guide);
-        ButterKnife.bind(this);
-//        webView.loadUrl("file:///android_asset/userGuide.html");
+    protected int getLayoutId() {
+        return R.layout.activity_user_guide;
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         loadUserGuide();
     }
 

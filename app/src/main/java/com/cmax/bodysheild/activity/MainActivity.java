@@ -33,16 +33,17 @@ public class MainActivity extends BaseActivity {
     private Fragment content;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        //获取FragmentManager实例
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         fMgr = getFragmentManager();
         homeItemClick();
 
     }
-
 
     @OnClick(R.id.homeItem)
     public void homeItemClick(){

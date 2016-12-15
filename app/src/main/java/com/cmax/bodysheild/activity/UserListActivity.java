@@ -48,19 +48,24 @@ public class UserListActivity extends BaseActivity {
 	private BLEDevice device;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user_list);
+	protected int getLayoutId() {
+		return R.layout.activity_user_list;
+	}
 
-		ButterKnife.bind(this);
-
+	@Override
+	protected void initData(Bundle savedInstanceState) {
+		super.initData(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
 		device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
 		msg = extras.getString(Constant.NEW_DEVICE_FLAG);
 
 		userAdapter = new UserAdapter(UserListActivity.this.getLayoutInflater(),userListView,device);
 		userListView.setAdapter(userAdapter);
+	}
 
+	@Override
+	protected void initEvent(Bundle savedInstanceState) {
+		super.initEvent(savedInstanceState);
 
 		// step 1. create a MenuCreator
 		SwipeMenuCreator creator = new SwipeMenuCreator() {

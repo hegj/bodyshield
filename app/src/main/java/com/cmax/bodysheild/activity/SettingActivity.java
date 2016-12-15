@@ -78,7 +78,6 @@ public class SettingActivity extends BaseActivity {
     String every;
     @BindString(R.string.setting_min)
     String min;
-
     private final static String TAG            = SettingActivity.class.getSimpleName();
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.00");
 
@@ -100,63 +99,16 @@ public class SettingActivity extends BaseActivity {
     private boolean isRegister = false;
     private BLEDevice device;
     private LoadingMask mask = null;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_setting;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
-
+    protected void initData(Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
-
-        initView();
-        initEvent();
-
-        serviceConnection = new ServiceConnection() {
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                bleBinder = (BluetoothService.LocalBinder) service;
-                bleService = bleBinder.getBLEService();
-
-                DataRequestCommand command = new DataRequestCommand(device.getAddress(),
-                        DataRequestCommand.ReqeustType.MemoryStatus);
-//                LogIntervalCommand logIntervalCommand = new LogIntervalCommand(device.getAddress(),LogIntervalCommand.ReqeustType.ReadModel);
-                bleService.executeCommand(command);
-//                bleService.executeCommand(logIntervalCommand);
-
-            }
-        };
-
-        bindService(new Intent(SettingActivity.this, BluetoothService.class), serviceConnection,
-                Context.BIND_AUTO_CREATE);
-
-
-
-        alertServiceConnection = new ServiceConnection() {
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                alertBinder = (AlertService.LocalBinder) service;
-                alertService = alertBinder.getService();
-                alertService.setDevice(device);
-            }
-        };
-        Intent intent = new Intent(this, AlertService.class);
-        bindService(intent, alertServiceConnection, Context.BIND_AUTO_CREATE);
-        isBind = true;
-
     }
 
     @Override
@@ -303,7 +255,11 @@ public class SettingActivity extends BaseActivity {
         Intent intent = new Intent(this, AboutUsActivity.class);
         startActivity(intent);
     }
-    private void initView(){
+
+
+
+    @Override
+    protected void initView(Bundle savedInstanceState){
         highFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_HIGHT_FEVER, 39);
         lowFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_LOW_FEVER, 38);
         unitCode = SharedPreferencesUtil.getIntValue(Constant.KEY_UNIT,0);
@@ -338,8 +294,8 @@ public class SettingActivity extends BaseActivity {
         measureIntervalText.setText(every + measureIntervalValue + min);
         volume.setProgress(volumeValue);
     }
-
-    private void initEvent(){
+    @Override
+    protected void initEvent(Bundle savedInstanceState){
         /*告警间隔设置*/
         alertInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             /**
@@ -422,6 +378,51 @@ public class SettingActivity extends BaseActivity {
                 //TODO
             }
         });
+
+        serviceConnection = new ServiceConnection() {
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                bleBinder = (BluetoothService.LocalBinder) service;
+                bleService = bleBinder.getBLEService();
+
+                DataRequestCommand command = new DataRequestCommand(device.getAddress(),
+                        DataRequestCommand.ReqeustType.MemoryStatus);
+//                LogIntervalCommand logIntervalCommand = new LogIntervalCommand(device.getAddress(),LogIntervalCommand.ReqeustType.ReadModel);
+                bleService.executeCommand(command);
+//                bleService.executeCommand(logIntervalCommand);
+
+            }
+        };
+
+        bindService(new Intent(SettingActivity.this, BluetoothService.class), serviceConnection,
+                Context.BIND_AUTO_CREATE);
+
+
+
+        alertServiceConnection = new ServiceConnection() {
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                alertBinder = (AlertService.LocalBinder) service;
+                alertService = alertBinder.getService();
+                alertService.setDevice(device);
+            }
+        };
+        Intent intent = new Intent(this, AlertService.class);
+        bindService(intent, alertServiceConnection, Context.BIND_AUTO_CREATE);
+        isBind = true;
+
     }
 
     private void saveParams(){

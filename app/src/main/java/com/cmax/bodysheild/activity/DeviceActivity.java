@@ -84,11 +84,18 @@ public class DeviceActivity extends BaseActivity {
 //	private boolean autoScan = false;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_device);
-        ButterKnife.bind(this);
-//		autoScan = getIntent().getBooleanExtra("autoScan",false);
+	protected int getLayoutId() {
+		return R.layout.activity_device;
+	}
+
+	@Override
+	protected void initView(Bundle savedInstanceState) {
+		super.initView(savedInstanceState);
+	}
+
+	@Override
+	protected void initData(Bundle savedInstanceState) {
+		super.initData(savedInstanceState);
 		deviceAdapter = new DeviceAdapter(DeviceActivity.this.getLayoutInflater(), deviceListView);
 		deviceListView.setAdapter(deviceAdapter);
 
@@ -115,8 +122,6 @@ public class DeviceActivity extends BaseActivity {
 		isBind = true;
 		initListViewMenu();
 	}
-
-
 	private void delete(int position){
 		//Todo delete device
 		BLEDevice device = (BLEDevice)deviceAdapter.getItem(position);

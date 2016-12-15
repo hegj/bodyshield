@@ -73,7 +73,8 @@ dependencies {
     compile rootProject.ext.dependencies["stetho"]
     compile rootProject.ext.dependencies["logger"]
     apt rootProject.ext.dependencies["multidex"]
-    apt rootProject.ext.dependencies["design"]
+
+    compile rootProject.ext.dependencies["design"]
     compile rootProject.ext.dependencies["okhttp"]
     compile rootProject.ext.dependencies["oklog3"]
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'

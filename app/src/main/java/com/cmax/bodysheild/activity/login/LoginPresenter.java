@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
+import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
@@ -57,7 +58,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
 
     @Override
     public void attachView(ILoginView view) {
-        super.attachView(loginView);
+        super.attachView(view);
         this.loginView = view;
     }
 
@@ -79,14 +80,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
             return;
         }
 
-        loginModel.login(userName, passWord).subscribe(new ProgressSubscriber<Object>(getView()) {
+        loginModel.login(userName, passWord).subscribe(new ProgressSubscriber<UserProfileInfo>(getView()) {
             @Override
             public void _onError(String message) {
 
             }
 
             @Override
-            public void _onNext(Object o) {
+            public void _onNext(UserProfileInfo info) {
 
             }
 

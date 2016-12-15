@@ -1,5 +1,7 @@
 package com.cmax.bodysheild.model;
 
+import android.widget.EditText;
+
 import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.http.HttpMethods;

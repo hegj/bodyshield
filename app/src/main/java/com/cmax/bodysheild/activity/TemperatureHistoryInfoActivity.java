@@ -95,17 +95,14 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     private static final SimpleDateFormat FORMAT2     = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final DecimalFormat df = new DecimalFormat("#.00");
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("00");
-
     private BLEDevice device;
     private DBManager dbManager;
-
     private BLEService                   bleService;
     private ServiceConnection            serviceConnection;
     private BluetoothService.LocalBinder bleBinder;
     private boolean isBind     = false;
     private boolean isRegister = false;
     private LineData xData;
-
 //    private  int recordIndex = 1;
     private  int recordsCount = 0;
     private  String currentUserName = null;
@@ -182,26 +179,36 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             }
         }
     };
-
-
-
-
-    private Vibrator vibrator;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_temperature_history_info);
-        ButterKnife.bind(this);
+    protected int getLayoutId() {
+        return R.layout.activity_temperature_history_info;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        chart = (LineChart) findViewById(R.id.historyTemperatureChart);
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         et_showDate.setOnTouchListener(this);
         et_showDate.setText(DATE_FORMAT.format(new Date()));
         showTime.setText(FORMAT2.format(new Date()));
         Bundle extras = getIntent().getExtras();
         device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
         setCurrentUser();
-        chart = (LineChart) findViewById(R.id.historyTemperatureChart);
+
         dbManager = new DBManager(this);
         initLineData();
         initChart();
+    }
+
+    @Override
+    protected void initEvent(Bundle savedInstanceState) {
+        super.initEvent(savedInstanceState);
+
         serviceConnection = new ServiceConnection() {
 
             @Override
@@ -227,9 +234,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             isRegister = true;
         }
         timeFlag = SharedPreferencesUtil.getLongValue(Constant.KEY_TIME_FLAG,1L);
-        Log.i(TAG,"时间记录："+timeFlag);
     }
-
 
     @Override
     protected void onResume() {

@@ -50,8 +50,8 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
 
     @Bind(R.id.userName)
     EditText userName;
-    @Bind(R.id.portrait)
-    ImageView portrait;
+
+    ImageView portrait = new ImageView(this);
     @Bind(R.id.userPassword)
     EditText userPassword;
     private BLEDevice device;
@@ -60,10 +60,13 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
     private Bitmap bitmap;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
         currentUser = extras.getParcelable(UserListActivity.CURRENT_USER);
@@ -73,9 +76,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
             userName.setText(currentUser.getUserName());
         }
         mCropParams = new CropParams(this);
-        // 测试所用
     }
-
 
     @OnClick(R.id.backBtn)
     void finishActivity(View view) {
@@ -150,21 +151,6 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
         finish();
     }
 
-    @OnClick(R.id.portrait)
-    void setPortrait(ImageView v) {
-        PermissionUtils.askCamera(new PermissionUtils.PermissionListener() {
-            @Override
-            public void onGranted() {
-                showDialog();
-            }
-
-            @Override
-            public void onDenied(List<String> permissions) {
-
-            }
-        });
-
-    }
 
     Dialog dialog = null;
 

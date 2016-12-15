@@ -9,8 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.BaseMvpActivity;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 
 import org.hybridsquad.android.library.CropHelper;
@@ -21,12 +23,12 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/11/23 0023.
  */
-public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements ILoginView{
+public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILoginView{
 
     @Bind(R.id.userName)
     EditText userName;
-    @Bind(R.id.portrait)
-    ImageView portrait;
+    //@Bind(R.id.portrait)
+//    ImageView portrait = new ImageView(this);
     @Bind(R.id.userPassword)
     EditText userPassword;
     private ProgressDialog loginDialog;
@@ -112,12 +114,12 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
 
     @Override
     public void setPortraitBitmap(Bitmap bitmap) {
-        portrait.setImageBitmap(bitmap);
+      //  portrait.setImageBitmap(bitmap);
     }
 
     @OnClick(R.id.tvRegister)
     void register(View view){
-            loginPresenter.startLogin();
+        IntentUtils.toRegisterActivity(this);
     }
     @OnClick(R.id.tvLogin)
     void login(View view){
@@ -132,10 +134,10 @@ public class LoginActivity2 extends BaseMvpActivity<LoginPresenter> implements I
         CropHelper.clearCacheDir();
         super.onDestroy();
     }
-    @OnClick(R.id.portrait)
+   /* @OnClick(R.id.portrait)
     void setPortrait(){
       loginPresenter.showChoosePortraitDialog();
-    }
+    }*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         CropHelper.handleResult(basePresenter, requestCode, resultCode, data);

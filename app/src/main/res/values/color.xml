@@ -8,4 +8,8 @@
     <color name="green">#008000</color>
     <color name="navigation_bar_background">#A3D9F5</color>
     <color name="navigation_bar_text">#ffffffff</color>
+    <color name="e4e4e4">#e4e4e4</color>
+    <color name="thin_gray">#DDDDDD</color>
+    <color name="c666666">#666666</color>
+    <color name="f0f0f0">#F0F0F0</color>
 </resources>

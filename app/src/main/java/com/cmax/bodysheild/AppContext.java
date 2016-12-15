@@ -14,10 +14,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.exception.CrashHandler;
-import com.cmax.bodysheild.inject.component.AppComponent;
+/*import com.cmax.bodysheild.inject.component.AppComponent;
 
 import com.cmax.bodysheild.inject.component.DaggerAppComponent;
-import com.cmax.bodysheild.inject.module.AppModule;
+import com.cmax.bodysheild.inject.module.AppModule;*/
 import com.github.mikephil.charting.data.LineData;
 
 import org.apache.commons.lang3.StringUtils;

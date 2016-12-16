@@ -18,6 +18,7 @@ import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.KeyBoardUtils;
@@ -95,43 +96,26 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
 
             @Override
             public void _onCompleted() {
-
+  /*  if (bitmap != null) {
+                    String imagePath = PortraitUtil.writeBitmap(activity, bitmap, finalUser.getImage());
+                    finalUser.setImage(imagePath);
+                }*/
                 final List<User> users = SharedPreferencesUtil.getList(Constant.USER_LIST,
                         User.class);
-                if (currentUser != null && users.contains(currentUser)) {
-                    //包含
-                    users.remove(currentUser);
-                }
+
                 User user = new User();
                 user.setId(userName);
                 user.setUserName(userName);
                 user.setPassword(passWord);
-              /*  if (bitmap != null) {
-                    String imagePath = PortraitUtil.writeBitmap(activity, bitmap, finalUser.getImage());
-                    finalUser.setImage(imagePath);
-                }*/
+                if (users.contains(user)) {
+                    //包含
+                    users.remove(user);
+                }
                 users.add(user);
                 SharedPreferencesUtil.setList(Constant.USER_LIST, users);
 
-                List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST,
-                        DeviceUser.class);
-                DeviceUser temp = null;
-                for (DeviceUser deviceuser : deviceUsers) {
-                    if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())) {
-                        temp = deviceuser;
-                        break;
-                    }
-                }
-                if (temp == null) {
-                    temp = new DeviceUser();
-                }
-                temp.setDeviceType(device.getDeviceType());
-                temp.setAddress(device.getAddress());
-                temp.setUserId(user.getId());
-                deviceUsers.add(temp);
-                SharedPreferencesUtil.setList(Constant.DEVICE_USER_LIST, deviceUsers);
-                //保存设备名称
-                SharedPreferencesUtil.setStringValue(device.getAddress(), userName);
+                DataUtils.addDeviceToSp(device,user) ;
+
                  IntentUtils.toTemperatureInfoActivity(activity,device);
 
             }

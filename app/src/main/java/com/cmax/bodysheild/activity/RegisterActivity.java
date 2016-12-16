@@ -185,6 +185,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                 user.setPassword(password);
                 DataUtils.addUserToSp(user);
                 ToastUtils.showSuccessToast("注册成功");
+                DataUtils.addDeviceToSp(device,user) ;
                 IntentUtils.toTemperatureInfoActivity(RegisterActivity.this,device);
 
 

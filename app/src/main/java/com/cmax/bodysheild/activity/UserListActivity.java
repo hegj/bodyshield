@@ -205,6 +205,14 @@ public class UserListActivity extends BaseActivity {
 
     }
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (userAdapter!=null && resultCode==3) {
+			userAdapter.notifyDataSetChanged();
+		}
+	}
+
 	@OnClick(R.id.common_back_btn)
 	void back(){
 		finish();

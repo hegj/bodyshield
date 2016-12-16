@@ -1,11 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    <TextView
-        android:textColor="@color/c666666"
-        android:text="迭代当中"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"           android:background="@mipmap/bluebg"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height"
+        android:background="@color/navigation_bar_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/navigation_bar_setting_width"
+            android:layout_height="@dimen/navigation_bar_setting_height"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/jian"/>
+
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="编辑个人资料"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
+        <com.cmax.bodysheild.widget.CircleImageView
+            android:layout_centerHorizontal="true"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:id="@+id/userImageBtn"
+            android:src="@mipmap/people"
+            app:border_width="1dp"
+            app:border_color="#70C8EF"/>
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:textColor="#F9FAFC"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_below="@+id/userImageBtn"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_width="wrap_content"></TextView>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

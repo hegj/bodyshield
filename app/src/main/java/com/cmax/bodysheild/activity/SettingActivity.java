@@ -109,6 +109,39 @@ public class SettingActivity extends BaseActivity {
         super.initData(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
+        highFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_HIGHT_FEVER, 39);
+        lowFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_LOW_FEVER, 38);
+        unitCode = SharedPreferencesUtil.getIntValue(Constant.KEY_UNIT,0);
+        vibratedCode = SharedPreferencesUtil.getIntValue(Constant.KEY_VIBRATION,0);
+        alertIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_ALERT_INTERVAL, 1);
+        measureIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
+        volumeValue = SharedPreferencesUtil.getIntValue(Constant.KEY_VOLUME, 1);
+
+
+
+        if(0 == unitCode){
+            highFever.setText(""+highFeverValue);
+            lowFever.setText(""+lowFeverValue);
+            degHighFever.setText("℃");
+            degLowFever.setText("℃");
+            tempUnit.setChecked(false);
+        }else {
+            highFever.setText(""+CommonUtil.centigradeToFahrenheit(highFeverValue));
+            lowFever.setText(""+CommonUtil.centigradeToFahrenheit(lowFeverValue));
+            degHighFever.setText("℉");
+            degLowFever.setText("℉");
+            tempUnit.setChecked(true);
+        }
+        if(0 == vibratedCode){
+            vibration.setChecked(false);
+        }else {
+            vibration.setChecked(true);
+        }
+        alertInterval.setProgress(alertIntervalValue);
+        alertIntervalText.setText(every + alertIntervalValue + min);
+        measureInterval.setProgress(measureIntervalValue);
+        measureIntervalText.setText(every + measureIntervalValue + min);
+        volume.setProgress(volumeValue);
     }
 
     @Override
@@ -260,39 +293,7 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState){
-        highFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_HIGHT_FEVER, 39);
-        lowFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_LOW_FEVER, 38);
-        unitCode = SharedPreferencesUtil.getIntValue(Constant.KEY_UNIT,0);
-        vibratedCode = SharedPreferencesUtil.getIntValue(Constant.KEY_VIBRATION,0);
-        alertIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_ALERT_INTERVAL, 1);
-        measureIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
-        volumeValue = SharedPreferencesUtil.getIntValue(Constant.KEY_VOLUME, 1);
 
-
-
-        if(0 == unitCode){
-            highFever.setText(""+highFeverValue);
-            lowFever.setText(""+lowFeverValue);
-            degHighFever.setText("℃");
-            degLowFever.setText("℃");
-            tempUnit.setChecked(false);
-        }else {
-            highFever.setText(""+CommonUtil.centigradeToFahrenheit(highFeverValue));
-            lowFever.setText(""+CommonUtil.centigradeToFahrenheit(lowFeverValue));
-            degHighFever.setText("℉");
-            degLowFever.setText("℉");
-            tempUnit.setChecked(true);
-        }
-        if(0 == vibratedCode){
-            vibration.setChecked(false);
-        }else {
-            vibration.setChecked(true);
-        }
-        alertInterval.setProgress(alertIntervalValue);
-        alertIntervalText.setText(every + alertIntervalValue + min);
-        measureInterval.setProgress(measureIntervalValue);
-        measureIntervalText.setText(every + measureIntervalValue + min);
-        volume.setProgress(volumeValue);
     }
     @Override
     protected void initEvent(Bundle savedInstanceState){

@@ -106,7 +106,7 @@
             android:name=".activity.AboutUsActivity"
             android:label="@string/title_activity_about_us" >
         </activity>
-        <activity android:name=".activity.UserProfileEditActivity"></activity>
+        <activity android:name=".activity.user.UserProfileEditActivity"></activity>
     </application>
 
 </manifest>

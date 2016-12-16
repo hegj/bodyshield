@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.cmax.bodysheild.activity.RegisterActivity;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
-import com.cmax.bodysheild.activity.UserProfileEditActivity;
+import com.cmax.bodysheild.activity.user.UserProfileEditActivity;
 import com.cmax.bodysheild.activity.login.LoginActivity2;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
@@ -40,7 +40,7 @@ public class IntentUtils {
     public static void toEditProfile( Activity activity, User user) {
         Intent intent = new Intent(activity, UserProfileEditActivity.class);
         intent.putExtra(UserListActivity.CURRENT_USER, user);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent,2);
 
     }
 }

@@ -26,6 +26,8 @@ public class UIUtils {
      */
     public static Resources getResource() {
         return getContext().getResources();
+    }  public static int getResourceColor(int c) {
+        return getContext().getResources().getColor(c);
     }
 
     public static int dp2px(int dp) {

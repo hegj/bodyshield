@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.cmax.bodysheild.activity.RegisterActivity;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
-import com.cmax.bodysheild.activity.login.LoginActivity;
+import com.cmax.bodysheild.activity.UserProfileEditActivity;
 import com.cmax.bodysheild.activity.login.LoginActivity2;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
@@ -17,7 +17,7 @@ import com.cmax.bodysheild.bean.cache.User;
 
 public class IntentUtils {
     public static void toLoginActivity(Activity activity, User user, BLEDevice device) {
-        final Intent intent = new Intent(activity, LoginActivity2.class);
+          Intent intent = new Intent(activity, LoginActivity2.class);
         if (device != null)
             intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
         if (user != null)
@@ -25,8 +25,22 @@ public class IntentUtils {
         activity.startActivity(intent);
     }
 
-    public static void toRegisterActivity(Activity activity) {
+    public static void toRegisterActivity(Activity activity,BLEDevice device) {
         Intent intent = new Intent(activity, RegisterActivity.class);
-        activity.startActivityForResult(intent,10);
+        intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
+        activity.startActivity(intent);
+    }
+    public static void toTemperatureInfoActivity(Activity activity,BLEDevice device) {
+        Intent intent = new Intent(activity, TemperatureInfoActivity.class);
+        intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    public static void toEditProfile( Activity activity, User user) {
+        Intent intent = new Intent(activity, UserProfileEditActivity.class);
+        intent.putExtra(UserListActivity.CURRENT_USER, user);
+        activity.startActivity(intent);
+
     }
 }

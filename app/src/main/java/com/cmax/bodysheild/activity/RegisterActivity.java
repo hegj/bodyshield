@@ -17,6 +17,7 @@ import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
 import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.bean.UserProfileInfo;
+import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
 import com.cmax.bodysheild.http.rxexception.ErrorManager;
@@ -25,10 +26,16 @@ import com.cmax.bodysheild.inject.component.ActivityComponent;
 import com.cmax.bodysheild.listeners.BelowMenuPopupWindowListener;
 import com.cmax.bodysheild.model.RegisterModel;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
+import com.cmax.bodysheild.util.IntentUtils;
+import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.StringUtils;
 import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.ChoosePopupWindow;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +74,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
     private RegisterModel registerModel;
     private ChoosePopupWindow popupWindow;
     private int sex;
+    private BLEDevice device;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +95,9 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         registerModel = new RegisterModel();
+        device = getIntent().getParcelableExtra(TemperatureInfoActivity.EXTRA_DEVICE);
+      KeyBoardUtils.openKeybord(userName,this);
+
     }
 
     @Override
@@ -106,6 +117,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
 
     @OnClick(R.id.tvLogin)
     public void onClick() {
+        KeyBoardUtils.closeKeybord(userSex);
         final String username = userName.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
             ToastUtils.showFailToast("请填写用户名");
@@ -116,14 +128,25 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
             ToastUtils.showFailToast("请填写密码");
             return;
         }
+        String userAge = this.userAge.getText().toString().trim();
+        String userMobil = userMobile.getText().toString().trim();
+        if (!TextUtils.isEmpty(userAge)&&(!StringUtils.isNumber(userAge)||Integer.parseInt(userAge)>99)){
+            ToastUtils.showFailToast("请输入正确的年龄");
+            return;
+        }
+       /* if (!TextUtils.isEmpty(userMobil)&&StringUtils.isPhoneNumber(userMobil)){
+            ToastUtils.showFailToast("请输入正确的手机号码");
+            return;
+        }*/
         final Map<String,String> map = new HashMap();
         map.put("name",username);
         map.put("password",password);
         map.put("sex",sex+"");
-        map.put("age", TextUtils.isEmpty(userAge.getText().toString().trim())?"0":userAge.getText().toString().trim());
-        map.put("mobile", TextUtils.isEmpty(userMobile.getText().toString().trim())?"":userAge.getText().toString().trim());
+        map.put("age", TextUtils.isEmpty(userAge)?"0": userAge);
+        map.put("mobile", TextUtils.isEmpty(userMobil)?"": userMobil);
 
         final ProgressDialog progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, "注册中,请稍后");
+        progressDialog.show();
         registerModel.isRegister(username).flatMap(new Func1<BaseRequestData, Observable<UserProfileInfo>>() {
             @Override
             public Observable<UserProfileInfo> call(BaseRequestData baseRequestData) {
@@ -132,7 +155,6 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                 } else {
                     if (progressDialog != null && progressDialog.isShowing())
                         progressDialog.dismiss();
-                    // ToastUtils.showFailToast();
                     return Observable.error(new ServerException(baseRequestData.code, "用户名已经被注册,请修改用户名"));
                 }
 
@@ -157,27 +179,13 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
 
             @Override
             public void onNext(UserProfileInfo userProfileInfo) {
-
                 User user = new User();
                 user.setId(username);
                 user.setUserName(username);
                 user.setPassword(password);
-                List<User> users = SharedPreferencesUtil.getList(Constant.USER_LIST,
-                        User.class);
-                for (User u : users) {
-                    if (u.equals(user)) {
-                        ToastUtils.showFailToast("已经有了这个账号啦,请您修改账号密码");
-                        return;
-                    }
-                }
-                users.add(user);
-
-                SharedPreferencesUtil.setList(Constant.USER_LIST, users);
+                DataUtils.addUserToSp(user);
                 ToastUtils.showSuccessToast("注册成功");
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                intent.putExtra("Register", user);
-                setResult(2, intent);
-                finish();
+                IntentUtils.toTemperatureInfoActivity(RegisterActivity.this,device);
 
 
             }
@@ -186,13 +194,12 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
 
     @OnClick(R.id.userSex)
     public void userSex() {
-
-
+        KeyBoardUtils.closeKeybord(userSex);
         if (popupWindow==null){
             popupWindow = new ChoosePopupWindow(this);
             popupWindow.showMenuPopupwindow();
             popupWindow.setMenuTextGravity();
-            popupWindow.setMenuLeftText("请选择性别","男","女" );
+            popupWindow.setMenuLeftText("女" ,"男","请选择性别");
             popupWindow.setBelowMenuPopupWindowListener(this);
         } else {
             popupWindow.showMenuPopupwindow();
@@ -202,12 +209,24 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
     @Override
     public void menuItemClickByType(int type) {
         switch (type) {
-            case BelowMenuPopupWindowListener.TYPE_1:
-                sex = 1;
-            break;
             case BelowMenuPopupWindowListener.TYPE_2:
-                  sex=2;
+                sex=2;
+                userSex.setText("女");
+                popupWindow.dismiss();
                 break;
+            case BelowMenuPopupWindowListener.TYPE_3:
+                sex=1;
+
+                userSex.setText("男");
+                popupWindow.dismiss();
+                break;
+
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+     //   KeyBoardUtils.closeKeybord(this);
     }
 }

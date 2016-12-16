@@ -8,5 +8,6 @@ public interface BelowMenuPopupWindowListener {
     int TYPE_1=1;
     int TYPE_2=2;
     int TYPE_3=3;
+    int TYPE_4=4;
       void menuItemClickByType(int type);
 }

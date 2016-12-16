@@ -198,7 +198,7 @@ public class UserListActivity extends BaseActivity {
             }
         }
         if(user!=null){
-			IntentUtils.toLoginActivity(this,user,device);
+			IntentUtils.toEditProfile(this,user);
         } else{
             Toast.makeText(this, R.string.not_selected_user, Toast.LENGTH_SHORT).show();
         }

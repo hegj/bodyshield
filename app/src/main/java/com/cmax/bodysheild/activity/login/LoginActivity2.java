@@ -12,7 +12,9 @@ import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.BaseMvpActivity;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
+import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
+import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 
 import org.hybridsquad.android.library.CropHelper;
@@ -47,8 +49,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        loginDialog = new ProgressDialog(this);
-        loginDialog.setMessage("登陆中,请稍后");
+        loginDialog = DialogUtils.showProgressDialog(this,"登陆中,请稍后");
+
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
         basePresenter =loginPresenter;
@@ -57,7 +59,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-
+        KeyBoardUtils.openKeybord(userName,this);
         loginPresenter.initIntentData(  getIntent() );
 
     }
@@ -119,7 +121,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @OnClick(R.id.tvRegister)
     void register(View view){
-        IntentUtils.toRegisterActivity(this);
+        loginPresenter.toRegisterActivity();
+
     }
     @OnClick(R.id.tvLogin)
     void login(View view){
@@ -132,6 +135,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void onDestroy() {
         CropHelper.clearCacheDir();
+
         super.onDestroy();
     }
    /* @OnClick(R.id.portrait)

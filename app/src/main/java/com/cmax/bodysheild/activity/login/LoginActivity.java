@@ -84,7 +84,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
     }
     @OnClick(R.id.tvRegister)
     void register(View view){
-        IntentUtils.toRegisterActivity(this);
+        IntentUtils.toRegisterActivity(this,null);
     }
 
     @OnClick(R.id.tvLogin)
@@ -114,7 +114,7 @@ public class LoginActivity extends BaseActivity implements CropHandler, View.OnC
         }
         if (user == null) {
           ToastUtils.showToast("没有此账号,请先注册");
-          IntentUtils.toRegisterActivity(this);
+          IntentUtils.toRegisterActivity(this,null);
           return;
         }
         user.setId(name);

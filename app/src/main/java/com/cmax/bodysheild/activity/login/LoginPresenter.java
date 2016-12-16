@@ -20,6 +20,7 @@ import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
+import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.ToastUtils;
@@ -69,6 +70,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
     }
 
     public void startLogin() {
+        KeyBoardUtils.closeKeybord(activity);
         final String userName = loginView.getUserName();
         if (TextUtils.isEmpty(userName)) {
             loginView.setUserNameError("用户名不能为空");
@@ -100,14 +102,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
                     //包含
                     users.remove(currentUser);
                 }
-                User finalUser = new User();
-                finalUser.setId(userName);
-                finalUser.setUserName(userName);
-                finalUser.setPassword(passWord);
-                if (bitmap != null) {
+                User user = new User();
+                user.setId(userName);
+                user.setUserName(userName);
+                user.setPassword(passWord);
+              /*  if (bitmap != null) {
                     String imagePath = PortraitUtil.writeBitmap(activity, bitmap, finalUser.getImage());
                     finalUser.setImage(imagePath);
-                }
+                }*/
+                users.add(user);
                 SharedPreferencesUtil.setList(Constant.USER_LIST, users);
 
                 List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST,
@@ -124,15 +127,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
                 }
                 temp.setDeviceType(device.getDeviceType());
                 temp.setAddress(device.getAddress());
-                temp.setUserId(finalUser.getId());
+                temp.setUserId(user.getId());
                 deviceUsers.add(temp);
                 SharedPreferencesUtil.setList(Constant.DEVICE_USER_LIST, deviceUsers);
                 //保存设备名称
                 SharedPreferencesUtil.setStringValue(device.getAddress(), userName);
-                final Intent intent = new Intent(activity, TemperatureInfoActivity.class);
-                intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
-                activity.startActivity(intent);
-                activity.finish();
+                 IntentUtils.toTemperatureInfoActivity(activity,device);
+
             }
         });
     }
@@ -193,5 +194,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
             choosePortraitDialog.show();
         }
 
+    }
+
+    public void toRegisterActivity() {
+        IntentUtils.toRegisterActivity(activity,device);
     }
 }

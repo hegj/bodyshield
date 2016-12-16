@@ -6,7 +6,7 @@
         <item name="android:windowActionBar">false</item><!-- 设置没有标题 -->
         <item name="android:textSize">20sp</item>   <!-- 设置文本大小 -->
         <item name="android:textColor">@color/black</item><!-- 默认字体颜色 -->
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/blue</item>
 
         <!-- 设置activity切换动画 -->

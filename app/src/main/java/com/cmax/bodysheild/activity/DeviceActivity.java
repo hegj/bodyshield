@@ -27,8 +27,6 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.adapter.DeviceAdapter;
-import com.cmax.bodysheild.activity.login.LoginActivity;
-import com.cmax.bodysheild.activity.login.LoginActivity2;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.Temperature;
@@ -321,7 +319,7 @@ public class DeviceActivity extends BaseActivity {
 					clazz = UserListActivity.class;
 					msg = Constant.NEW_DEVICE_FLAG;
 				}else {
-					clazz = LoginActivity2.class;
+					clazz = RegisterActivity.class;
 				}
 
 			}else{

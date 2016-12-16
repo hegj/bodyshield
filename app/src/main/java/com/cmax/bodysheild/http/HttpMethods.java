@@ -2,6 +2,7 @@ package com.cmax.bodysheild.http;
 
 import com.cmax.bodysheild.api.ApiServer;
 import com.cmax.bodysheild.api.Url;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,7 @@ public class HttpMethods {
     private HttpMethods(){
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(12, TimeUnit.SECONDS);
+        httpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

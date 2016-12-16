@@ -57,8 +57,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        loginPresenter.initIntentData(extras);
+
+        loginPresenter.initIntentData(  getIntent() );
 
     }
 

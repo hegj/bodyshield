@@ -30,7 +30,6 @@ public class RxJavaHttpHelper {
                             if (tBaseRequestData==null){
                                  return Observable.error(new NetworkConnectionException(""));
                             }else if (tBaseRequestData.code ==0){
-
                                 //创建一个观察者
                                 if (tBaseRequestData==null){
                                     Logger.d("........");

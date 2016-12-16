@@ -43,6 +43,7 @@ import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
 import com.cmax.bodysheild.listeners.SimpleDialogListeners;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.LogUtil;
 import com.cmax.bodysheild.util.PermissionUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
@@ -235,6 +236,7 @@ public class DeviceActivity extends BaseActivity {
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
 		scanLeDevice(!scanning);
+		//IntentUtils.toLoginActivity(this,null,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {

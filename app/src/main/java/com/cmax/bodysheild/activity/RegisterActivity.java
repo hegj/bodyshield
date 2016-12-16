@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
-import com.cmax.bodysheild.activity.login.ILoginView;
 import com.cmax.bodysheild.activity.login.LoginActivity;
 import com.cmax.bodysheild.base.BaseActivity;
-import com.cmax.bodysheild.base.BaseMvpActivity;
 import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
 import com.cmax.bodysheild.base.view.IStateView;
@@ -21,23 +21,23 @@ import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
 import com.cmax.bodysheild.http.rxexception.ErrorManager;
 import com.cmax.bodysheild.http.rxexception.ServerException;
-import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
+import com.cmax.bodysheild.listeners.BelowMenuPopupWindowListener;
 import com.cmax.bodysheild.model.RegisterModel;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
-import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.widget.ChoosePopupWindow;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
 import rx.functions.Func1;
 
@@ -45,14 +45,28 @@ import rx.functions.Func1;
  * Created by Administrator on 2016/12/13 0013.
  */
 
-public class RegisterActivity extends BaseActivity implements IStateView {
+public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWindowListener {
     @Bind(R.id.userName)
     EditText userName;
     @Bind(R.id.userPassword)
     EditText userPassword;
     @Bind(R.id.tvLogin)
     TextView tvLogin;
+    @Bind(R.id.userSex)
+    TextView userSex;
+    @Bind(R.id.userAge)
+    EditText userAge;
+    @Bind(R.id.userMobile)
+    EditText userMobile;
+    @Bind(R.id.backBtn)
+    ImageView backBtn;
+    @Bind(R.id.tvRegister)
+    TextView tvRegister;
+    @Bind(R.id.rlTitle)
+    RelativeLayout rlTitle;
     private RegisterModel registerModel;
+    private ChoosePopupWindow popupWindow;
+    private int sex;
 
     @Override
     protected int getLayoutId() {
@@ -89,51 +103,62 @@ public class RegisterActivity extends BaseActivity implements IStateView {
     void finishActivity(View view) {
         finish();
     }
+
     @OnClick(R.id.tvLogin)
     public void onClick() {
         final String username = userName.getText().toString().trim();
-        if (TextUtils.isEmpty(username)){
+        if (TextUtils.isEmpty(username)) {
             ToastUtils.showFailToast("请填写用户名");
             return;
         }
         final String password = userPassword.getText().toString().trim();
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             ToastUtils.showFailToast("请填写密码");
             return;
         }
-        final ProgressDialog   progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, "注册中,请稍后");
+        final Map<String,String> map = new HashMap();
+        map.put("name",username);
+        map.put("password",password);
+        map.put("sex",sex+"");
+        map.put("age", TextUtils.isEmpty(userAge.getText().toString().trim())?"0":userAge.getText().toString().trim());
+        map.put("mobile", TextUtils.isEmpty(userMobile.getText().toString().trim())?"":userAge.getText().toString().trim());
+
+        final ProgressDialog progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, "注册中,请稍后");
         registerModel.isRegister(username).flatMap(new Func1<BaseRequestData, Observable<UserProfileInfo>>() {
             @Override
             public Observable<UserProfileInfo> call(BaseRequestData baseRequestData) {
-                if (baseRequestData.code==0){
-                return     registerModel.register(username,password);
+                if (baseRequestData.code == 0) {
+                    return registerModel.register(map);
                 } else {
-                    if (progressDialog!=null&&progressDialog.isShowing())progressDialog.dismiss();
-                   // ToastUtils.showFailToast();
-                    return Observable.error(new ServerException(baseRequestData.code,"用户名已经被注册,请修改用户名"));
+                    if (progressDialog != null && progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    // ToastUtils.showFailToast();
+                    return Observable.error(new ServerException(baseRequestData.code, "用户名已经被注册,请修改用户名"));
                 }
 
             }
         }).subscribe(new Subscriber<UserProfileInfo>() {
             @Override
             public void onCompleted() {
+                if (progressDialog != null && progressDialog.isShowing())
+                    progressDialog.dismiss();
                 ToastUtils.showSuccessToast("注册成功");
             }
 
             @Override
             public void onError(Throwable e) {
                 String s = ErrorManager.handleError(new DefaultErrorBundle((Exception) e));
-                if (TextUtils.isEmpty(s)){
-                    s="注册失败,请重试";
+                if (TextUtils.isEmpty(s)) {
+                    s = "注册失败,请重试";
                 }
                 ToastUtils.showFailToast(s);
-                if (progressDialog!=null&&progressDialog.isShowing())progressDialog.dismiss();
+                if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
             }
 
             @Override
             public void onNext(UserProfileInfo userProfileInfo) {
 
-                User  user = new User();
+                User user = new User();
                 user.setId(username);
                 user.setUserName(username);
                 user.setPassword(password);
@@ -150,88 +175,39 @@ public class RegisterActivity extends BaseActivity implements IStateView {
                 SharedPreferencesUtil.setList(Constant.USER_LIST, users);
                 ToastUtils.showSuccessToast("注册成功");
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                intent.putExtra("Register",user);
-                setResult(2,intent);
+                intent.putExtra("Register", user);
+                setResult(2, intent);
                 finish();
 
 
             }
         });
-     /*  registerModel.isRegister(username).subscribe(new Subscriber<Object>() {
+    }
 
-           @Override
-           public void onStart() {
-               super.onStart();
-           }
+    @OnClick(R.id.userSex)
+    public void userSex() {
 
-           @Override
-           public void onCompleted() {
-               registerModel.register(username,password).subscribe(new Subscriber<UserProfileInfo>() {
-                   @Override
-                   public void onCompleted() {
-                       if (progressDialog!=null&&progressDialog.isShowing())progressDialog.dismiss();
-                   }
 
-                   @Override
-                   public void onError(Throwable e) {
-                       String s = ErrorManager.handleError(new DefaultErrorBundle((Exception) e));
-                       if (TextUtils.isEmpty(s)){
-                           s="注册失败,请重试";
-                       }
-                       ToastUtils.showFailToast(s);
-                       if (progressDialog!=null&&progressDialog.isShowing())progressDialog.dismiss();
-                   }
-
-                   @Override
-                   public void onNext(UserProfileInfo userProfileInfo) {
-                        //保存用户
-                       onCompleted();
-                   }
-               });
-           }
-
-           @Override
-           public void onError(Throwable e) {
-               String s = ErrorManager.handleError(new DefaultErrorBundle((Exception) e));
-               if (TextUtils.isEmpty(s)){
-                   s="此账号已经被注册,请更换用户名";
-               }
-               ToastUtils.showFailToast(s);
-               if (progressDialog!=null&&progressDialog.isShowing())progressDialog.dismiss();
-           }
-
-           @Override
-           public void onNext(Object o) {
-            onCompleted();
-           }
-       })  ;*/
-       /* Observable.concat(registerModel.isRegister(username),registerModel.register(username,password)).first().subscribe(new ProgressSubscriber<UserProfileInfo>(this) {
-            @Override
-            public void _onError(String message) {
-
-            }
-
-            @Override
-            public void _onNext(UserProfileInfo userProfileInfo) {
-
-            }
-
-            @Override
-            public void _onCompleted() {
-
-            }
-        });
-*/
-
+        if (popupWindow==null){
+            popupWindow = new ChoosePopupWindow(this);
+            popupWindow.showMenuPopupwindow();
+            popupWindow.setMenuTextGravity();
+            popupWindow.setMenuLeftText("请选择性别","男","女" );
+            popupWindow.setBelowMenuPopupWindowListener(this);
+        } else {
+            popupWindow.showMenuPopupwindow();
+        }
     }
 
     @Override
-    public void showProgressDialog() {
-
-    }
-
-    @Override
-    public void hideProgressDialog() {
-
+    public void menuItemClickByType(int type) {
+        switch (type) {
+            case BelowMenuPopupWindowListener.TYPE_1:
+                sex = 1;
+            break;
+            case BelowMenuPopupWindowListener.TYPE_2:
+                  sex=2;
+                break;
+        }
     }
 }

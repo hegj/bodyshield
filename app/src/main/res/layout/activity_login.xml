@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
@@ -37,18 +37,17 @@
             android:textColor="@color/white"/>
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+
+        <RelativeLayout
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-             <LinearLayout
-                 android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+
                 <EditText
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -64,29 +63,54 @@
                     android:textSize="20sp"
                     android:textColorHint="#C1DEFD"
                     android:gravity="center"/>
-            </LinearLayout>
+
 
 
             <android.support.design.widget.TextInputLayout
+                android:visibility="gone"
+                app:errorEnabled="true"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="wrap_content">
+
+                <EditText
+
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textColorHint="#C1DEFD"
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="userName"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:visibility="gone"
+                app:errorEnabled="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textColorHint="#C1DEFD"
-                    android:gravity="center"
-                    android:id="@+id/et_name"
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="password"/>
             </android.support.design.widget.TextInputLayout>
 
-                <EditText
+            <EditText
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="30dp"
@@ -118,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" />
         </LinearLayout>
-    </ScrollView>
+        </RelativeLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

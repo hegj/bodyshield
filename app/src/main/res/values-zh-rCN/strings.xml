@@ -35,6 +35,9 @@
     <!-- LoginActivity-->
     <string name="login_please_input_name_warning">请输入账号</string>
     <string name="login_please_input_password_warning">请输入密码</string>
+    <string name="login_please_input_sex_warning"  >请输入您的性别</string>
+    <string name="login_please_input_age_warning"  >请输入您的年龄</string>
+    <string name="login_please_input_mobile_warning"  >请输入您的手机号码</string>
     <string name="press_for_exit">再按一次退出程序</string>
     <string name="RegisterText">注册</string>
     <string name="device_default_user">guest</string>

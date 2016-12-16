@@ -18,6 +18,7 @@ import com.cmax.bodysheild.exception.CrashHandler;
 
 import com.cmax.bodysheild.inject.component.DaggerAppComponent;
 import com.cmax.bodysheild.inject.module.AppModule;*/
+import com.facebook.stetho.Stetho;
 import com.github.mikephil.charting.data.LineData;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,14 @@ public class AppContext extends MultiDexApplication {
 	private static AppContext context;
 	private LineData xData;
     private static Handler mHandler;
+
+    public static void setDebugModel(boolean DEBUG) {
+        AppContext.DEBUG = DEBUG;
+    }public static boolean getDebugModel() {
+       return AppContext.DEBUG;
+    }
+
+    public static  boolean DEBUG=true;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -37,8 +46,10 @@ public class AppContext extends MultiDexApplication {
         CrashHandler catchHandler = CrashHandler.getInstance();
         catchHandler.init(getApplicationContext());
       //  AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
-
-        mHandler=new Handler();
+        if (DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
+        mHandler = new Handler();
     }
 	
 	public static AppContext getContext() {

@@ -5,7 +5,7 @@
     android:background="@mipmap/bluebg"
     android:layout_height="match_parent">
     <RelativeLayout
-
+        android:id="@+id/rlTitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_bar_height"
         android:background="@color/navigation_bar_background"
@@ -27,8 +27,6 @@
             android:id="@+id/tvRegister"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注册"
@@ -37,8 +35,9 @@
 
 
     <LinearLayout
-
-           android:layout_centerVertical="true"
+        android:layout_below="@+id/rlTitle"
+        android:layout_marginTop="30dp"
+        android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,8 +78,59 @@
         android:textColorHint="#C1DEFD"
         android:gravity="center"/>
 
+        <TextView
 
-    <TextView
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/userSex"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/login_please_input_sex_warning"
+            android:background="@drawable/edittext_bg_1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textColorHint="#C1DEFD"
+            android:gravity="center"/>
+        <EditText
+
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/userAge"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/login_please_input_age_warning"
+            android:background="@drawable/edittext_bg_1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textColorHint="#C1DEFD"
+            android:gravity="center"/>
+        <EditText
+
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/userMobile"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/login_please_input_mobile_warning"
+            android:background="@drawable/edittext_bg_1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textColorHint="#C1DEFD"
+            android:gravity="center"/>
+
+        <TextView
         android:id="@+id/tvLogin"
         android:gravity="center"
         android:layout_marginLeft="30dp"

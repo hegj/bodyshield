@@ -1,19 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@android:style/Theme">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item><!-- 设置没有标题 -->
         <item name="android:textSize">20sp</item>   <!-- 设置文本大小 -->
         <item name="android:textColor">@color/black</item><!-- 默认字体颜色 -->
+        <item name="colorAccent">@color/white</item>
+        <item name="colorPrimary">@color/blue</item>
 
         <!-- 设置activity切换动画 -->
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
         <item name="android:configChanges">orientation|keyboardHidden|navigation</item>
         <item name="android:screenOrientation">portrait</item>
+<!--        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
-
-    <style name="activityAnimation" parent="@android:style/Animation.Activity">
+     <style name="activityAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_in_anim</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_open_out_anim</item>
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_anim</item>

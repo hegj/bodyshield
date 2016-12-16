@@ -8,6 +8,8 @@ import com.cmax.bodysheild.http.HttpMethods;
 import com.cmax.bodysheild.http.RxJavaHttpHelper;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -15,8 +17,8 @@ import rx.Observable;
  */
 
 public class RegisterModel {
-    public Observable<UserProfileInfo> register(String userName, String userPassword){
-        return HttpMethods.getInstance().apiService.register(userName, userPassword)
+    public Observable<UserProfileInfo> register(Map<String,String>map){
+        return HttpMethods.getInstance().apiService.register(map)
                 .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
                 .compose( RxSchedulersHelper.<UserProfileInfo>applyIoTransformer());
     }

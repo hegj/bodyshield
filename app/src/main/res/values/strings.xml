@@ -43,7 +43,9 @@
     <!-- LoginActivity-->
     <string name="login_please_input_name_warning">Please input your name</string>
     <string name="login_please_input_password_warning">Please input your password</string>
-
+    <string name="login_please_input_sex_warning"  >Please input your sex</string>
+    <string name="login_please_input_age_warning"  >Please input your age</string>
+    <string name="login_please_input_mobile_warning"  >Please input your phone number</string>
     <string name="press_for_exit">Press once more to exit</string>
 
     <string name="device_default_user">guest</string>
@@ -95,5 +97,6 @@
     <string name="checkResult3">Please check the network</string>
     <string name="RegisterText">register</string>
     <string name="login_text">login</string>
+
 
 </resources>

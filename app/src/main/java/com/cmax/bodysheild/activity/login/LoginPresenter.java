@@ -137,9 +137,11 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
         });
     }
 
-    public void initIntentData(Bundle extras) {
-        device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
-        currentUser = extras.getParcelable(UserListActivity.CURRENT_USER);
+    public void initIntentData(Intent extras) {
+        if (extras!=null) {
+            device = extras.getParcelableExtra(TemperatureInfoActivity.EXTRA_DEVICE);
+            currentUser = extras.getParcelableExtra(UserListActivity.CURRENT_USER);
+        }
         if (currentUser != null) {
             Bitmap bm = PortraitUtil.getBitmap(activity, currentUser.getImage());
             loginView.setPortraitBitmap(bm);

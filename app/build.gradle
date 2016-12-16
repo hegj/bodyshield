@@ -73,15 +73,16 @@ dependencies {
     compile rootProject.ext.dependencies["stetho"]
     compile rootProject.ext.dependencies["logger"]
     apt rootProject.ext.dependencies["multidex"]
-
+    compile rootProject.ext.dependencies["stetho-okhttp3"]
     compile rootProject.ext.dependencies["design"]
     compile rootProject.ext.dependencies["okhttp"]
     compile rootProject.ext.dependencies["oklog3"]
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.mylhyl:acp:1.1.7' //权限管理，6.0必需
+
 /*
 
-     compile rootProject.ext.dependencies["stetho-okhttp3"]
+
   compile rootProject.ext.dependencies["okhttp"]
   compile rootProject.ext.dependencies["logging-interceptor"]
  provided rootProject.ext.dependencies["auto-value-gson"]

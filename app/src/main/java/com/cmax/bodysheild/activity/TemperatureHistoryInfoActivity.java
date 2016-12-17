@@ -400,25 +400,25 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 
 
 
-    @OnClick(R.id.synchronizedBtn)
-    public void synchronizeHistoryData(){
-        if(device != null){
-            if(bleService != null){
-                if(mask == null) {
-                    mask = new LoadingMask(TemperatureHistoryInfoActivity.this);
-                }
-                mask.show();
-                DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.MemoryStatus);
-                bleService.executeCommand(command);
-                et_showDate.setText(DATE_FORMAT.format(new Date()));
-                showTime.setText(FORMAT2.format(new Date()));
-                if(chart != null){
-                    chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
-                }
-            }
-
-        }
-    }
+//    @OnClick(R.id.synchronizedBtn)
+//    public void synchronizeHistoryData(){
+//        if(device != null){
+//            if(bleService != null){
+//                if(mask == null) {
+//                    mask = new LoadingMask(TemperatureHistoryInfoActivity.this);
+//                }
+//                mask.show();
+//                DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.MemoryStatus);
+//                bleService.executeCommand(command);
+//                et_showDate.setText(DATE_FORMAT.format(new Date()));
+//                showTime.setText(FORMAT2.format(new Date()));
+//                if(chart != null){
+//                    chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
+//                }
+//            }
+//
+//        }
+//    }
 
     @OnClick(R.id.settingBtn_history)
     public void setting(){

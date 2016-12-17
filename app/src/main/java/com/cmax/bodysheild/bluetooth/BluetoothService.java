@@ -21,15 +21,21 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.cmax.bodysheild.AppContext;
+import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.Temperature;
+import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bluetooth.command.BLECommand;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
 import com.cmax.bodysheild.bluetooth.response.temperature.ACKResponse;
 import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
+import com.cmax.bodysheild.dao.DBManager;
 import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.LogUtil;
+import com.cmax.bodysheild.util.SharedPreferencesUtil;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -89,6 +95,10 @@ public class BluetoothService extends Service implements BLEService {
 	private final String CONNECT_DEVICE_NAME2 = "THUV";
 	private final String CONNECT_DEVICE_NAME3 = "AB01";
 	private BluetoothManager bluetoothManager;
+
+	private long recordTime = 0L;
+	private DBManager dbManager;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
@@ -120,6 +130,8 @@ public class BluetoothService extends Service implements BLEService {
 			broadcastUpdate(ACTION_BLUETOOTH_UNSUPPORT);
 		}
 
+		dbManager = new DBManager(this);
+
 		//模拟数据
 		if (AppContext.appModel == AppModel.Debug) {
 			handler.postDelayed(new Runnable() {
@@ -139,6 +151,10 @@ public class BluetoothService extends Service implements BLEService {
 		super.onDestroy();
 		disconnectAllDevices();
 		unregisterReceiver(notificationReceiver);
+		if(dbManager != null){
+			dbManager.close();
+			dbManager = null;
+		}
 	}
 
 	public class LocalBinder extends Binder {
@@ -431,6 +447,32 @@ public class BluetoothService extends Service implements BLEService {
 		}
 
 		if (intent != null) {
+			if(intent.getAction().equals(PresentDataResponse.ACTION_REALTIME_TEMPRETURE)){
+				int measureInterval = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL,1);
+				if(System.currentTimeMillis() >= (recordTime + measureInterval*60*1000)){
+					Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
+					if(temperature != null&&temperature.getValue()>34){
+						String currentUserName = "";
+						List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST, DeviceUser.class);
+						for (DeviceUser deviceuser:deviceUsers) {
+							if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())){
+								currentUserName = deviceuser.getUserId();
+								break;
+							}
+						}
+						if(StringUtils.isNotBlank(currentUserName)){
+							HistoryData historyData = new HistoryData();
+							historyData.setDeviceAddress(device.getAddress());
+							historyData.setTimestamp(temperature.getTimestamp());
+							historyData.setUserId(currentUserName);
+							historyData.setValue(temperature.getValue());
+							dbManager.addHistory(historyData);
+							recordTime = System.currentTimeMillis();
+						}
+					}
+
+				}
+			}
 			intent.putExtra(EXTRA_DEVICE, device);
 			intent.putExtra(EXTRA_ADDRESS, device.getAddress());
 

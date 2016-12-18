@@ -53,10 +53,10 @@ public class PortraitUtil {
     }
 
     public static Bitmap getCameraImageBitmap(Context context){
-        return BitmapFactory.decodeStream(context.getResources().openRawResource(R.mipmap.photo));
+        return BitmapFactory.decodeStream(context.getResources().openRawResource(+R.mipmap.photo));
     }
 
     public static Bitmap getDefaultPortrait(Context context){
-        return BitmapFactory.decodeStream(context.getResources().openRawResource(R.mipmap.people));
+        return BitmapFactory.decodeStream(context.getResources().openRawResource(+R.mipmap.people));
     }
 }

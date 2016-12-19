@@ -230,4 +230,10 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
         super.onDestroy();
      //   KeyBoardUtils.closeKeybord(this);
     }
+
+    @OnClick(R.id.tvToLogin )
+    void register(View view){
+       IntentUtils.toLoginActivity(this,null,device);
+
+    }
 }

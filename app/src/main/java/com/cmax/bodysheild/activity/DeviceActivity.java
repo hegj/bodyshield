@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -82,6 +83,7 @@ public class DeviceActivity extends BaseActivity {
 	private static final int     EXIT_TIME   = 2000;
 	private              boolean scanning    = false;
 	private Dialog permissionDialog;
+	private boolean firstIn=true;
 	//	private boolean autoScan = false;
 
 	@Override
@@ -235,43 +237,37 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
-	//	scanLeDevice(!scanning);
-		 IntentUtils.toEditProfile(this,null);
+	 scanLeDevice(!scanning);
+		//IntentUtils.toEditProfile(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {
+
 		if (enable) {
-			PermissionUtils.askLocationInfo(new PermissionUtils.PermissionListener() {
-				@Override
-				public void onGranted() {
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							scanning = false;
-							// 停止扫描设备
-							bleService.scanLeDevice(!enable);
 
-						}
-					}, SCAN_PERIOD);
-
-					scanning = true;
-					scanTextView.setText(R.string.menu_stop);
-					// 开始扫描设备
-					bleService.scanLeDevice(enable);
-				}
-
-				@Override
-				public void onDenied(String[] permissions, String permissionDesc, boolean isCancle, int requestCode) {
-					if (permissionDialog == null) {
-						permissionDialog = DialogUtils.showRequestPermissionDialog(DeviceActivity.this, permissionDesc, requestCode, isCancle, permissions);
-					}else {
-						permissionDialog.show();
+			if (firstIn) {
+				PermissionUtils.askLocationInfo(this, new PermissionUtils.PermissionListener() {
+					@Override
+					public void onGranted() {
+						sanLeDevice(enable);
 					}
-				}
+
+					@Override
+					public void onDenied(String[] permissions, String permissionDesc, boolean isCancle, int requestCode) {
+						firstIn = false;
+						if (permissionDialog == null) {
+							permissionDialog = DialogUtils.showRequestPermissionDialog(DeviceActivity.this, permissionDesc, requestCode, isCancle, permissions);
+						} else {
+							permissionDialog.show();
+						}
+					}
 
 
-			});
-
+				});
+			}else{
+				firstIn = false;
+				sanLeDevice(enable);
+			}
 		} else {
 			scanning = false;
 //			scanTextView.setText(R.string.ScanText);
@@ -288,6 +284,24 @@ public class DeviceActivity extends BaseActivity {
 				}
 			}, 1000);
 		}
+	}
+
+	private void sanLeDevice(final boolean b) {
+		firstIn = false;
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				scanning = false;
+				// 停止扫描设备
+				bleService.scanLeDevice(!b);
+
+			}
+		}, SCAN_PERIOD);
+
+		scanning = true;
+		scanTextView.setText(R.string.menu_stop);
+		// 开始扫描设备
+		bleService.scanLeDevice(b);
 	}
 
 	@OnItemClick(R.id.deviceList)
@@ -382,7 +396,11 @@ public class DeviceActivity extends BaseActivity {
 			isBind = false;
 		}
 	}
-
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+	}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

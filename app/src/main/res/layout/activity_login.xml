@@ -144,17 +144,7 @@
             android:layout_height="40dp" />
         </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvToRegister"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/ll"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                android:text="没有账号?请点击注册"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
         </RelativeLayout>
 
 

@@ -97,6 +97,8 @@
     <string name="checkResult3">Please check the network</string>
     <string name="RegisterText">register</string>
     <string name="login_text">login</string>
+    <string name="label_select_picture">Select Picture</string>
+    <string name="get_pick_failure">Get failure, please try again</string>
 
 
 </resources>

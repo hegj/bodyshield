@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.listeners.SimpleDialogListeners;
 
-import org.hybridsquad.android.library.CropHelper;
 import org.hybridsquad.android.library.CropParams;
 
 import butterknife.ButterKnife;
@@ -48,7 +47,7 @@ public class DialogUtils {
         alertDialog.show();
     }
 
-    public  static Dialog showChoosePortraitDialog(final Activity activity, final CropParams mCropParams) {
+    public  static Dialog showChoosePortraitDialog(final Activity activity) {
         View view =activity. getLayoutInflater().inflate(R.layout.photo_choose_dialog, null);
         final Dialog  dialog = new Dialog(activity, R.style.transparentFrameWindowStyle);
         dialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -73,20 +72,22 @@ public class DialogUtils {
         ButterKnife.findById(view, R.id.galleryBtn) .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCropParams.enable = true;
+            /*    mCropParams.enable = true;
                 mCropParams.compress = true;
                 Intent intent = CropHelper.buildGalleryIntent(mCropParams);
-                activity.  startActivityForResult(intent, CropHelper.REQUEST_CROP);
+                activity.  startActivityForResult(intent, CropHelper.REQUEST_CROP);*/
+                CropUtils.pickFromGallery(activity,CropUtils.RATIO_4_3);
                 dialog.dismiss();
             }
         });
         ButterKnife.findById(view, R.id.cameraBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCropParams.enable = true;
+              /*  mCropParams.enable = true;
                 mCropParams.compress = true;
                 Intent intent = CropHelper.buildCameraIntent(mCropParams);
-                activity. startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
+                activity. startActivityForResult(intent, CropHelper.REQUEST_CAMERA);*/
+                CropUtils.pickFromCamera(activity,CropUtils.RATIO_4_3);
                 dialog.dismiss();
             }
         });
@@ -105,5 +106,28 @@ public class DialogUtils {
         ProgressDialog   loginDialog = new ProgressDialog(activity );
         loginDialog.setMessage(text);
         return  loginDialog;
+    }
+    public  static  Dialog showRequestPermissionDialog(final Activity activity, String desc, final int requestCode,boolean isCancle , final String...permissions){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog alertDialog = builder.setTitle("权限申请")
+                .setMessage(desc)
+                .setPositiveButton("申请", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ActivityCompat.requestPermissions(activity, permissions, requestCode);
+                        IntentUtils.toPermissionSetting(activity);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+
+        alertDialog .setCancelable(isCancle);
+        alertDialog.setCanceledOnTouchOutside(isCancle);
+        alertDialog  .show();
+        return  alertDialog;
     }
 }

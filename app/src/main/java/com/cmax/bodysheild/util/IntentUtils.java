@@ -2,6 +2,8 @@ package com.cmax.bodysheild.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 
 import com.cmax.bodysheild.activity.RegisterActivity;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
@@ -42,5 +44,18 @@ public class IntentUtils {
         intent.putExtra(UserListActivity.CURRENT_USER, user);
         activity.startActivityForResult(intent,2);
 
+    }
+    public  static  void toPermissionSetting(Activity activity){
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            localIntent.setData(Uri.fromParts("package",activity. getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            localIntent.setAction(Intent.ACTION_VIEW);
+            localIntent.setClassName("com.android.settings","com.android.settings.InstalledAppDetails");
+            localIntent.putExtra("com.android.settings.ApplicationPkgName",activity. getPackageName());
+        }
+        activity.startActivity(localIntent);
     }
 }

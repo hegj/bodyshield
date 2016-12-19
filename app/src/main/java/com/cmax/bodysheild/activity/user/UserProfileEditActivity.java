@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,10 +13,15 @@ import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.cache.User;
+import com.cmax.bodysheild.listeners.CropPickListeners;
+import com.cmax.bodysheild.util.CropUtils;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
+import com.cmax.bodysheild.util.PermissionUtils;
 import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.CircleImageView;
+import com.yalantis.ucrop.UCrop;
 
 import org.hybridsquad.android.library.BitmapUtil;
 import org.hybridsquad.android.library.CropHandler;
@@ -32,12 +38,11 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/12/16 0016.
  */
 
-public class UserProfileEditActivity extends BaseActivity implements CropHandler {
+public class UserProfileEditActivity extends BaseActivity implements CropPickListeners  {
     @Bind(R.id.userImageBtn)
     CircleImageView userImageBtn;
     @Bind(R.id.tvUserName)
     TextView tvUserName;
-    private CropParams mCropParams;
     private Bitmap bitmap;
     private Dialog mCropParamsDialog;
 
@@ -51,8 +56,8 @@ public class UserProfileEditActivity extends BaseActivity implements CropHandler
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        mCropParams = new CropParams(this);
         user = getIntent().getParcelableExtra(UserListActivity.CURRENT_USER);
+        if (user!=null)
         tvUserName.setText(user.getUserName());
     }
 
@@ -64,7 +69,7 @@ public class UserProfileEditActivity extends BaseActivity implements CropHandler
                 break;
             case R.id.userImageBtn:
                 if (mCropParamsDialog==null) {
-                    mCropParamsDialog = DialogUtils.showChoosePortraitDialog(this, mCropParams);
+                    mCropParamsDialog = DialogUtils.showChoosePortraitDialog(this);
                 }else{
                     mCropParamsDialog.show();
                 }
@@ -74,48 +79,16 @@ public class UserProfileEditActivity extends BaseActivity implements CropHandler
     }
 
     @Override
-    public void onPhotoCropped(Uri uri) {
-        if (!mCropParams.compress) {
-            bitmap = BitmapUtil.decodeUriAsBitmap(this, uri);
-            userImageBtn.setImageBitmap(bitmap);
-        }
-    }
-
-    @Override
-    public void onCompressed(Uri uri) {
-        if (mCropParams.compress) {
-            bitmap = BitmapUtil.decodeUriAsBitmap(this, uri);
-            userImageBtn.setImageBitmap(bitmap);
-        }
-    }
-
-    @Override
-    public void onCancel() {
-
-    }
-
-    @Override
-    public void onFailed(String message) {
-        ToastUtils.showFailToast(message);
-    }
-
-    @Override
-    public void handleIntent(Intent intent, int requestCode) {
-        this.startActivityForResult(intent, requestCode);
-    }
-
-    @Override
-    public CropParams getCropParams() {
-        return mCropParams;
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        CropHelper.handleResult(this, requestCode, resultCode, data);
+            CropUtils.handleResult(this,this,requestCode,resultCode,data);
 
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
 
     @OnClick(R.id.tvSave)
     public void save() {
@@ -125,5 +98,26 @@ public class UserProfileEditActivity extends BaseActivity implements CropHandler
         DataUtils.addUserToSp(user);
        setResult(3);
         finish();
+    }
+
+    @Override
+    public void cropResult(Intent data) {
+        final Uri resultUri = UCrop.getOutput(data);
+        bitmap = BitmapUtil.decodeUriAsBitmap(this, resultUri);
+        userImageBtn.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void cropError(Intent data) {
+        ToastUtils.showFailToast(UIUtils.getString(R.string.get_pick_failure));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCropParamsDialog!=null&&mCropParamsDialog.isShowing()){
+            mCropParamsDialog.dismiss();
+        }
+        CropUtils.setPermissionDialogDismiss();
     }
 }

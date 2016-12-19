@@ -1,5 +1,6 @@
 package com.cmax.bodysheild.activity;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -80,7 +81,8 @@ public class DeviceActivity extends BaseActivity {
 	private              long    exitTime    = 0;
 	private static final int     EXIT_TIME   = 2000;
 	private              boolean scanning    = false;
-//	private boolean autoScan = false;
+	private Dialog permissionDialog;
+	//	private boolean autoScan = false;
 
 	@Override
 	protected int getLayoutId() {
@@ -233,8 +235,8 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
-		scanLeDevice(!scanning);
-		//IntentUtils.toLoginActivity(this,null,null);
+	//	scanLeDevice(!scanning);
+		 IntentUtils.toEditProfile(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {
@@ -259,21 +261,15 @@ public class DeviceActivity extends BaseActivity {
 				}
 
 				@Override
-				public void onDenied(List<String> permissions) {
-					DialogUtils.createSimpleDialog(DeviceActivity.this,
-							"严重警告!", "由于您禁止了定位的权限,将会导致与设备连接不正常,设备将不会正常工作,请您点击设置去设置同意定位权限", "去设置", "取消", new SimpleDialogListeners() {
-								@Override
-								public void confirm() {
-									Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
-									startActivityForResult(intent,0); //此为设置完成后返回到获取界面
-								}
-
-								@Override
-								public void cancel() {
-
-								}
-							});
+				public void onDenied(String[] permissions, String permissionDesc, boolean isCancle, int requestCode) {
+					if (permissionDialog == null) {
+						permissionDialog = DialogUtils.showRequestPermissionDialog(DeviceActivity.this, permissionDesc, requestCode, isCancle, permissions);
+					}else {
+						permissionDialog.show();
+					}
 				}
+
+
 			});
 
 		} else {
@@ -395,6 +391,8 @@ public class DeviceActivity extends BaseActivity {
 			isBind = false;
 		}
 		unregisterReceiver(notificationReceiver);
+		if (permissionDialog!=null &&permissionDialog.isShowing() )permissionDialog.dismiss();
+		permissionDialog=null;
 		Log.i(TAG,"destory");
 	}
 
@@ -555,4 +553,5 @@ public class DeviceActivity extends BaseActivity {
 
 		return intentFilter;
 	}
+
 }

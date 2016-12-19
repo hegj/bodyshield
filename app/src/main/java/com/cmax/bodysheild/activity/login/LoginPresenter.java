@@ -173,7 +173,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
 
     public void showChoosePortraitDialog() {
         if (choosePortraitDialog == null) {
-            choosePortraitDialog = DialogUtils.showChoosePortraitDialog(activity, mCropParams);
+            choosePortraitDialog = DialogUtils.showChoosePortraitDialog(activity );
         } else {
             choosePortraitDialog.show();
         }

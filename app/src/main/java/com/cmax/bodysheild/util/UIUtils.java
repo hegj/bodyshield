@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.TypedValue;
 
 import com.cmax.bodysheild.AppContext;
+import com.cmax.bodysheild.R;
 
 /**
  * Created by Administrator on 2016/12/7 0007.
@@ -39,4 +40,7 @@ public class UIUtils {
     }
 
 
+    public static String getString(int res) {
+        return   getContext().getString(res);
+    }
 }

@@ -29,8 +29,6 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @Bind(R.id.userName)
     EditText userName;
-    //@Bind(R.id.portrait)
-//    ImageView portrait = new ImageView(this);
     @Bind(R.id.userPassword)
     EditText userPassword;
     private ProgressDialog loginDialog;
@@ -50,7 +48,6 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         loginDialog = DialogUtils.showProgressDialog(this,"登陆中,请稍后");
-
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
         basePresenter =loginPresenter;
@@ -119,7 +116,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
       //  portrait.setImageBitmap(bitmap);
     }
 
-    @OnClick(R.id.tvRegister)
+    @OnClick(R.id.tvRegister | R.id.tvToRegister)
     void register(View view){
         loginPresenter.toRegisterActivity();
 
@@ -138,10 +135,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
         super.onDestroy();
     }
-   /* @OnClick(R.id.portrait)
-    void setPortrait(){
-      loginPresenter.showChoosePortraitDialog();
-    }*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         CropHelper.handleResult(basePresenter, requestCode, resultCode, data);

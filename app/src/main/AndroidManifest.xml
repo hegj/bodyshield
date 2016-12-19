@@ -107,6 +107,11 @@
             android:label="@string/title_activity_about_us" >
         </activity>
         <activity android:name=".activity.user.UserProfileEditActivity"></activity>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
     </application>
 
 </manifest>

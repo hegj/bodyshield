@@ -39,6 +39,7 @@ ext {
                     "logger"              : "com.orhanobut:logger:1.15",
                     "circularprogressview": "com.github.rahatarmanahmed:circularprogressview:2.5.0",
                     "oklog3"              : "com.github.simonpercic:oklog3:1.0.1",
-                    "okhttp"              : "com.squareup.okhttp3:okhttp:3.4.1"
+                    "okhttp"              : "com.squareup.okhttp3:okhttp:3.4.1",
+                    "crop"                : "com.yalantis:ucrop:2.2.0",
     ]
 }

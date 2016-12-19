@@ -97,6 +97,7 @@ public class BluetoothService extends Service implements BLEService {
 	private final String CONNECT_DEVICE_NAME1 = "Body Temp";
 	private final String CONNECT_DEVICE_NAME2 = "THUV";
 	private final String CONNECT_DEVICE_NAME3 = "AB01";
+	private final String CONNECT_DEVICE_NAME4 = "AB02";
 	private BluetoothManager bluetoothManager;
 
 	private long recordTime = 0L;
@@ -199,7 +200,7 @@ public class BluetoothService extends Service implements BLEService {
 
 			if (device.getName() != null){
 				if (device.getName().indexOf(CONNECT_DEVICE_NAME1) != -1
-						|| device.getName().indexOf(CONNECT_DEVICE_NAME2) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME3) != -1) {
+						|| device.getName().indexOf(CONNECT_DEVICE_NAME2) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME3) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME4) != -1) {
 					if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
 						// 广播发现新设备
 						SCANNING_DEVICE_ADDRESS.add(device.getAddress());

@@ -59,9 +59,9 @@ public class BLEDevice implements Parcelable{
 	public String getName() {
 		if (this.deviceType == DeviceType.Tempreature
 				|| this.deviceType == null){
-			return Constant.DEVICE_NAME_TEMPERATURE+ BLEUtil.toIndex(this.address);
+			return name+ "-"+BLEUtil.toIndex(this.address);
 		}else if (this.deviceType == DeviceType.UV){
-			return Constant.DEVICE_NAME_UV + BLEUtil.toIndex(this.address);
+			return name + "-"+BLEUtil.toIndex(this.address);
 		}
 		return name;
 	}

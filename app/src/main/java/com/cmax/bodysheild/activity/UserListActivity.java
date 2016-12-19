@@ -169,7 +169,7 @@ public class UserListActivity extends BaseActivity {
 				temp.setDeviceType(device.getDeviceType());
 				temp.setAddress(device.getAddress());
 				temp.setUserId(user.getUser().getId());
-
+				temp.setName(device.getName());
 				deviceUsers.add(temp);
 			}
 

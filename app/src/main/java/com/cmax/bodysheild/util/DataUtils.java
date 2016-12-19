@@ -44,6 +44,7 @@ public class DataUtils {
         temp.setDeviceType(device.getDeviceType());
         temp.setAddress(device.getAddress());
         temp.setUserId(user.getId());
+        temp.setName(device.getName());
         deviceUsers.add(temp);
         SharedPreferencesUtil.setList(Constant.DEVICE_USER_LIST, deviceUsers);
         //保存设备名称

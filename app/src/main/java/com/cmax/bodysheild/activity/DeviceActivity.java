@@ -192,6 +192,13 @@ public class DeviceActivity extends BaseActivity {
 			device.setAddress(deviceUser.getAddress());
 			device.setDeviceType(DeviceType.Tempreature);
 			device.setConnectionState(false);
+			String[] nameStr = deviceUser.getName().split("-");
+			if(nameStr.length > 1){
+				device.setName(nameStr[0]);
+			}else {
+				device.setName(deviceUser.getName());
+			}
+
 
 			for (User user:users) {
 				if (deviceUser.getUserId().equals(user.getId())){

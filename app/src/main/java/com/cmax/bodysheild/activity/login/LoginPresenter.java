@@ -1,20 +1,18 @@
 package com.cmax.bodysheild.activity.login;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
+import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
-import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.Constant;
@@ -25,15 +23,13 @@ import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.util.UIUtils;
 
 import org.hybridsquad.android.library.BitmapUtil;
 import org.hybridsquad.android.library.CropHandler;
 import org.hybridsquad.android.library.CropParams;
 
-import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
 
 
 /**
@@ -73,19 +69,19 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
         KeyBoardUtils.closeKeybord(activity);
         final String userName = loginView.getUserName();
         if (TextUtils.isEmpty(userName)) {
-            loginView.setUserNameError("用户名不能为空");
+            loginView.setUserNameError(UIUtils.getString(R.string.username_error_message));
             return;
         }
         final String passWord = loginView.getPassWord();
         if (TextUtils.isEmpty(passWord)) {
-            loginView.setPasswordError("密码不能为空");
+            loginView.setPasswordError(UIUtils.getString(R.string.password_error_message));
             return;
         }
 
         loginModel.login(userName, passWord).subscribe(new ProgressSubscriber<UserProfileInfo>(getView()) {
             @Override
             public void _onError(String message) {
-
+                ToastUtils.showFailToast(UIUtils.getString(R.string.login_failed));
             }
 
             @Override
@@ -95,7 +91,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
 
             @Override
             public void _onCompleted() {
-  /*  if (bitmap != null) {
+             /*  if (bitmap != null) {
                     String imagePath = PortraitUtil.writeBitmap(activity, bitmap, finalUser.getImage());
                     finalUser.setImage(imagePath);
                 }*/

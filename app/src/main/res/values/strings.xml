@@ -99,6 +99,28 @@
     <string name="login_text">login</string>
     <string name="label_select_picture">Select Picture</string>
     <string name="get_pick_failure">Get failure, please try again</string>
+    <string name="login_loading">Log in, please later</string>
+    <string name="username_error_message">User name cannot be empty</string>
+    <string name="password_error_message">Password cannot be empty</string>
+
+
+
+
+    <!--网络相关错误-->
+    <string name="network_interruption_error_message" >Network interruption, please check your network status</string>
+    <string name="network_timeout_error_message">Network connection timeout, please check your network status</string>
+    <string name="network_unusual_error_message">Connection is unusual, please check your network status</string>
+    <string name="network_server_error_message">Failed to connect to the server, please try again later</string>
+    <string name="login_failed">The user name or password error, please try again after checking</string>
+    <string name="age_error_message">Please input the correct age</string>
+    <string name="register_loading">To register, please later</string>
+    <string name="username_already_register">The user name has already been registered please modify the user name</string>
+    <string name="registered_successfully">Registered successfully</string>
+    <string name="register_failed_message">Registration failed, please try again</string>
+    <string name="man">man</string>
+    <string name="woman">woman</string>
+    <string name="register_select_sex">Please select a gender</string>
+    <string name="edit_profile">Edit profile</string>
 
 
 </resources>

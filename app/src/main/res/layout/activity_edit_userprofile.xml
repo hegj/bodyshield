@@ -32,7 +32,7 @@
             android:layout_gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="编辑个人资料"
+            android:text="@string/edit_profile"
             android:textColor="@color/white"/>
         <TextView
             android:id="@+id/tvSave"
@@ -41,7 +41,7 @@
             android:layout_gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="保存"
+            android:text="@string/SaveText"
             android:textColor="@color/white"/>
     </RelativeLayout>
 

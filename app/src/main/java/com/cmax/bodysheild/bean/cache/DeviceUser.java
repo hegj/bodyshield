@@ -9,6 +9,7 @@ import com.cmax.bodysheild.bluetooth.DeviceType;
 public class DeviceUser {
 
 	String     address;
+	String name;
 	String     userId;
 	DeviceType deviceType;
 
@@ -26,6 +27,14 @@ public class DeviceUser {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public DeviceType getDeviceType() {

@@ -1,7 +1,6 @@
 package com.cmax.bodysheild.activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,11 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
-import com.cmax.bodysheild.activity.login.LoginActivity;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.base.presenter.BasePresenter;
-import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
@@ -25,12 +22,10 @@ import com.cmax.bodysheild.http.rxexception.ServerException;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
 import com.cmax.bodysheild.listeners.BelowMenuPopupWindowListener;
 import com.cmax.bodysheild.model.RegisterModel;
-import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.KeyBoardUtils;
-import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.StringUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
@@ -38,11 +33,9 @@ import com.cmax.bodysheild.widget.ChoosePopupWindow;
 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
@@ -120,24 +113,21 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
         KeyBoardUtils.closeKeybord(userSex);
         final String username = userName.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
-            ToastUtils.showFailToast("请填写用户名");
+            ToastUtils.showFailToast(UIUtils.getString(R.string.username_error_message));
             return;
         }
         final String password = userPassword.getText().toString().trim();
         if (TextUtils.isEmpty(password)) {
-            ToastUtils.showFailToast("请填写密码");
+            ToastUtils.showFailToast(UIUtils.getString(R.string.password_error_message));
             return;
         }
         String userAge = this.userAge.getText().toString().trim();
         String userMobil = userMobile.getText().toString().trim();
         if (!TextUtils.isEmpty(userAge)&&(!StringUtils.isNumber(userAge)||Integer.parseInt(userAge)>99)){
-            ToastUtils.showFailToast("请输入正确的年龄");
+            ToastUtils.showFailToast(UIUtils.getString(R.string.age_error_message));
             return;
         }
-       /* if (!TextUtils.isEmpty(userMobil)&&StringUtils.isPhoneNumber(userMobil)){
-            ToastUtils.showFailToast("请输入正确的手机号码");
-            return;
-        }*/
+
         final Map<String,String> map = new HashMap();
         map.put("name",username);
         map.put("password",password);
@@ -145,7 +135,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
         map.put("age", TextUtils.isEmpty(userAge)?"0": userAge);
         map.put("mobile", TextUtils.isEmpty(userMobil)?"": userMobil);
 
-        final ProgressDialog progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, "注册中,请稍后");
+        final ProgressDialog progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.register_loading));
         progressDialog.show();
         registerModel.isRegister(username).flatMap(new Func1<BaseRequestData, Observable<UserProfileInfo>>() {
             @Override
@@ -155,7 +145,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                 } else {
                     if (progressDialog != null && progressDialog.isShowing())
                         progressDialog.dismiss();
-                    return Observable.error(new ServerException(baseRequestData.code, "用户名已经被注册,请修改用户名"));
+                    return Observable.error(new ServerException(baseRequestData.code, UIUtils.getString(R.string.username_already_register)));
                 }
 
             }
@@ -164,14 +154,15 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
             public void onCompleted() {
                 if (progressDialog != null && progressDialog.isShowing())
                     progressDialog.dismiss();
-                ToastUtils.showSuccessToast("注册成功");
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.registered_successfully));
+                IntentUtils.toTemperatureInfoActivity(RegisterActivity.this,device);
             }
 
             @Override
             public void onError(Throwable e) {
                 String s = ErrorManager.handleError(new DefaultErrorBundle((Exception) e));
                 if (TextUtils.isEmpty(s)) {
-                    s = "注册失败,请重试";
+                    s = UIUtils.getString(R.string.register_failed_message);
                 }
                 ToastUtils.showFailToast(s);
                 if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
@@ -184,9 +175,8 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                 user.setUserName(username);
                 user.setPassword(password);
                 DataUtils.addUserToSp(user);
-                ToastUtils.showSuccessToast("注册成功");
                 DataUtils.addDeviceToSp(device,user) ;
-                IntentUtils.toTemperatureInfoActivity(RegisterActivity.this,device);
+
 
 
             }
@@ -200,7 +190,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
             popupWindow = new ChoosePopupWindow(this);
             popupWindow.showMenuPopupwindow();
             popupWindow.setMenuTextGravity();
-            popupWindow.setMenuLeftText("女" ,"男","请选择性别");
+            popupWindow.setMenuLeftText(UIUtils.getString(R.string.woman) ,UIUtils.getString(R.string.man),UIUtils.getString(R.string.register_select_sex));
             popupWindow.setBelowMenuPopupWindowListener(this);
         } else {
             popupWindow.showMenuPopupwindow();
@@ -212,13 +202,13 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
         switch (type) {
             case BelowMenuPopupWindowListener.TYPE_2:
                 sex=2;
-                userSex.setText("女");
+                userSex.setText(UIUtils.getString(R.string.woman));
                 popupWindow.dismiss();
                 break;
             case BelowMenuPopupWindowListener.TYPE_3:
                 sex=1;
 
-                userSex.setText("男");
+                userSex.setText(UIUtils.getString(R.string.man));
                 popupWindow.dismiss();
                 break;
 

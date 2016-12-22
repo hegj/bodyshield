@@ -24,12 +24,13 @@
 
 
         <TextView
+            android:textSize="20sp"
             android:id="@+id/tvRegister"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注册"
+            android:text="@string/RegisterText"
             android:textColor="@color/white"/>
     </RelativeLayout>
 
@@ -139,7 +140,7 @@
         android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_marginTop="50dp"
-        android:text="注册"
+        android:text="@string/RegisterText"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
     </LinearLayout>

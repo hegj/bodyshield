@@ -2,9 +2,12 @@ package com.cmax.bodysheild.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -289,6 +292,14 @@ public class PermissionUtils {
                 return true;
             }
         }
+/*
+
+        AppOpsManager appOpsManager = (AppOpsManager)activity. getSystemService(Context.APP_OPS_SERVICE);
+        int checkOp = appOpsManager.checkOp(AppOpsManager.OPSTR_FINE_LOCATION, Process.myUid(), activity.getPackageName());
+        if (checkOp == AppOpsManager.MODE_IGNORED) {
+            // 权限被拒绝了 .
+        }
+*/
         return false;
     }
 

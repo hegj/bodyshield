@@ -16,6 +16,7 @@ import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.util.UIUtils;
 
 import org.hybridsquad.android.library.CropHelper;
 
@@ -47,7 +48,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        loginDialog = DialogUtils.showProgressDialog(this,"登陆中,请稍后");
+        loginDialog = DialogUtils.showProgressDialog(this, UIUtils.getString(R.string.login_loading));
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
         basePresenter =loginPresenter;

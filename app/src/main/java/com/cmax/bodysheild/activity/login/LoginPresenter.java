@@ -109,9 +109,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
                 }
                 users.add(user);
                 SharedPreferencesUtil.setList(Constant.USER_LIST, users);
-
                 DataUtils.addDeviceToSp(device,user) ;
-
                  IntentUtils.toTemperatureInfoActivity(activity,device);
 
             }

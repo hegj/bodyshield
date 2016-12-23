@@ -117,7 +117,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
       //  portrait.setImageBitmap(bitmap);
     }
 
-    @OnClick(R.id.tvRegister | R.id.tvToRegister)
+    @OnClick(R.id.tvRegister )
     void register(View view){
         loginPresenter.toRegisterActivity();
 
@@ -137,10 +137,4 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
         super.onDestroy();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        CropHelper.handleResult(basePresenter, requestCode, resultCode, data);
-        if (requestCode == 1) {
-        }
-    }
 }

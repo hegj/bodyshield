@@ -35,11 +35,10 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/23 0023.
  */
-public class LoginPresenter extends BasePresenter<ILoginView> implements CropHandler {
+public class LoginPresenter extends BasePresenter<ILoginView>  {
     private FragmentActivity activity;
     private BLEDevice device;
     private User currentUser;
-    CropParams mCropParams;
     private LoginModel loginModel;
     private ILoginView loginView;
     private Bitmap bitmap;
@@ -126,44 +125,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements CropHan
             loginView.setPortraitBitmap(bm);
             loginView.setUserName(currentUser.getUserName());
         }
-        mCropParams = new CropParams(activity);
     }
 
-    @Override
-    public void onPhotoCropped(Uri uri) {
-        if (!mCropParams.compress) {
-            bitmap = BitmapUtil.decodeUriAsBitmap(activity, uri);
-            loginView.setPortraitBitmap(bitmap);
-        }
-    }
-
-    @Override
-    public void onCompressed(Uri uri) {
-        if (mCropParams.compress) {
-            bitmap = BitmapUtil.decodeUriAsBitmap(activity, uri);
-            loginView.setPortraitBitmap(bitmap);
-        }
-    }
-
-    @Override
-    public void onCancel() {
-
-    }
-
-    @Override
-    public void onFailed(String message) {
-        ToastUtils.showFailToast(message);
-    }
-
-    @Override
-    public void handleIntent(Intent intent, int requestCode) {
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    @Override
-    public CropParams getCropParams() {
-        return mCropParams;
-    }
 
     public void showChoosePortraitDialog() {
         if (choosePortraitDialog == null) {

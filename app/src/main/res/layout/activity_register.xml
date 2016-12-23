@@ -34,8 +34,8 @@
             android:textColor="@color/white"/>
     </RelativeLayout>
 
-
     <LinearLayout
+        android:id="@+id/ll_content"
         android:layout_below="@+id/rlTitle"
         android:layout_marginTop="30dp"
         android:layout_centerVertical="true"
@@ -144,4 +144,17 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
     </LinearLayout>
+    <TextView
+
+        android:id="@+id/tvToLogin"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ll_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:text="有账号?去登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

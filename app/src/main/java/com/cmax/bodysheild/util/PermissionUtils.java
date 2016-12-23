@@ -152,7 +152,7 @@ public class PermissionUtils {
         isCancle=true;
         permissionDesc = new StringBuilder().append("蓝牙连接设备需要您同意定位app的权限,请务必同意此权限,否则此app的所有功能将使用不了")
                 .append("\n").append("请点击申请,在应用信息界面的权限管理中同意\"定位权限\"").append("\n").append("如点击取消,将会退出应用").toString() ;
-        performRequestPermissions(activity, permissionDesc,1,listener,isCancle, Manifest.permission.ACCESS_COARSE_LOCATION);
+        performRequestPermissions(activity, permissionDesc,1,listener,isCancle, Manifest.permission.ACCESS_FINE_LOCATION);
     }
     public static void askLocationInfo(PermissionListener listener){
         askPermission(listener, Manifest.permission.ACCESS_COARSE_LOCATION);

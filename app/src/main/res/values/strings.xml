@@ -121,6 +121,7 @@
     <string name="woman">woman</string>
     <string name="register_select_sex">Please select a gender</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="register_has_account" >There are accounts?To login</string>
 
 
 </resources>

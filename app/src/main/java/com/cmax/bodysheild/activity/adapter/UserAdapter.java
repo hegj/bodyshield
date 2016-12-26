@@ -52,7 +52,8 @@ public class UserAdapter  extends BaseAdapter {
 		List<User> users = SharedPreferencesUtil.getList(Constant.USER_LIST,User.class);
 		DeviceUser currentUser = getCurrentDeviceUser();
 		for (User user:users) {
-
+			if (user==null)
+				continue;
 			UserSelected us = new UserSelected();
 			us.user = user;
 			us.selected = false;
@@ -160,14 +161,16 @@ public class UserAdapter  extends BaseAdapter {
 
 		viewHolder.checkedView.setVisibility(View.GONE);
 		if(us != null){
-			viewHolder.checkedView.setVisibility(us.selected?View.VISIBLE:View.GONE);
-			viewHolder.userName.setText(us.user.getUserName());
-            if (us.isNew){
-                viewHolder.user.setImageBitmap(camera);
-            }else{
-                Bitmap bm = PortraitUtil.getBitmap(convertView.getContext(),us.getUser().getImage());
-                viewHolder.user.setImageBitmap(bm);
-            }
+			if (us.user!=null) {
+				viewHolder.checkedView.setVisibility(us.selected?View.VISIBLE:View.GONE);
+				viewHolder.userName.setText(us.user.getUserName());
+				if (us.isNew) {
+					viewHolder.user.setImageBitmap(camera);
+				} else {
+					Bitmap bm = PortraitUtil.getBitmap(convertView.getContext(), us.getUser().getImage());
+					viewHolder.user.setImageBitmap(bm);
+				}
+			}
 		}
 
 		return convertView;

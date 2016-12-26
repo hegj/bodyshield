@@ -156,6 +156,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                     progressDialog.dismiss();
                 ToastUtils.showSuccessToast(UIUtils.getString(R.string.registered_successfully));
                 IntentUtils.toTemperatureInfoActivity(RegisterActivity.this,device);
+
             }
 
             @Override

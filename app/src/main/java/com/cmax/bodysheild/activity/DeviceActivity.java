@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -235,13 +236,13 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
-	//	scanLeDevice(!scanning);
-		 IntentUtils.toEditProfile(this,null);
+		scanLeDevice(!scanning);
+		// IntentUtils.toEditProfile(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {
 		if (enable) {
-			PermissionUtils.askLocationInfo(new PermissionUtils.PermissionListener() {
+			PermissionUtils.askLocationInfo(this,new PermissionUtils.PermissionListener() {
 				@Override
 				public void onGranted() {
 					handler.postDelayed(new Runnable() {
@@ -274,7 +275,6 @@ public class DeviceActivity extends BaseActivity {
 
 		} else {
 			scanning = false;
-//			scanTextView.setText(R.string.ScanText);
 			// 停止扫描设备
 			bleService.scanLeDevice(!enable);
 
@@ -332,7 +332,11 @@ public class DeviceActivity extends BaseActivity {
 			startActivity(intent);
 		}
 	}
-
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();

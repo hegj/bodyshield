@@ -100,6 +100,105 @@ public class BluetoothManage {
         }
 
     }
+    /**
+     * 设备扫描的回调
+     */
+    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+
+            if (device.getName() != null){
+                if (device.getName().indexOf(CONNECT_DEVICE_NAME1) != -1
+                        || device.getName().indexOf(CONNECT_DEVICE_NAME2) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME3) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME4) != -1) {
+                    if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
+                        Logger.d("-----------------leScanCallback");
+                        // 广播发现新设备
+                        SCANNING_DEVICE_ADDRESS.add(device.getAddress());
+                        BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_BLE_NEW_DEVICE,device);
+                    }
+                }
+            }
+        }
+    };
+
+    /**
+     *  gatt协议 设备连接以及读取数据的回调
+     */
+    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
+        /**
+         * 连接设备改变
+         */
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            Logger.d("-----------------onConnectionStateChange");
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                gatt.discoverServices();
+                BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_CONNECTED, gatt.getDevice());
+
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Logger.d( gatt.getDevice().getAddress() + " is disconnected");
+                DEVICE_HOLDERS.remove(gatt.getDevice().getAddress());
+                BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_DISCONNECTED, gatt.getDevice());
+                gatt.close();
+            }
+        }
+
+        /**
+         * 发现设备
+         */
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Logger.d("-----------------onServicesDiscovered");
+                boolean isNotification = false;
+                for (int i = 0; i < 4; i++) {
+                    isNotification = enableNotification(gatt, TEMPRETURE_SERVICE_UUID, TEMPRETURE_READ_UUID);
+                    if (isNotification) {
+                        break;
+                    } else {
+                        try {
+                            Thread.currentThread().sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                // boolean isNotification = enableNotification(gatt, BluetoothManage.TEMPRETURE_SERVICE_UUID, BluetoothManage.TEMPRETURE_READ_UUID);
+                if (isNotification){
+                    BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED);
+                }else {
+                    BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_BLE_NOTIFICATION_ERROR);
+                }
+
+            } else {
+                Logger.d( "onServicesDiscovered received: " + status);
+            }
+        }
+
+        /**
+         * 主动读写设备的回调
+         */
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt,
+                                         BluetoothGattCharacteristic characteristic,
+                                         int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Logger.d("-----------------onCharacteristicRead");
+                doAfterCharacteristicChanged(gatt.getDevice(), characteristic);
+            }
+        }
+
+        /**
+         * 订阅的Characteristic发生变化的回调
+         */
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt,
+                                            BluetoothGattCharacteristic characteristic) {
+            Logger.d("-----------------onCharacteristicChanged");
+            doAfterCharacteristicChanged(gatt.getDevice(), characteristic);
+        }
+    };
 
     /**
      *  连接设备
@@ -313,80 +412,6 @@ public class BluetoothManage {
     }
 
 
-    /**
-     *  gatt协议 设备连接以及读取数据的回调
-     */
-    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-        /**
-         * 连接设备改变
-         */
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-                gatt.discoverServices();
-                BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_CONNECTED, gatt.getDevice());
-
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Logger.d( gatt.getDevice().getAddress() + " is disconnected");
-                DEVICE_HOLDERS.remove(gatt.getDevice().getAddress());
-                BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_DISCONNECTED, gatt.getDevice());
-                gatt.close();
-            }
-        }
-
-        /**
-         * 发现设备
-         */
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                boolean isNotification = false;
-                for (int i = 0; i < 4; i++) {
-                    isNotification = enableNotification(gatt, TEMPRETURE_SERVICE_UUID, TEMPRETURE_READ_UUID);
-                    if (isNotification) {
-                        break;
-                    } else {
-                        try {
-                            Thread.currentThread().sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-               // boolean isNotification = enableNotification(gatt, BluetoothManage.TEMPRETURE_SERVICE_UUID, BluetoothManage.TEMPRETURE_READ_UUID);
-                if (isNotification){
-                    BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED);
-                }else {
-                    BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_BLE_NOTIFICATION_ERROR);
-                }
-
-            } else {
-                Logger.d( "onServicesDiscovered received: " + status);
-            }
-        }
-
-        /**
-         * 主动读写设备的回调
-         */
-        @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
-                                         BluetoothGattCharacteristic characteristic,
-                                         int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                doAfterCharacteristicChanged(gatt.getDevice(), characteristic);
-            }
-        }
-
-        /**
-         * 订阅的Characteristic发生变化的回调
-         */
-        @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt,
-                                            BluetoothGattCharacteristic characteristic) {
-            doAfterCharacteristicChanged(gatt.getDevice(), characteristic);
-        }
-    };
 
     /**
      * 读取改变的Characteristic的数据以及修改保存在本地的数据
@@ -457,28 +482,6 @@ public class BluetoothManage {
     public static Map<String, DeviceHolder> getDeviceHolders() {
         return DEVICE_HOLDERS;
     }
-
-    /**
-     * 设备扫描的回调
-     */
-    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-
-            if (device.getName() != null){
-                if (device.getName().indexOf(CONNECT_DEVICE_NAME1) != -1
-                        || device.getName().indexOf(CONNECT_DEVICE_NAME2) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME3) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME4) != -1) {
-                    if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
-                        // 广播发现新设备
-                        SCANNING_DEVICE_ADDRESS.add(device.getAddress());
-                        BluetoothManage.getInstance().broadcastUpdate(BluetoothManage.ACTION_BLE_NEW_DEVICE,device);
-                    }
-                }
-            }
-        }
-    };
-
 
     private BluetoothManage(){}
     /**

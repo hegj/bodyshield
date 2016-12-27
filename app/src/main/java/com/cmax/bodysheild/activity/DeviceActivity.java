@@ -49,6 +49,7 @@ import com.cmax.bodysheild.util.LogUtil;
 import com.cmax.bodysheild.util.PermissionUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.UIUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -148,7 +149,9 @@ public class DeviceActivity extends BaseActivity {
 	Runnable scanTask = new Runnable() {
 		@Override
 		public void run() {
+			Logger.d("----- "+scanning);
 			if (!scanning) {
+				Logger.d("-----scanTask)");
 				scanLeDevice(true);
 			}
 		}
@@ -169,7 +172,7 @@ public class DeviceActivity extends BaseActivity {
 			device.setAddress(deviceUser.getAddress());
 			device.setDeviceType(DeviceType.Tempreature);
 			device.setConnectionState(false);
-
+			device.setName(deviceUser.getName());
 			for (User user:users) {
 				if (deviceUser.getUserId().equals(user.getId())){
 					device.setUserName(user.getUserName());
@@ -277,7 +280,6 @@ public class DeviceActivity extends BaseActivity {
 			scanning = false;
 			// 停止扫描设备
 			bleService.scanLeDevice(!enable);
-
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -505,9 +507,11 @@ public class DeviceActivity extends BaseActivity {
 				//扫描结束
 				Map<String,Float> m = bleService.getConnectedDevicesValue();
 				if(m == null || m.isEmpty()){
+					Logger.d("m.isEmpty()");
 					 handler.post(scanTask);
 				}else {
 					scanTextView.setText(R.string.menu_scan);
+					Logger.d("-----R.string.menu_scan)");
 				}
 			} else if (PresentDataResponse.ACTION_REALTIME_TEMPRETURE.equals(action)) {
 				//发现读数

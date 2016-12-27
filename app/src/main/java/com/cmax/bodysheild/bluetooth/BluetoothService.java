@@ -93,7 +93,6 @@ public class BluetoothService extends Service implements BLEService {
         myBluetoothManage.disconnectAllDevices();
         unregisterReceiver(notificationReceiver);
         myBluetoothManage.closeDBManage();
-        myBluetoothManage = null;
     }
 
     public class LocalBinder extends Binder {

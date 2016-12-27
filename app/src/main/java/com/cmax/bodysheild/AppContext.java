@@ -20,6 +20,8 @@ import com.cmax.bodysheild.inject.component.DaggerAppComponent;
 import com.cmax.bodysheild.inject.module.AppModule;*/
 import com.facebook.stetho.Stetho;
 import com.github.mikephil.charting.data.LineData;
+import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,7 +53,22 @@ public class AppContext extends MultiDexApplication {
         }
         mHandler = new Handler();
     }
-	
+    private void initLogger() {
+        if (DEBUG){
+            Logger.init("BODYSHIELD_ANDROID")         // default PRETTYLOGGER or use just init()
+                    .methodCount(4)                 // default 2
+                    .hideThreadInfo()               // default shown
+                    .logLevel(LogLevel.FULL);      // default LogLevel.FULL
+        }else {
+            Logger.init("BODYSHIELD_ANDROID")         // default PRETTYLOGGER or use just init()
+                    .methodCount(3)                 // default 2
+                    .hideThreadInfo()               // default shown
+                    .logLevel(LogLevel.NONE)  ;      // default LogLevel.FULL
+        }
+
+
+
+    }
 	public static AppContext getContext() {
 		return context;
 	}

@@ -35,6 +35,7 @@ import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
+import com.cmax.bodysheild.bluetooth.BluetoothManage;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.DeviceType;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
@@ -83,7 +84,7 @@ public class DeviceActivity extends BaseActivity {
 	private static final int     EXIT_TIME   = 2000;
 	private              boolean scanning    = false;
 	private Dialog permissionDialog;
-	//	private boolean autoScan = false;
+		private boolean autoScan = false;
 
 	@Override
 	protected int getLayoutId() {
@@ -114,10 +115,10 @@ public class DeviceActivity extends BaseActivity {
 				bleBinder = (BluetoothService.LocalBinder) service;
 				bleService = bleBinder.getBLEService();
 				loadHistoryList();
-//				if(autoScan){
-//					scanLeDevice(!scanning);
-//					autoScan = false;
-//				}
+		    	if(autoScan){
+					scanLeDevice(!scanning);
+					autoScan = false;
+				}
 			}
 		};
 		bindService(new Intent(DeviceActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);
@@ -236,6 +237,7 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
+
 		scanLeDevice(!scanning);
 		// IntentUtils.toEditProfile(this,null);
 	}
@@ -269,8 +271,6 @@ public class DeviceActivity extends BaseActivity {
 						permissionDialog.show();
 					}
 				}
-
-
 			});
 
 		} else {
@@ -431,20 +431,20 @@ public class DeviceActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			final String action = intent.getAction();
 
-			if (BluetoothService.ACTION_BLE_UNSUPPORT.equals(action)) {
+			if (BluetoothManage.ACTION_BLE_UNSUPPORT.equals(action)) {
 				//设备不支持BLE
 				Toast.makeText(DeviceActivity.this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-			} else if (BluetoothService.ACTION_BLUETOOTH_UNSUPPORT.equals(action)) {
+			} else if (BluetoothManage.ACTION_BLUETOOTH_UNSUPPORT.equals(action)) {
 				//设备没有蓝牙
 				Toast.makeText(DeviceActivity.this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-			} else if (BluetoothService.ACTION_BLUETOOTH_UNABLED.equals(action)) {
+			} else if (BluetoothManage.ACTION_BLUETOOTH_UNABLED.equals(action)) {
 				//蓝牙没开启
 				Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
-			} else if (BluetoothService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+			} else if (BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 				//发现服务
-			} else if (BluetoothService.ACTION_GATT_CONNECTED.equals(action)) {
+			} else if (BluetoothManage.ACTION_GATT_CONNECTED.equals(action)) {
 				//连接上设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 
@@ -467,7 +467,7 @@ public class DeviceActivity extends BaseActivity {
 
 				}
 
-			} else if (BluetoothService.ACTION_GATT_DISCONNECTED.equals(action)) {
+			} else if (BluetoothManage.ACTION_GATT_DISCONNECTED.equals(action)) {
 				//设备断开
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 
@@ -478,7 +478,7 @@ public class DeviceActivity extends BaseActivity {
 				}
 				//尝试扫描一次
 //				handler.post(scanTask);
-			} else if (BluetoothService.ACTION_BLE_NEW_DEVICE.equals(action)) {
+			} else if (BluetoothManage.ACTION_BLE_NEW_DEVICE.equals(action)) {
 				//发现新设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 				LogUtil.i(TAG, "find new device:" + device.getName());
@@ -501,23 +501,11 @@ public class DeviceActivity extends BaseActivity {
 				}
 				deviceAdapter.notifyDataSetChanged();
 				bleService.connect(bleDevice.getAddress(), bleDevice.getDeviceType());
-			} else if (BluetoothService.ACTION_BLE_FINISH_SCANNING.equals(action)) {
+			} else if (BluetoothManage.ACTION_BLE_FINISH_SCANNING.equals(action)) {
 				//扫描结束
-//				int count = deviceAdapter.getCount();
-//				for (int index = 0; index < count; index++) {
-//					try {
-//						BLEDevice device = (BLEDevice) deviceAdapter.getItem(index);
-//						if (device != null) {
-//							bleService.connect(device.getAddress(), device.getDeviceType());
-//						}
-//					} catch (Exception e) {
-//						LogUtil.e(TAG, e.getMessage());
-//					}
-//				}
-
 				Map<String,Float> m = bleService.getConnectedDevicesValue();
 				if(m == null || m.isEmpty()){
-					handler.post(scanTask);
+					 handler.post(scanTask);
 				}else {
 					scanTextView.setText(R.string.menu_scan);
 				}
@@ -543,16 +531,14 @@ public class DeviceActivity extends BaseActivity {
 
 	private static IntentFilter makeIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
-
-		intentFilter.addAction(BluetoothService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothService.ACTION_GATT_DISCONNECTED);
-		intentFilter.addAction(BluetoothService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothService.ACTION_BLE_UNSUPPORT);
-		intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_UNSUPPORT);
-		intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_UNABLED);
-		intentFilter.addAction(BluetoothService.ACTION_BLE_NEW_DEVICE);
-		intentFilter.addAction(BluetoothService.ACTION_BLE_FINISH_SCANNING);
-
+		intentFilter.addAction(BluetoothManage.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BluetoothManage.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(BluetoothManage.ACTION_BLE_UNSUPPORT);
+		intentFilter.addAction(BluetoothManage.ACTION_BLUETOOTH_UNSUPPORT);
+		intentFilter.addAction(BluetoothManage.ACTION_BLUETOOTH_UNABLED);
+		intentFilter.addAction(BluetoothManage.ACTION_BLE_NEW_DEVICE);
+		intentFilter.addAction(BluetoothManage.ACTION_BLE_FINISH_SCANNING);
 		intentFilter.addAction(PresentDataResponse.ACTION_REALTIME_TEMPRETURE);
 
 		return intentFilter;

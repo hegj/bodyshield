@@ -33,6 +33,7 @@ import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
+import com.cmax.bodysheild.bluetooth.BluetoothManage;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
 import com.cmax.bodysheild.bluetooth.command.temperature.DataRequestCommand;
@@ -171,7 +172,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 //                }
 //            }
 
-            if (BluetoothService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            if (BluetoothManage.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //设备断开
                 if(mask != null){
                     mask.hide();

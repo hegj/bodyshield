@@ -2,6 +2,7 @@ package com.cmax.bodysheild.exception;
 
 import android.content.Context;
 
+import com.cmax.bodysheild.bluetooth.BluetoothManage;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.util.LogUtil;
 
@@ -39,7 +40,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
 
 	public void uncaughtException(Thread thread, Throwable ex) {
 
-		BluetoothService.disconnectAllDevices();
+		BluetoothManage.disconnectAllDevices();
 
 		if (mDefaultHandler != null) {
 			//如果用户没有处理则让系统默认的异常处理器来处理

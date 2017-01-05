@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -61,6 +62,10 @@ public class BluetoothService extends Service implements BLEService {
 	private final static String  TAG     = BluetoothService.class.getSimpleName();
 	private final        IBinder mBinder = new LocalBinder();
 
+	/**
+	 *  连接后才
+	 */
+	//  保存device 的map , key 为 address
 	private final static Map<String, DeviceHolder> DEVICE_HOLDERS = new HashMap<String, DeviceHolder>();
 
 	private static final String TEMPRETURE_SERVICE_UUID_STR = "00005307-0000-0041-4C50-574953450000";
@@ -116,15 +121,12 @@ public class BluetoothService extends Service implements BLEService {
 		LogUtil.i(TAG, "BleService created");
 
 		registerReceiver(notificationReceiver, makeIntentFilter());
-
 		handler = new Handler();
-
 		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 		if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			// 广播:蓝牙不支持BLE
 			broadcastUpdate(ACTION_BLE_UNSUPPORT);
 		}
-
 		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
 		bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		bluetoothAdapter = bluetoothManager.getAdapter();
@@ -204,7 +206,6 @@ public class BluetoothService extends Service implements BLEService {
 					if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
 						// 广播发现新设备
 						SCANNING_DEVICE_ADDRESS.add(device.getAddress());
-
 						final Intent intent = new Intent(ACTION_BLE_NEW_DEVICE);
 						intent.putExtra(EXTRA_DEVICE, device);
 						sendBroadcast(intent);
@@ -213,6 +214,7 @@ public class BluetoothService extends Service implements BLEService {
 			}
 		}
 	};
+
 
 	//设备连接成功后的回调
 	private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
@@ -329,7 +331,7 @@ public class BluetoothService extends Service implements BLEService {
 			LogUtil.e(TAG, "Read charateristic not found!");
 			return false;
 		}
-
+		// 设置当前的Characteristic变化发出通知
 		boolean statu = gatt.setCharacteristicNotification(readChar, true);
 
 		LogUtil.i(TAG, "setCharacteristicNotification:" + statu);

@@ -28,4 +28,9 @@
         <attr name="disableTensileSlidingBlock" format="boolean"/>
 
     </declare-styleable>
+
+    <declare-styleable name="UserProfileItemView">
+        <attr name="profileName" format="string"></attr>
+        <attr name="profileType"  format="integer"></attr>
+    </declare-styleable>
 </resources>

@@ -31,13 +31,6 @@ public  abstract class BaseCustomView extends FrameLayout {
 
     protected abstract void initView();
 
-    public  void    switchState(){
-
-    }
-
-    public void followsOrFansFailure(){
-
-    }
 
 
 }

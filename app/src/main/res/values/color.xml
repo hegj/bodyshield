@@ -13,5 +13,6 @@
     <color name="c666666">#666666</color>
     <color name="f0f0f0">#F0F0F0</color>
     <color name="trans50">#80000000</color>
-
+    <color name="c999999">#999999</color>
+    <color name="trans10">#16000000</color>
 </resources>

@@ -57,10 +57,15 @@ public class BLEDevice implements Parcelable{
 	}
 
 	public String getName() {
-		if (this.deviceType == DeviceType.Tempreature
-				|| this.deviceType == null){
+		if (this.deviceType == DeviceType.Tempreature || this.deviceType == null){
+			if (name.contains(BLEUtil.toIndex(this.address))){
+				return name;
+			}
 			return name+ "-"+BLEUtil.toIndex(this.address);
 		}else if (this.deviceType == DeviceType.UV){
+			if (name.contains(BLEUtil.toIndex(this.address))){
+				return name;
+			}
 			return name + "-"+BLEUtil.toIndex(this.address);
 		}
 		return name;

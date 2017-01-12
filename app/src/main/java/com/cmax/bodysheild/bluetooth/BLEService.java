@@ -44,5 +44,5 @@ public interface BLEService {
 	 */
 	Map<String,Float> getConnectedDevicesValue();
 
-	public Set<String> getScanningDeviceAddress();
+
 }

@@ -3,6 +3,7 @@ package com.cmax.bodysheild.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.cmax.bodysheild.R;
+import com.cmax.bodysheild.activity.user.view.EditProfileDialog;
 import com.cmax.bodysheild.listeners.SimpleDialogListeners;
 
 import org.hybridsquad.android.library.CropParams;
@@ -129,5 +131,10 @@ public class DialogUtils {
         alertDialog.setCanceledOnTouchOutside(isCancle);
         alertDialog  .show();
         return  alertDialog;
+    }
+
+    public static Dialog showEditProfileDialog(Activity context ,int profileType) {
+        EditProfileDialog dialog = new EditProfileDialog(context);
+        return  null;
     }
 }

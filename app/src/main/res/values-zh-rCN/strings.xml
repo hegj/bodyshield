@@ -111,5 +111,6 @@
     <string name="woman">女</string>
     <string name="register_select_sex">请选择性别</string>
     <string name="edit_profile">编辑资料</string>
+    <string name="register_has_account" >有账号?去登录</string>
 
 </resources>

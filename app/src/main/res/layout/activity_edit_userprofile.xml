@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:profile="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"           android:background="@mipmap/bluebg"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bluebg"
 
     >
 
@@ -46,33 +48,39 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true">
+        >
         <com.cmax.bodysheild.widget.CircleImageView
             android:layout_centerHorizontal="true"
             android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:id="@+id/userImageBtn"
             android:src="@mipmap/people"
             app:border_width="1dp"
             app:border_color="#70C8EF"/>
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:textColor="#F9FAFC"
-            android:textSize="20sp"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:layout_below="@+id/userImageBtn"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_width="wrap_content"></TextView>
 
 
     </RelativeLayout>
+    <com.cmax.bodysheild.activity.user.view.UserProfileItemView
+        android:id="@+id/tv_user_name"
+        android:layout_marginTop="20dp"
+        profile:profileName="用户名"
+        profile:profileType="1"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"/>
+    <View
+        android:layout_marginLeft="28dp"
+        style="@style/LineDeviderLandscape"/>
+    <com.cmax.bodysheild.activity.user.view.UserProfileItemView
+        android:id="@+id/tv_user_phone"
+        profile:profileName="电话号码"
+        profile:profileType="2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"/>
+    <View
+        android:layout_marginLeft="55dp"
+        style="@style/LineDeviderLandscape"/>
 
-</RelativeLayout>
+</LinearLayout>

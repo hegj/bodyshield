@@ -18,6 +18,7 @@ import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.orhanobut.logger.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -157,8 +158,9 @@ public class DeviceAdapter extends BaseAdapter {
 		if (temp!=null){
 			setUser(temp.getUserId(),device);
 		}
-
-		holder.deviceUser.setText(device.getName());
+		String name = device.getName();
+		Logger.d(name);
+		holder.deviceUser.setText(name);
 
 		if (device.isConnectionState()){
 			holder.deviceState.setColorFilter(holder.deviceState.getResources().getColor(R.color.blue));

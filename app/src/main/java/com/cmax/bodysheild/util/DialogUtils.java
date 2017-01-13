@@ -134,7 +134,12 @@ public class DialogUtils {
     }
 
     public static Dialog showEditProfileDialog(Activity context ,int profileType) {
-        EditProfileDialog dialog = new EditProfileDialog(context);
+        String title ="";
+        int dialogType=0;
+        EditProfileDialog.Builder builder = new EditProfileDialog.Builder();
+
+        builder.setTitle(title);
+
         return  null;
     }
 }

@@ -43,4 +43,8 @@ public class UIUtils {
     public static String getString(int res) {
         return   getContext().getString(res);
     }
+
+    public static  int getUserId(){
+     return    AppContext.getUserId();
+    }
 }

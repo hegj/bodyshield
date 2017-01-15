@@ -242,7 +242,7 @@ public class DeviceActivity extends BaseActivity {
 	void clickScanText(TextView scanTextView) {
 
 		//scanLeDevice(!scanning);
-		 IntentUtils.toEditProfile(this,null);
+		 IntentUtils.toFeedBack(this);
 	}
 
 	private void scanLeDevice(final boolean enable) {

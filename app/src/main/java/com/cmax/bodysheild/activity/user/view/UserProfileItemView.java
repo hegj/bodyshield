@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseCustomView;
+import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/1/12 0012.
  */
 
-public class UserProfileItemView extends BaseCustomView {
+public abstract class UserProfileItemView extends BaseCustomView {
 
 
     @Bind(R.id.tv_name)
@@ -32,6 +33,8 @@ public class UserProfileItemView extends BaseCustomView {
     private int profileType;
     private EditProfileDialog editProfileDialog;
     private Context context;
+    protected EditProfileDialog.Builder builder;
+    protected User user;
 
     public UserProfileItemView(Context context) {
         super(context);
@@ -53,26 +56,15 @@ public class UserProfileItemView extends BaseCustomView {
     }
 
     private void buildProfileDialog(final int profileType) {
-        final EditProfileDialog.Builder builder = new EditProfileDialog.Builder();
-       String title ="";
-        switch (profileType){
-            case 1:
-                builder.setDialogType(EditProfileDialog.TYPE3);
-                title="请输入您要修改的用户名";
-                break;
-            case  2:
-                title="请输入您要修改的用户名";
-                builder.setDialogType(EditProfileDialog.TYPE4);
-                break;
-        }
-        builder.setTitle(title);
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder = new EditProfileDialog.Builder();
+        itemSetConfig(builder,profileType);
+        builder.setNegativeButton(UIUtils.getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(UIUtils.getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // 访问网络
@@ -87,7 +79,9 @@ public class UserProfileItemView extends BaseCustomView {
         editProfileDialog.show();
     }
 
-    private void sendDataToServer(DialogInterface dialog, int profileType) {
+    protected abstract void itemSetConfig(EditProfileDialog.Builder builder, int profileType) ;
+
+    protected void sendDataToServer(DialogInterface dialog, int profileType) {
 
     }
 
@@ -108,5 +102,9 @@ public class UserProfileItemView extends BaseCustomView {
     protected void initView() {
         rootView = (ViewGroup) View.inflate(UIUtils.getContext(), R.layout.user_profile_item, null);
         ButterKnife.bind(this,rootView);
+    }
+
+    public void setUser(User user) {
+        this.user =user;
     }
 }

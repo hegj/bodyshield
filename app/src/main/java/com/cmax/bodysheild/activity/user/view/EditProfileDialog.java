@@ -98,6 +98,9 @@ public class EditProfileDialog extends Dialog {
             return this;
         }
 
+        public String getEtMessageContent (){
+          return  edMessage.getText().toString().trim();
+        }
         // 构建整个dialog
         public EditProfileDialog create() {
             View view = View.inflate(context, R.layout.dialog_edit_profile, null);

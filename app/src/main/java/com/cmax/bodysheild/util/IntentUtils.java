@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
+import com.cmax.bodysheild.activity.FeedbackActivity;
 import com.cmax.bodysheild.activity.RegisterActivity;
+import com.cmax.bodysheild.activity.SettingActivity;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.activity.user.UserProfileEditActivity;
@@ -43,6 +45,10 @@ public class IntentUtils {
         Intent intent = new Intent(activity, UserProfileEditActivity.class);
         intent.putExtra(UserListActivity.CURRENT_USER, user);
         activity.startActivityForResult(intent,2);
+
+    }    public static void toFeedBack( Activity activity ) {
+        Intent intent = new Intent(activity, FeedbackActivity.class);
+        activity.startActivity(intent);
 
     }
     public  static  void toPermissionSetting(Activity activity){

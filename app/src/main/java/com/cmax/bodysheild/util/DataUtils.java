@@ -15,6 +15,7 @@ import java.util.List;
 
 public class DataUtils {
     public static void addUserToSp(User user){
+        if (user==null)return;
         List<User> users = getUserList();
         if (users.contains(user)){
             users.remove(user);
@@ -57,4 +58,5 @@ public class DataUtils {
             user.setImage(imagePath);
         }
     }
+
 }

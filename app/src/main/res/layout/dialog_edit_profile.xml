@@ -41,7 +41,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:id="@+id/tv_message"
-                android:text="这和我啥快递发卡上很快就发生发生大口径 "
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <android.support.design.widget.TextInputEditText
@@ -64,7 +64,7 @@
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     android:id="@+id/tv_positive"
-                    android:text="确定 "
+                    android:text="@string/confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -74,7 +74,7 @@
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     android:id="@+id/tv_negative"
-                    android:text="取消 "
+                    android:text="@string/cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

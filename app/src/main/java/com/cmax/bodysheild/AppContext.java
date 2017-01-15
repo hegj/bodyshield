@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.cmax.bodysheild;
 
@@ -27,57 +27,62 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AppContext extends MultiDexApplication {
 
-   public static final AppModel appModel = AppModel.Product;
+    public static final AppModel appModel = AppModel.Product;
     //  public static final AppModel appModel = AppModel.Debug;
 
-	private static AppContext context;
-	private LineData xData;
+    private static AppContext context;
+    private LineData xData;
     private static Handler mHandler;
+    private static int uid;
 
     public static void setDebugModel(boolean DEBUG) {
         AppContext.DEBUG = DEBUG;
-    }public static boolean getDebugModel() {
-       return AppContext.DEBUG;
     }
 
-    public static  boolean DEBUG=true;
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		context = this;
+    public static boolean getDebugModel() {
+        return AppContext.DEBUG;
+    }
+
+    public static boolean DEBUG = true;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
         CrashHandler catchHandler = CrashHandler.getInstance();
         catchHandler.init(getApplicationContext());
-      //  AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
+        //  AppComponent.Instance.init(DaggerAppComponent.builder().appModule(new AppModule(this)).build());
         if (DEBUG) {
             Stetho.initializeWithDefaults(this);
         }
         mHandler = new Handler();
     }
+
     private void initLogger() {
-        if (DEBUG){
+        if (DEBUG) {
             Logger.init("BODYSHIELD_ANDROID")         // default PRETTYLOGGER or use just init()
                     .methodCount(4)                 // default 2
                     .hideThreadInfo()               // default shown
                     .logLevel(LogLevel.FULL);      // default LogLevel.FULL
-        }else {
+        } else {
             Logger.init("BODYSHIELD_ANDROID")         // default PRETTYLOGGER or use just init()
                     .methodCount(3)                 // default 2
                     .hideThreadInfo()               // default shown
-                    .logLevel(LogLevel.NONE)  ;      // default LogLevel.FULL
+                    .logLevel(LogLevel.NONE);      // default LogLevel.FULL
         }
 
 
-
     }
-	public static AppContext getContext() {
-		return context;
-	}
 
-	public static void setContext(AppContext context) {
-		AppContext.context = context;
-	}
-	
-	public String getMetaValue(String metaName) {
+    public static AppContext getContext() {
+        return context;
+    }
+
+    public static void setContext(AppContext context) {
+        AppContext.context = context;
+    }
+
+    public String getMetaValue(String metaName) {
         Bundle metaData = null;
         String metaValue = null;
         if (StringUtils.isEmpty(metaName)) {
@@ -93,7 +98,7 @@ public class AppContext extends MultiDexApplication {
                 metaValue = metaData.getString(metaName);
             }
         } catch (NameNotFoundException e) {
-        	
+
         }
         return metaValue;
     }
@@ -101,15 +106,24 @@ public class AppContext extends MultiDexApplication {
     /**
      * 预初始化x轴刻度
      */
-    private void initLineData(){
+    private void initLineData() {
         xData = new LineData();
         xData.setValueTextColor(Color.WHITE);
-        for(int i = 0; i<86399;i++){
-            xData.addXValue(""+i);
+        for (int i = 0; i < 86399; i++) {
+            xData.addXValue("" + i);
         }
         xData.setHighlightEnabled(true);
     }
+
     public static Handler getMainHandler() {
         return mHandler;
+    }
+
+    public static void setUserId(int id) {
+        uid = id;
+    }
+
+    public static int getUserId() {
+        return uid;
     }
 }

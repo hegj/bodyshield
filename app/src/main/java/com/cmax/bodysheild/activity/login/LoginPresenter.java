@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
+import com.cmax.bodysheild.AppContext;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
@@ -86,7 +87,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
 
             @Override
             public void _onNext(UserProfileInfo info) {
-
+                AppContext.setUserId(info.getId());
             }
 
             @Override

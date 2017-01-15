@@ -122,6 +122,11 @@
     <string name="register_select_sex">Please select a gender</string>
     <string name="edit_profile">Edit profile</string>
     <string name="register_has_account" >There are accounts?To login</string>
+    <string name="input_feedback_message">Please enter your message to feedback</string>
+    <string name="feedback_success_message" >Feedback is successful, we will make as soon as possible</string>
+    <string name="leave_contact">Please leave your contact way so that we can contact you (not required)</string>
+    <string name="input_user_contact">Please enter your contact information</string>
+    <string name="confirm">confirm</string>
 
 
 </resources>

@@ -11,6 +11,7 @@ import android.view.View;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.activity.user.view.UserProfileItemView;
+import com.cmax.bodysheild.activity.user.view.UserProfileNameItemView;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.listeners.CropPickListeners;
@@ -39,9 +40,9 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     @Bind(R.id.userImageBtn)
     CircleImageView userImageBtn;
     @Bind(R.id.tv_user_name)
-    UserProfileItemView tvUserName;
-    @Bind(R.id.tv_user_phone)
-    UserProfileItemView tvUserPhone;
+    UserProfileNameItemView tvUserName;
+  /*  @Bind(R.id.tv_user_phone)
+    UserProfileItemView tvUserPhone;*/
 
     private Bitmap bitmap;
     private Dialog mCropParamsDialog;
@@ -59,6 +60,7 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
         user = getIntent().getParcelableExtra(UserListActivity.CURRENT_USER);
         if (user != null)
             tvUserName.setProfileValue(user.getUserName());
+        tvUserName.setUser(user);
     }
 
     @OnClick({R.id.backBtn, R.id.userImageBtn})

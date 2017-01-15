@@ -334,29 +334,6 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 //        bleService.executeCommand(continuousDataCommand);
         finish();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_temperature_info, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -403,28 +380,6 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
         return true;
     }
 
-
-
-
-//    @OnClick(R.id.synchronizedBtn)
-//    public void synchronizeHistoryData(){
-//        if(device != null){
-//            if(bleService != null){
-//                if(mask == null) {
-//                    mask = new LoadingMask(TemperatureHistoryInfoActivity.this);
-//                }
-//                mask.show();
-//                DataRequestCommand command = new DataRequestCommand(device.getAddress(), DataRequestCommand.ReqeustType.MemoryStatus);
-//                bleService.executeCommand(command);
-//                et_showDate.setText(DATE_FORMAT.format(new Date()));
-//                showTime.setText(FORMAT2.format(new Date()));
-//                if(chart != null){
-//                    chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
-//                }
-//            }
-//
-//        }
-//    }
 
     @OnClick(R.id.settingBtn_history)
     public void setting(){

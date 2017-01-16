@@ -14,14 +14,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.cmax.bodysheild.api.ApiServer;
 import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
 import com.cmax.bodysheild.dao.DBManager;
 import com.cmax.bodysheild.http.HttpMethods;
+import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.JsonUtil;
 import com.cmax.bodysheild.util.LogUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.UIUtils;
@@ -36,6 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+
+import rx.Subscriber;
 
 /**
  * Created by Administrator on 2016/12/26 0026.
@@ -80,6 +85,8 @@ public class BluetoothManage {
      * 新的设备的集合, 用来判断当发现一个设备时,是否是新的设备,还是已经连接过的设备
      */
     private static final Set<String> SCANNING_DEVICE_ADDRESS = new HashSet<String>();
+    private long recordNetTime=0;
+
     /**
      * 初始化数据
      */
@@ -426,20 +433,20 @@ public class BluetoothManage {
             intent = ResponseAnalyzer.analyze(bytes, holder.deviceType);
         }
         if (intent != null) {
-            if(intent.getAction().equals(PresentDataResponse.ACTION_REALTIME_TEMPRETURE)){
-                int measureInterval = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL,1);
-                if(System.currentTimeMillis() >= (recordTime + measureInterval*60*1000)){
+            if(intent.getAction().equals(PresentDataResponse.ACTION_REALTIME_TEMPRETURE)) {
+                int measureInterval = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
+                if (System.currentTimeMillis() >= (recordTime + measureInterval * 60 * 1000)) {
                     Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
-                    if(temperature != null&&temperature.getValue()>34){
+                    if (temperature != null && temperature.getValue() > 34) {
                         String currentUserName = "";
                         List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST, DeviceUser.class);
-                        for (DeviceUser deviceuser:deviceUsers) {
-                            if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())){
+                        for (DeviceUser deviceuser : deviceUsers) {
+                            if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())) {
                                 currentUserName = deviceuser.getUserId();
                                 break;
                             }
                         }
-                        if(StringUtils.isNotBlank(currentUserName)){
+                        if (StringUtils.isNotBlank(currentUserName)) {
                             HistoryData historyData = new HistoryData();
                             historyData.setDeviceAddress(device.getAddress());
                             historyData.setTimestamp(temperature.getTimestamp());
@@ -451,10 +458,51 @@ public class BluetoothManage {
                     }
 
                 }
+                if (System.currentTimeMillis() >= (recordNetTime + 20)) {
+                    Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
+                    if (temperature != null && temperature.getValue() > 34) {
+                        String currentUserName = "";
+                        List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST, DeviceUser.class);
+                        for (DeviceUser deviceuser : deviceUsers) {
+                            if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())) {
+                                currentUserName = deviceuser.getUserId();
+                                break;
+                            }
+                        }
+                        if (StringUtils.isNotBlank(currentUserName)) {
+                            HistoryData historyData = new HistoryData();
+                            historyData.setDeviceAddress(device.getAddress());
+                            historyData.setTimestamp(temperature.getTimestamp());
+                            historyData.setId(1);
+                            historyData.setValue(temperature.getValue());
+
+
+                            HttpMethods.getInstance().apiService.uploadTemperature(JsonUtil.toJsonString(historyData)).compose(RxSchedulersHelper.applyIoTransformer())
+                            .subscribe(new Subscriber() {
+                                @Override
+                                public void onCompleted() {
+                                        Logger.d("success");
+                                    recordNetTime = System.currentTimeMillis();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.d("onError");
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+
+                                }
+                            });
+                        }
+                    }
+
+                }
+                intent.putExtra(BluetoothService.EXTRA_DEVICE, device);
+                intent.putExtra(BluetoothService.EXTRA_ADDRESS, device.getAddress());
+                context.sendBroadcast(intent);
             }
-            intent.putExtra(BluetoothService.EXTRA_DEVICE, device);
-            intent.putExtra(BluetoothService.EXTRA_ADDRESS, device.getAddress());
-           context.sendBroadcast(intent);
         }
     }
 

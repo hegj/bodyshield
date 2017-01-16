@@ -7,13 +7,23 @@ public class HistoryData {
     private int id;
     private String deviceAddress;
     private String userId;
+
+
+
+    private String uid;
     private long timestamp;
     private float value;
 
     public int getId() {
         return id;
     }
+    public String getUid() {
+        return uid;
+    }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public void setId(int id) {
         this.id = id;
     }

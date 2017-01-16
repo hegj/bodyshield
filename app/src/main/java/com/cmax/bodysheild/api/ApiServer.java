@@ -1,8 +1,10 @@
 package com.cmax.bodysheild.api;
 
 import com.cmax.bodysheild.base.bean.BaseRequestData;
+import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -42,5 +44,5 @@ public interface ApiServer {
     Observable<BaseRequestData<Object>> uploadTemperature(@Field("data") String data);
     @FormUrlEncoded
     @POST( Url.DOWNLOAD_TEMPERATURE)
-    Observable<BaseRequestData<Object>> downloadTemperature(@Field("deviceAddress") String deviceAddress,@Field("uid") String uid);
+    Observable<BaseRequestData<List<HistoryData>>> downloadTemperature(@Field("deviceAddress") String deviceAddress, @Field("uid") String uid, @Field("lastTimestamp") String lastTimestamp);
 }

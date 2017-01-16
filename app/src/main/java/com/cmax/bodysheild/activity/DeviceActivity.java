@@ -85,7 +85,7 @@ public class DeviceActivity extends BaseActivity {
 	private static final int     EXIT_TIME   = 2000;
 	private              boolean scanning    = false;
 	private Dialog permissionDialog;
-		private boolean autoScan = false;
+		private boolean autoScan = true;
 
 	@Override
 	protected int getLayoutId() {
@@ -241,8 +241,8 @@ public class DeviceActivity extends BaseActivity {
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
 
-		//scanLeDevice(!scanning);
-		 IntentUtils.toEditProfile(this,null);
+		scanLeDevice(!scanning);
+		// IntentUtils.toEditProfile(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {

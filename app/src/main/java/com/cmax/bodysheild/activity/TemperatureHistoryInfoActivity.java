@@ -1,6 +1,7 @@
 package com.cmax.bodysheild.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -20,11 +21,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseActivity;
+import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.ble.MemoryRecord;
@@ -42,10 +45,17 @@ import com.cmax.bodysheild.bluetooth.response.temperature.MemoryStatusResponse;
 import com.cmax.bodysheild.chart.TemperatureChartXAxisValueFormatter;
 import com.cmax.bodysheild.chart.TemperatureChartYAxisValueFormatter;
 import com.cmax.bodysheild.dao.DBManager;
+import com.cmax.bodysheild.http.HttpMethods;
+import com.cmax.bodysheild.http.RxJavaHttpHelper;
+import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
+import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.ToastUtils;
+import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.CircleImageView;
 import com.cmax.bodysheild.widget.LoadingMask;
 import com.github.mikephil.charting.charts.LineChart;
@@ -72,7 +82,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-public class TemperatureHistoryInfoActivity extends BaseActivity implements View.OnTouchListener,OnChartValueSelectedListener {
+public class TemperatureHistoryInfoActivity extends BaseActivity implements View.OnTouchListener,OnChartValueSelectedListener ,IStateView {
 
     public final static String EXTRA_DEVICE = "com.cmax.bodysheild.Temperature.EXTRA_DEVICE";
     private final static String TAG = TemperatureHistoryInfoActivity.class.getSimpleName();
@@ -84,8 +94,8 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     TextView  tv_userName;
     @Bind(R.id.temperature)
     TextView  tv_temperature;
-//    @Bind(R.id.synchronizedBtn)
-//    ImageView synchronizedBtn;
+    @Bind(R.id.synchronizedBtn)
+    ImageView synchronizedBtn;
     @Bind(R.id.userImageBtn_history)
     CircleImageView userImageBtn;
 
@@ -180,6 +190,8 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             }
         }
     };
+    private ProgressDialog progressDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_temperature_history_info;
@@ -285,8 +297,6 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             currentUserName = "";
             tv_userName.setText("");
         }
-
-
     }
     @Override
     protected void onStop() {
@@ -630,5 +640,51 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
         chart.moveViewToX(parseIndex(new Date().getTime()) - 50);
 //        chart.notifyDataSetChanged();
 //        chart.invalidate();
+    }
+    @OnClick(R.id.synchronizedBtn)
+    void synchronizedBtn(View v){
+        long lastTimestamp = SharedPreferencesUtil.getLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME, 0);
+        HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",lastTimestamp+"")
+                .compose(RxJavaHttpHelper.<List<HistoryData>>handleResult())
+                .compose( RxSchedulersHelper.<List<HistoryData>>applyIoTransformer())
+                .subscribe(new ProgressSubscriber<List<HistoryData>>(this) {
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showFailToast(message);
+            }
+
+            @Override
+            public void _onNext(List<HistoryData> data) {
+                for (int i =0 ; i<data.size();i++){
+                    HistoryData historyData = data.get(i);
+                  /*  if (historyData.getUserId().equals(historyData.getUserId()) && historyData.getDeviceAddress() .equalsIgnoreCase( device.getAddress())){
+
+                    }*/
+                    dbManager.addHistory(historyData);
+                }
+                //TODO
+                SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME,data.get(0).getTimestamp());
+            }
+
+            @Override
+            public void _onCompleted() {
+
+                initChartData(FORMAT1.format(new Date()));
+            }
+        });
+    }
+
+    @Override
+    public void showProgressDialog() {
+        if (progressDialog==null)
+            progressDialog = DialogUtils.showProgressDialog(this, "反馈中,请稍后");
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        if (progressDialog!=null &&progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 }

@@ -127,6 +127,7 @@
     <string name="leave_contact">Please leave your contact way so that we can contact you (not required)</string>
     <string name="input_user_contact">Please enter your contact information</string>
     <string name="confirm">confirm</string>
-
+    <string name="access_server_failed">Access the server failed, please try again</string>
+    <string name="access_server_success">The update is successful</string>
 
 </resources>

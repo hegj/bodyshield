@@ -143,7 +143,7 @@ public class CropUtils {
 
     private  static  Uri getCameraCacheUri() {
         File picture = FileUtils.getAppPictureDir("Picture");
-        String name = String.format("imagecrop-%d.jpg", System.currentTimeMillis());
+        String name = String.format("imagecrop%d.jpg", System.currentTimeMillis());
         uri = Uri
                 .fromFile(picture)
                 .buildUpon()

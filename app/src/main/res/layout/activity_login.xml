@@ -143,6 +143,34 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" />
         </LinearLayout>
+<!--
+
+            <LinearLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/ib_login_sina"
+
+                    android:background="@drawable/icon_sina"
+                    android:layout_width="@dimen/dis_100px"
+                    android:layout_height="@dimen/dis_100px" />
+                <ImageButton
+                    android:id="@+id/ib_login_weixin"
+                    android:layout_marginLeft="@dimen/dis_80px"
+                    android:background="@drawable/icon_weixin_base"
+                    android:layout_width="@dimen/dis_100px"
+                    android:layout_height="@dimen/dis_100px" />
+                <ImageButton
+                    android:id="@+id/ib_login_qq"
+                    android:layout_marginLeft="@dimen/dis_80px"
+                    android:background="@drawable/icon_qq"
+                    android:layout_width="@dimen/dis_100px"
+                    android:layout_height="@dimen/dis_100px" />
+
+            </LinearLayout>
+-->
 
 
         </RelativeLayout>

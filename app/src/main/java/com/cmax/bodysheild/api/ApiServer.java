@@ -45,4 +45,5 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST( Url.DOWNLOAD_TEMPERATURE)
     Observable<BaseRequestData<List<HistoryData>>> downloadTemperature(@Field("deviceAddress") String deviceAddress, @Field("uid") String uid, @Field("lastTimestamp") String lastTimestamp);
+
 }

@@ -22,49 +22,40 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpMethods {
 
-    public    ApiServer apiService;
-    private   Retrofit retrofit;
+    public ApiServer apiService;
+    private Retrofit retrofit;
 
 
-
-    private  static    class SingleHttpMethods{
-        private static  final HttpMethods INSTANCE=new HttpMethods();
+    private static class SingleHttpMethods {
+        private static final HttpMethods INSTANCE = new HttpMethods();
     }
+
     //获取单例
     public static HttpMethods getInstance() {
         return SingleHttpMethods.INSTANCE;
     }
 
-    private HttpMethods(){
+    private HttpMethods() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(12, TimeUnit.SECONDS);
         httpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl( Url.BASE_URL)
+                .baseUrl(Url.BASE_URL)
                 .client(httpClientBuilder.build())
                 .build();
         apiService = retrofit.create(ApiServer.class);
     }
-   public   RequestBody buildHeadImageFileBody(int uid, File file){
-        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("uid", uid+"")
-               // .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image*//*"), file))
-                .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/jpg"), file))
-                .build();
-        return  requestBody;
-    }
-    public     MultipartBody.Part buildHeadImageFileBody( File file){
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-        return  part;
+
+    public RequestBody toTextRequestBody(String s) {
+        return RequestBody.create(MediaType.parse("text/plain"), s);
     }
 
-      public  RequestBody toTextRequestBody(String s){
-           return RequestBody.create(MediaType.parse("text/plain"),s);
-      }
     public RequestBody toImageRequestBody(File file) {
-        return    RequestBody.create(MediaType.parse("image/jpg"), file);
+        return RequestBody.create(MediaType.parse("image/jpg"), file);
+    }
+    public void  thirdLogin(String token ,String uid ,String type,String name){
+
     }
 }

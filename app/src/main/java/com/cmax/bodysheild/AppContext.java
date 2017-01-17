@@ -22,6 +22,9 @@ import com.facebook.stetho.Stetho;
 import com.github.mikephil.charting.data.LineData;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,6 +59,12 @@ public class AppContext extends MultiDexApplication {
             Stetho.initializeWithDefaults(this);
         }
         mHandler = new Handler();
+        Config.DEBUG = false;
+        UMShareAPI.get(this);
+        //  初始化 UM key
+        PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
+        //TODO QQ
+        //TODO FACEBOOK
     }
 
     private void initLogger() {

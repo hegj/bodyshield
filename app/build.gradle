@@ -60,7 +60,6 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.5'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'org.hybridsquad.android.photocropper:library:3.0.2'
-
     compile rootProject.ext.dependencies["butterknife"]
     compile rootProject.ext.dependencies["dagger"]
     compile rootProject.ext.dependencies["rxjava"]
@@ -79,16 +78,21 @@ dependencies {
     compile rootProject.ext.dependencies["oklog3"]
     compile rootProject.ext.dependencies["crop"]
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.mylhyl:acp:1.1.7' //权限管理，6.0必需
+    compile 'com.mylhyl:acp:1.1.7'
+    //权限管理，6.0必需
 
-/*
+    /*
 
 
-  compile rootProject.ext.dependencies["okhttp"]
-  compile rootProject.ext.dependencies["logging-interceptor"]
- provided rootProject.ext.dependencies["auto-value-gson"]
- compile rootProject.ext.dependencies["sqlbrite"]
-     apt rootProject.ext.dependencies["auto-value"]
-     provided rootProject.ext.dependencies["auto-value"]
-     apt rootProject.ext.dependencies["auto-value-gson"]*/
+      compile rootProject.ext.dependencies["okhttp"]
+      compile rootProject.ext.dependencies["logging-interceptor"]
+     provided rootProject.ext.dependencies["auto-value-gson"]
+     compile rootProject.ext.dependencies["sqlbrite"]
+         apt rootProject.ext.dependencies["auto-value"]
+         provided rootProject.ext.dependencies["auto-value"]
+         apt rootProject.ext.dependencies["auto-value-gson"]*/
+    compile files('libs/SocialSDK_facebook.jar')
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/SocialSDK_twitter.jar')
+    compile files('libs/SocialSDK_WeChat_Simplify.jar')
 }

@@ -663,7 +663,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
                     dbManager.addHistory(historyData);
                 }
                 //TODO
-                SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME,data.get(0).getTimestamp());
+                SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME+device.getAddress()+UIUtils.getUserId(),data.get(0).getTimestamp());
             }
 
             @Override

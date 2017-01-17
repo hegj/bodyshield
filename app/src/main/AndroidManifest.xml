@@ -48,16 +48,15 @@
             android:value="561cae6ae0f55abd990035bf" >
         </meta-data>
         <!--facebook-->
-        <activity
+<!--        <activity
             android:name="com.umeng.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--1104087112943046-->
+        &lt;!&ndash;1104087112943046&ndash;&gt;
         <provider
             android:name="com.umeng.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1266254913438718"
-            android:exported="true" />
+            android:exported="true" />-->
         <!--facebookKey-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

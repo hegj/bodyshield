@@ -278,7 +278,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
         for (DeviceUser deviceuser:deviceUsers) {
             if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())){
                 currentUserName = deviceuser.getUserId();
-                tv_userName.setText(deviceuser.getUserId());
+                tv_userName.setText(deviceuser.getName());
                 List<User> users = SharedPreferencesUtil.getList(Constant.USER_LIST,
                         User.class);
                 for (User user:users) {
@@ -643,7 +643,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     }
     @OnClick(R.id.synchronizedBtn)
     void synchronizedBtn(View v){
-        long lastTimestamp = SharedPreferencesUtil.getLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME, 0);
+        long lastTimestamp = SharedPreferencesUtil.getLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME + device.getAddress() +UIUtils.getUserId(), 0);
         HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",lastTimestamp+"")
                 .compose(RxJavaHttpHelper.<List<HistoryData>>handleResult())
                 .compose( RxSchedulersHelper.<List<HistoryData>>applyIoTransformer())
@@ -663,13 +663,16 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
                     dbManager.addHistory(historyData);
                 }
                 //TODO
-                SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME+device.getAddress()+UIUtils.getUserId(),data.get(0).getTimestamp());
+                if (data.size()>0) {
+                    SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME + device.getAddress() +UIUtils.getUserId(), data.get(0).getTimestamp());
+                    initChartData(FORMAT1.format(new Date()));
+                }
             }
 
             @Override
             public void _onCompleted() {
 
-                initChartData(FORMAT1.format(new Date()));
+
             }
         });
     }
@@ -677,7 +680,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     @Override
     public void showProgressDialog() {
         if (progressDialog==null)
-            progressDialog = DialogUtils.showProgressDialog(this, "反馈中,请稍后");
+            progressDialog = DialogUtils.showProgressDialog(this,UIUtils.getString(R.string.loading));
         progressDialog.show();
     }
 

@@ -117,8 +117,9 @@ public class DeviceActivity extends BaseActivity {
 				bleService = bleBinder.getBLEService();
 				loadHistoryList();
 		    	if(autoScan){
-					scanLeDevice(!scanning);
 					autoScan = false;
+					scanLeDevice(!scanning);
+
 				}
 			}
 		};
@@ -242,7 +243,7 @@ public class DeviceActivity extends BaseActivity {
 	void clickScanText(TextView scanTextView) {
 
 		scanLeDevice(!scanning);
-		  IntentUtils.toLoginActivity(this,null,null);
+		  //IntentUtils.toLoginActivity(this,null,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {
@@ -345,6 +346,7 @@ public class DeviceActivity extends BaseActivity {
 		registerReceiver(notificationReceiver, makeIntentFilter());
 
 		if (!isBind){
+			autoScan = false;
 			bindService(new Intent(DeviceActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 			isBind = true;
 		}

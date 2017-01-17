@@ -47,4 +47,8 @@ public class UIUtils {
     public static  int getUserId(){
      return    AppContext.getUserId();
     }
+
+    public static void setUserId(int id) {
+        AppContext.setUserId(id);
+    }
 }

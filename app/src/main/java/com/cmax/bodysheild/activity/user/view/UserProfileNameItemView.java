@@ -3,15 +3,11 @@ package com.cmax.bodysheild.activity.user.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.cmax.bodysheild.R;
-import com.cmax.bodysheild.bean.cache.User;
+import com.cmax.bodysheild.listeners.ProfileDataSuccessListener;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.UIUtils;
-import com.orhanobut.logger.Logger;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/1/16 0016.
@@ -33,14 +29,13 @@ public class UserProfileNameItemView extends  UserProfileItemView {
     }
 
     @Override
-    protected void sendDataToServer(DialogInterface dialog, int profileType) {
-        super.sendDataToServer(dialog, profileType);
-        List<User> usertList = DataUtils.getUserList();
+    protected void sendDataToServer(DialogInterface dialog, int profileType, ProfileDataSuccessListener profileDataSuccessListener) {
+        super.sendDataToServer(dialog, profileType, profileDataSuccessListener);
         String etMessageContent = builder.getEtMessageContent();
-        if (usertList.contains(user)) usertList.remove(user);
-        Logger.d(etMessageContent);
         user.setUserName(etMessageContent);
         DataUtils.addUserToSp(user);
         dialog.dismiss();
+        if (profileDataSuccessListener!=null)
+        profileDataSuccessListener.success(profileType,user);
     }
 }

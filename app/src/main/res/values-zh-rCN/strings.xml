@@ -114,6 +114,7 @@
     <string name="register_has_account" >有账号?去登录</string>
     <string name="input_feedback_message">请输入您要反馈的消息</string>
     <string name="feedback_success_message" >反馈成功,我们会尽快做出处理</string>
+    <string name="feedback_loading_message" >正在反馈您的问题,请稍后</string>
     <string name="leave_contact">请留下联系方式以便我们与您取得联系(非必填)</string>
     <string name="input_user_contact">请输入您的联系方式</string>
     <string name="confirm">确定</string>

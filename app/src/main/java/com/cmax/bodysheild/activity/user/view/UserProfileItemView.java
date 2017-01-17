@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseCustomView;
 import com.cmax.bodysheild.bean.cache.User;
+import com.cmax.bodysheild.listeners.ProfileDataSuccessListener;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
@@ -35,7 +36,7 @@ public abstract class UserProfileItemView extends BaseCustomView {
     private Context context;
     protected EditProfileDialog.Builder builder;
     protected User user;
-
+    ProfileDataSuccessListener profileDataSuccessListener;
     public UserProfileItemView(Context context) {
         super(context);
     }
@@ -54,6 +55,9 @@ public abstract class UserProfileItemView extends BaseCustomView {
             }
         });
     }
+    public  void setProfileDataSuccessListener( ProfileDataSuccessListener listener){
+        profileDataSuccessListener=listener;
+    }
 
     private void buildProfileDialog(final int profileType) {
         builder = new EditProfileDialog.Builder();
@@ -68,7 +72,7 @@ public abstract class UserProfileItemView extends BaseCustomView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // 访问网络
-                sendDataToServer(dialog,profileType);
+                sendDataToServer(dialog,profileType,profileDataSuccessListener);
             }
         });
         if (editProfileDialog!=null) {
@@ -81,7 +85,7 @@ public abstract class UserProfileItemView extends BaseCustomView {
 
     protected abstract void itemSetConfig(EditProfileDialog.Builder builder, int profileType) ;
 
-    protected void sendDataToServer(DialogInterface dialog, int profileType) {
+    protected void sendDataToServer(DialogInterface dialog, int profileType, ProfileDataSuccessListener profileDataSuccessListener) {
 
     }
 

@@ -7,6 +7,7 @@ import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,8 +18,12 @@ public class DataUtils {
     public static void addUserToSp(User user){
         if (user==null)return;
         List<User> users = getUserList();
-        if (users.contains(user)){
-            users.remove(user);
+        Iterator<User> iterator = users.iterator();
+        while (iterator.hasNext()){
+            User spUser = iterator.next();
+            if (spUser.getId().equals(user.getId())){
+                iterator.remove();
+            }
         }
         users.add(user);
         SharedPreferencesUtil.setList(Constant.USER_LIST, users);
@@ -52,11 +57,12 @@ public class DataUtils {
         SharedPreferencesUtil.setStringValue(device.getAddress(), user.getUserName());
     }
 
-    public static void saveUserPortrait(Bitmap bitmap, Activity activity, User user) {
+    public static void saveUserInfo(Bitmap bitmap, Activity activity, User user) {
         if (bitmap != null) {
             String imagePath = PortraitUtil.writeBitmap(activity, bitmap, user.getImage());
             user.setImage(imagePath);
+            addUserToSp(user);
         }
     }
-
+    
 }

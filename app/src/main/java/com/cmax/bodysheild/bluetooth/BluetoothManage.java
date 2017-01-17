@@ -32,6 +32,7 @@ import com.orhanobut.logger.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -447,6 +448,7 @@ public class BluetoothManage {
                             }
                         }
                         if (StringUtils.isNotBlank(currentUserName)) {
+
                             HistoryData historyData = new HistoryData();
                             historyData.setDeviceAddress(device.getAddress());
                             historyData.setTimestamp(temperature.getTimestamp());
@@ -458,7 +460,7 @@ public class BluetoothManage {
                     }
 
                 }
-                if (System.currentTimeMillis() >= (recordNetTime + 20)) {
+                if (System.currentTimeMillis() >= (recordNetTime + 30*1000)) {
                     Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
                     if (temperature != null && temperature.getValue() > 34) {
                         String currentUserName = "";
@@ -470,14 +472,15 @@ public class BluetoothManage {
                             }
                         }
                         if (StringUtils.isNotBlank(currentUserName)) {
+                            List <HistoryData>historyDataList = new ArrayList<>();
                             HistoryData historyData = new HistoryData();
                             historyData.setDeviceAddress(device.getAddress());
                             historyData.setTimestamp(temperature.getTimestamp());
                             historyData.setId(1);
                             historyData.setValue(temperature.getValue());
-
-
-                            HttpMethods.getInstance().apiService.uploadTemperature(JsonUtil.toJsonString(historyData)).compose(RxSchedulersHelper.applyIoTransformer())
+                            historyDataList.add(historyData);
+                            String jsonString = JsonUtil.toJsonString(historyDataList);
+                            HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
                             .subscribe(new Subscriber() {
                                 @Override
                                 public void onCompleted() {
@@ -492,7 +495,7 @@ public class BluetoothManage {
 
                                 @Override
                                 public void onNext(Object o) {
-
+                                        onCompleted();
                                 }
                             });
                         }

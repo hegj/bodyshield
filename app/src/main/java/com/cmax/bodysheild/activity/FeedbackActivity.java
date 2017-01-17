@@ -94,7 +94,7 @@ public class FeedbackActivity extends BaseActivity implements IStateView {
     @Override
     public void showProgressDialog() {
         if (progressDialog==null)
-        progressDialog = DialogUtils.showProgressDialog(this, "反馈中,请稍后");
+        progressDialog = DialogUtils.showProgressDialog(this,UIUtils.getString(R.string.feedback_loading_message));
         progressDialog.show();
     }
 

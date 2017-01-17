@@ -88,28 +88,16 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
             @Override
             public void _onNext(UserProfileInfo info) {
                 AppContext.setUserId(info.getId());
+                User user = new User();
+                user.setId(info.getId()+"");
+                user.setUserName(info.getName());
+                user.setPassword(info.getPassword());
+                DataUtils.addDeviceToSp(device,user) ;
+                DataUtils.addUserToSp(user);
             }
 
             @Override
             public void _onCompleted() {
-             /*  if (bitmap != null) {
-                    String imagePath = PortraitUtil.writeBitmap(activity, bitmap, finalUser.getImage());
-                    finalUser.setImage(imagePath);
-                }*/
-                final List<User> users = SharedPreferencesUtil.getList(Constant.USER_LIST,
-                        User.class);
-
-                User user = new User();
-                user.setId(userName);
-                user.setUserName(userName);
-                user.setPassword(passWord);
-                if (users.contains(user)) {
-                    //包含
-                    users.remove(user);
-                }
-                users.add(user);
-                SharedPreferencesUtil.setList(Constant.USER_LIST, users);
-                DataUtils.addDeviceToSp(device,user) ;
                  IntentUtils.toTemperatureInfoActivity(activity,device);
 
             }

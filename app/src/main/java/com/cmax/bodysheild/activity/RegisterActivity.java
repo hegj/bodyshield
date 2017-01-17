@@ -172,9 +172,9 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
             @Override
             public void onNext(UserProfileInfo userProfileInfo) {
                 User user = new User();
-                user.setId(username);
-                user.setUserName(username);
-                user.setPassword(password);
+                user.setId(userProfileInfo.getId()+"");
+                user.setUserName(userProfileInfo.getName());
+                user.setPassword(userProfileInfo.getPassword());
                 DataUtils.addUserToSp(user);
                 DataUtils.addDeviceToSp(device,user) ;
 
@@ -225,6 +225,6 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
     @OnClick(R.id.tvToLogin )
     void register(View view){
        IntentUtils.toLoginActivity(this,null,device);
-
+        finish();
     }
 }

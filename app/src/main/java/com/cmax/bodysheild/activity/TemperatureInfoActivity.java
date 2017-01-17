@@ -36,6 +36,7 @@ import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.CircleImageView;
 
 import java.text.DecimalFormat;
@@ -249,6 +250,7 @@ public class TemperatureInfoActivity extends FragmentActivity {
                 String userImage = user.getImage();
                 Bitmap bm = PortraitUtil.getBitmap(this,userImage);
                 userImageBtn.setImageBitmap(bm);
+                UIUtils.setUserId(Integer.parseInt(id));
                 break;
             }
         }

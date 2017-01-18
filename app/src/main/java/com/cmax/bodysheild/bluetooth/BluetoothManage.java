@@ -26,6 +26,7 @@ import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.JsonUtil;
 import com.cmax.bodysheild.util.LogUtil;
+import com.cmax.bodysheild.util.SPUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.UIUtils;
 import com.orhanobut.logger.Logger;
@@ -424,7 +425,7 @@ public class BluetoothManage {
     /**
      * 读取改变的Characteristic的数据以及修改保存在本地的数据
      */
-    private void doAfterCharacteristicChanged(BluetoothDevice device, BluetoothGattCharacteristic characteristic) {
+    private void doAfterCharacteristicChanged(final BluetoothDevice device, BluetoothGattCharacteristic characteristic) {
         byte[] bytes = characteristic.getValue();
         int header = (bytes[0] & 0xFF);
 //		LogUtil.i(TAG, "first byte 0x" + Integer.toHexString(header));
@@ -448,7 +449,6 @@ public class BluetoothManage {
                             }
                         }
                         if (StringUtils.isNotBlank(currentUserName)) {
-
                             HistoryData historyData = new HistoryData();
                             historyData.setDeviceAddress(device.getAddress());
                             historyData.setTimestamp(temperature.getTimestamp());
@@ -460,7 +460,8 @@ public class BluetoothManage {
                     }
 
                 }
-                if (System.currentTimeMillis() >= (recordNetTime + 30*1000)) {
+                if (System.currentTimeMillis() >= (recordNetTime + 30*1000*60+SPUtils.getTempertureHisoryRecordTime(device.getAddress()))) {
+
                     Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
                     if (temperature != null && temperature.getValue() > 34) {
                         String currentUserName = "";
@@ -486,6 +487,7 @@ public class BluetoothManage {
                                 public void onCompleted() {
                                         Logger.d("success");
                                     recordNetTime = System.currentTimeMillis();
+                                    SPUtils.setTempertureToServerRecordTime(recordNetTime,device.getAddress());
                                 }
 
                                 @Override

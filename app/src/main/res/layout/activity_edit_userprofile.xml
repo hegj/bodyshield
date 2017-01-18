@@ -75,12 +75,14 @@
         android:layout_marginLeft="55dp"
         style="@style/LineDeviderLandscape"/>
   <com.cmax.bodysheild.activity.user.view.UserProfilePhoneItemView
+      android:visibility="gone"
         android:id="@+id/tv_user_phone"
         profile:profileName="电话号码"
         profile:profileType="2"
         android:layout_width="match_parent"
         android:layout_height="45dp"/>
     <View
+        android:visibility="gone"
         android:layout_marginLeft="55dp"
         style="@style/LineDeviderLandscape"/>
 

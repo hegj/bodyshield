@@ -652,7 +652,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
                 for (int i =0 ; i<data.size();i++){
                     HistoryData historyData = data.get(i);
                     dbManager.addHistory(historyData);
-                }
+                }   
                 if (data.size()>0) {
                     SPUtils.setTempertureHisoryRecordTime(data.get(data.size()-1).getTimestamp(),device.getAddress());
                     initChartData(FORMAT1.format(new Date()));

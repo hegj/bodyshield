@@ -39,12 +39,13 @@ public class HttpMethods {
 
     private HttpMethods() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-
+        httpClientBuilder.connectTimeout(12, TimeUnit.SECONDS);
+        httpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(Url.BASE_URL)
-                .client(getOkHttpClient())
+                .client(httpClientBuilder.build())
                 .build();
         apiService = retrofit.create(ApiServer.class);
     }

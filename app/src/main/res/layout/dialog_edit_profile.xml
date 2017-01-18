@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/tv_title"
             android:id="@+id/rl_message"
             android:layout_marginRight="25dp"
@@ -37,7 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <TextView
-                android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:id="@+id/tv_message"
@@ -49,7 +48,6 @@
                 android:id="@+id/et_message"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             </LinearLayout>

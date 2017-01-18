@@ -74,7 +74,7 @@
     <View
         android:layout_marginLeft="55dp"
         style="@style/LineDeviderLandscape"/>
-<!--    <com.cmax.bodysheild.activity.user.view.UserProfileItemView
+  <com.cmax.bodysheild.activity.user.view.UserProfilePhoneItemView
         android:id="@+id/tv_user_phone"
         profile:profileName="电话号码"
         profile:profileType="2"
@@ -84,6 +84,6 @@
     <View
         android:visibility="gone"
         android:layout_marginLeft="55dp"
-        style="@style/LineDeviderLandscape"/>-->
+        style="@style/LineDeviderLandscape"/>
 
 </LinearLayout>

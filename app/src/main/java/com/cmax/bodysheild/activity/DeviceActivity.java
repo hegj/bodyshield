@@ -242,8 +242,8 @@ public class DeviceActivity extends BaseActivity {
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
 
-		scanLeDevice(!scanning);
-		  //IntentUtils.toLoginActivity(this,null,null);
+		//scanLeDevice(!scanning);
+		 IntentUtils.toEditProfile(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {

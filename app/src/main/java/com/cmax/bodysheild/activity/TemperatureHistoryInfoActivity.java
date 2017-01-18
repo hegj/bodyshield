@@ -14,10 +14,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Vibrator;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
@@ -30,16 +27,12 @@ import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
-import com.cmax.bodysheild.bean.ble.MemoryRecord;
-import com.cmax.bodysheild.bean.ble.MemoryStatus;
 import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
 import com.cmax.bodysheild.bluetooth.BluetoothManage;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
-import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
-import com.cmax.bodysheild.bluetooth.command.temperature.DataRequestCommand;
 import com.cmax.bodysheild.bluetooth.response.temperature.MemoryRecordResponse;
 import com.cmax.bodysheild.bluetooth.response.temperature.MemoryStatusResponse;
 import com.cmax.bodysheild.chart.TemperatureChartXAxisValueFormatter;
@@ -54,6 +47,7 @@ import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.PortraitUtil;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.SPUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.CircleImageView;
@@ -78,7 +72,6 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
@@ -643,8 +636,9 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     }
     @OnClick(R.id.synchronizedBtn)
     void synchronizedBtn(View v){
-        long lastTimestamp = SharedPreferencesUtil.getLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME + device.getAddress() +UIUtils.getUserId(), 0);
-        HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",lastTimestamp+"")
+
+        HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",
+                SPUtils.getTempertureHisoryRecordTime(device.getAddress())+"")
                 .compose(RxJavaHttpHelper.<List<HistoryData>>handleResult())
                 .compose( RxSchedulersHelper.<List<HistoryData>>applyIoTransformer())
                 .subscribe(new ProgressSubscriber<List<HistoryData>>(this) {
@@ -657,14 +651,10 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             public void _onNext(List<HistoryData> data) {
                 for (int i =0 ; i<data.size();i++){
                     HistoryData historyData = data.get(i);
-                  /*  if (historyData.getUserId().equals(historyData.getUserId()) && historyData.getDeviceAddress() .equalsIgnoreCase( device.getAddress())){
-
-                    }*/
                     dbManager.addHistory(historyData);
                 }
-                //TODO
                 if (data.size()>0) {
-                    SharedPreferencesUtil.setLongValue(Constant.KEY_TEMPERTURE_RECORD_TIME + device.getAddress() +UIUtils.getUserId(), data.get(0).getTimestamp());
+                    SPUtils.setTempertureHisoryRecordTime(data.get(data.size()-1).getTimestamp(),device.getAddress());
                     initChartData(FORMAT1.format(new Date()));
                 }
             }

@@ -486,7 +486,7 @@ public class BluetoothService extends Service implements BLEService {
                     }
 
                 }
-                if (System.currentTimeMillis() >= (recordNetTime + 1000 * 60 + SPUtils.getTempertureHisoryRecordTime(device.getAddress()))) {
+                if (System.currentTimeMillis() >= (1000 * 60*30 + SPUtils.getTempertureHisoryRecordTime(device.getAddress()))) {
 
                     Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
                     if (temperature != null && temperature.getValue() > 34) {

@@ -650,6 +650,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
             public void _onNext(List<HistoryData> data) {
                 for (int i =0 ; i<data.size();i++){
                     HistoryData historyData = data.get(i);
+                    historyData.setUserId(historyData.getUid());
                     dbManager.addHistory(historyData);
                 }
                 if (data.size()>0) {

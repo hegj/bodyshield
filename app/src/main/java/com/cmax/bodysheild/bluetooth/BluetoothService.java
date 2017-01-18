@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.cmax.bodysheild.AppContext;
@@ -36,6 +37,8 @@ import com.cmax.bodysheild.http.HttpMethods;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.DataUtils;
+import com.cmax.bodysheild.util.DateUtils;
 import com.cmax.bodysheild.util.JsonUtil;
 import com.cmax.bodysheild.util.LogUtil;
 import com.cmax.bodysheild.util.PortraitUtil;
@@ -49,8 +52,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -66,27 +71,27 @@ import rx.Subscriber;
  */
 public class BluetoothService extends Service implements BLEService {
 
-    private final static String  TAG     = BluetoothService.class.getSimpleName();
-    private final        IBinder mBinder = new LocalBinder();
+    private final static String TAG = BluetoothService.class.getSimpleName();
+    private final IBinder mBinder = new LocalBinder();
 
     private final static Map<String, DeviceHolder> DEVICE_HOLDERS = new HashMap<String, DeviceHolder>();
 
     private static final String TEMPRETURE_SERVICE_UUID_STR = "00005307-0000-0041-4C50-574953450000";
-    private static final UUID   TEMPRETURE_SERVICE_UUID     = UUID.fromString(TEMPRETURE_SERVICE_UUID_STR); //服务UUID
-    public static final  UUID   TEMPRETURE_WRITE_UUID       = UUID.fromString("00005308-0000-0041-4C50-574953450000"); //特征值(写)
-    public static final  UUID   TEMPRETURE_READ_UUID        = UUID.fromString("00005309-0000-0041-4C50-574953450000"); //特征值(读)
+    private static final UUID TEMPRETURE_SERVICE_UUID = UUID.fromString(TEMPRETURE_SERVICE_UUID_STR); //服务UUID
+    public static final UUID TEMPRETURE_WRITE_UUID = UUID.fromString("00005308-0000-0041-4C50-574953450000"); //特征值(写)
+    public static final UUID TEMPRETURE_READ_UUID = UUID.fromString("00005309-0000-0041-4C50-574953450000"); //特征值(读)
 
 
-    public final static String ACTION_BLE_UNSUPPORT            = "com.cmax.bodysheild.bluetooth.ACTION_BLE_UNSUPPORT";
-    public final static String ACTION_BLUETOOTH_UNSUPPORT      = "com.cmax.bodysheild.bluetooth.ACTION_BLUETOOTH_UNSUPPORT";
-    public final static String ACTION_BLUETOOTH_UNABLED        = "com.cmax.bodysheild.bluetooth.ACTION_BLUETOOTH_UNABLED";
-    public final static String ACTION_BLE_NEW_DEVICE           = "com.cmax.bodysheild.bluetooth.ACTION_BLE_NEW_DEVICE";
-    public final static String ACTION_GATT_CONNECTED           = "com.cmax.bodysheild.bluetooth.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED        = "com.cmax.bodysheild.bluetooth.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_BLE_UNSUPPORT = "com.cmax.bodysheild.bluetooth.ACTION_BLE_UNSUPPORT";
+    public final static String ACTION_BLUETOOTH_UNSUPPORT = "com.cmax.bodysheild.bluetooth.ACTION_BLUETOOTH_UNSUPPORT";
+    public final static String ACTION_BLUETOOTH_UNABLED = "com.cmax.bodysheild.bluetooth.ACTION_BLUETOOTH_UNABLED";
+    public final static String ACTION_BLE_NEW_DEVICE = "com.cmax.bodysheild.bluetooth.ACTION_BLE_NEW_DEVICE";
+    public final static String ACTION_GATT_CONNECTED = "com.cmax.bodysheild.bluetooth.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "com.cmax.bodysheild.bluetooth.ACTION_GATT_DISCONNECTED";
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.cmax.bodysheild.bluetooth.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_BLE_FINISH_SCANNING      = "com.cmax.bodysheild.bluetooth.ACTION_BLE_FINISH_SCANNING";
+    public final static String ACTION_BLE_FINISH_SCANNING = "com.cmax.bodysheild.bluetooth.ACTION_BLE_FINISH_SCANNING";
 
-    public final static String EXTRA_DEVICE  = "com.cmax.bodysheild.bluetooth.EXTRA_DEVICE";
+    public final static String EXTRA_DEVICE = "com.cmax.bodysheild.bluetooth.EXTRA_DEVICE";
     public final static String EXTRA_ADDRESS = "com.cmax.bodysheild.bluetooth.EXTRA_ADDRESS";
 
 
@@ -98,8 +103,8 @@ public class BluetoothService extends Service implements BLEService {
     private static final Set<String> SCANNING_DEVICE_ADDRESS = new HashSet<String>();
 
     // 8秒后停止查找搜索.
-    public static final long    SCAN_PERIOD = 10000;
-    private static      boolean scanning    = false;
+    public static final long SCAN_PERIOD = 10000;
+    private static boolean scanning = false;
     private Handler handler;
 
     private final String CONNECT_DEVICE_NAME1 = "Body Temp";
@@ -111,7 +116,7 @@ public class BluetoothService extends Service implements BLEService {
     private long recordTime = 0L;
 
     private DBManager dbManager;
-    private long recordNetTime=0L;
+    private long recordNetTime = 0L;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -121,19 +126,14 @@ public class BluetoothService extends Service implements BLEService {
     @Override
     public void onCreate() {
         super.onCreate();
-
         LogUtil.i(TAG, "BleService created");
-
         registerReceiver(notificationReceiver, makeIntentFilter());
-
         handler = new Handler();
-
         // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             // 广播:蓝牙不支持BLE
             broadcastUpdate(ACTION_BLE_UNSUPPORT);
         }
-
         // 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
         bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
@@ -158,6 +158,68 @@ public class BluetoothService extends Service implements BLEService {
                 }
             }, 1000);
         }
+        UIUtils.getMainThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.d("更新数据");
+                updateTemperatureHistoryDataToServer();
+                UIUtils.getMainThreadHandler().postDelayed(this,1000*5*60);
+            }
+        }, 3000);
+
+
+    }
+
+    private void updateTemperatureHistoryDataToServer() {
+        if (DEVICE_HOLDERS != null && DEVICE_HOLDERS.size() != 0) {
+            Set<String> addresss = DEVICE_HOLDERS.keySet();
+            if (addresss != null && addresss.size() != 0) {
+                Iterator<String> iterator = addresss.iterator();
+                while (iterator.hasNext()) {
+                    final String address = iterator.next();
+                    String userId = DataUtils.getUserIdForAddress(address);
+                    if (TextUtils.isEmpty(userId)) return;
+                    List<Temperature> temperatureList = dbManager.getHistory(DateUtils.getFormatTime("yyyyMMdd"), address, userId);
+                    List<HistoryData> historyDataList = new ArrayList<>();
+                    for (int i = 0; i < temperatureList.size(); i++) {
+                        Temperature temperature = temperatureList.get(i);
+                        long tempertureToServerRecordTime = SPUtils.getTempertureToServerRecordTime(address);
+
+                            // 如果是在上次更新的时间之后的数据上传到服务器
+                            HistoryData historyData = new HistoryData();
+                            historyData.setDeviceAddress(address);
+                            historyData.setTimestamp(temperature.getTimestamp());
+                            historyData.setUid(userId);
+                            historyData.setValue(temperature.getValue());
+                            historyDataList.add(historyData);
+
+                    }
+                    String jsonString = JsonUtil.toJsonString(historyDataList);
+                    if (!TextUtils.isEmpty(jsonString)) {
+                        HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
+                                .subscribe(new Subscriber() {
+                                    @Override
+                                    public void onCompleted() {
+                                        Logger.d(" update temperature success");
+                                        recordNetTime = System.currentTimeMillis();
+                                        SPUtils.setTempertureToServerRecordTime(recordNetTime, address);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Logger.d("update temperature  onError");
+                                    }
+
+                                    @Override
+                                    public void onNext(Object o) {
+                                        onCompleted();
+                                    }
+                                });
+
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -165,7 +227,7 @@ public class BluetoothService extends Service implements BLEService {
         super.onDestroy();
         disconnectAllDevices();
         unregisterReceiver(notificationReceiver);
-        if(dbManager != null){
+        if (dbManager != null) {
             dbManager.close();
             dbManager = null;
         }
@@ -175,6 +237,7 @@ public class BluetoothService extends Service implements BLEService {
 
         /**
          * 获取Bluetooth服务
+         *
          * @return BluetoothService
          */
         public BluetoothService getService() {
@@ -183,6 +246,7 @@ public class BluetoothService extends Service implements BLEService {
 
         /**
          * 获取BLE服务主要接口功能
+         *
          * @return BLEService
          */
         public BLEService getBLEService() {
@@ -194,11 +258,11 @@ public class BluetoothService extends Service implements BLEService {
      * 设备数据绑定类
      */
     private class DeviceHolder {
-        String        address;
-        DeviceType    deviceType;
+        String address;
+        DeviceType deviceType;
         BluetoothGatt gatt;
-        byte          lastCommand;
-        float		  lastValue;
+        byte lastCommand;
+        float lastValue;
     }
 
     //设备扫描回调.
@@ -207,7 +271,7 @@ public class BluetoothService extends Service implements BLEService {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
 
-            if (device.getName() != null){
+            if (device.getName() != null) {
                 if (device.getName().indexOf(CONNECT_DEVICE_NAME1) != -1
                         || device.getName().indexOf(CONNECT_DEVICE_NAME2) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME3) != -1 || device.getName().indexOf(CONNECT_DEVICE_NAME4) != -1) {
                     if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
@@ -372,8 +436,9 @@ public class BluetoothService extends Service implements BLEService {
 
     /**
      * 写入特性值
+     *
      * @param address 设备地址
-     * @param value 命令值
+     * @param value   命令值
      */
 
     private boolean writeCharacteristic(String address, byte[] value) {
@@ -454,14 +519,14 @@ public class BluetoothService extends Service implements BLEService {
 //		LogUtil.i(TAG, "first byte 0x" + Integer.toHexString(header));
 
         DeviceHolder holder = DEVICE_HOLDERS.get(device.getAddress());
-        Intent       intent = null;
+        Intent intent = null;
 
         if (holder != null) {
             intent = ResponseAnalyzer.analyze(bytes, holder.deviceType);
         }
 
         if (intent != null) {
-            if(intent.getAction().equals(PresentDataResponse.ACTION_REALTIME_TEMPRETURE)) {
+            if (intent.getAction().equals(PresentDataResponse.ACTION_REALTIME_TEMPRETURE)) {
                 int measureInterval = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
                 if (System.currentTimeMillis() >= (recordTime + measureInterval * 60 * 1000)) {
                     Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
@@ -485,49 +550,6 @@ public class BluetoothService extends Service implements BLEService {
                         }
                     }
 
-                }
-                if (System.currentTimeMillis() >= (1000 * 60*30 + SPUtils.getTempertureHisoryRecordTime(device.getAddress()))) {
-
-                    Temperature temperature = intent.getParcelableExtra(PresentDataResponse.EXTRA_PRESENT_DATA);
-                    if (temperature != null && temperature.getValue() > 34) {
-                        String currentUserName = "";
-                        List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST, DeviceUser.class);
-                        for (DeviceUser deviceuser : deviceUsers) {
-                            if (deviceuser.getAddress().equalsIgnoreCase(device.getAddress())) {
-                                currentUserName = deviceuser.getUserId();
-                                break;
-                            }
-                        }
-                        if (StringUtils.isNotBlank(currentUserName)) {
-                            List<HistoryData> historyDataList = new ArrayList<>();
-                            HistoryData historyData = new HistoryData();
-                            historyData.setDeviceAddress(device.getAddress());
-                            historyData.setTimestamp(temperature.getTimestamp());
-                            historyData.setUid(UIUtils.getUserId()+"");
-                            historyData.setValue(temperature.getValue());
-                            historyDataList.add(historyData);
-                            String jsonString = JsonUtil.toJsonString(historyDataList);
-                            HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
-                                    .subscribe(new Subscriber() {
-                                        @Override
-                                        public void onCompleted() {
-                                            Logger.d("success");
-                                            recordNetTime = System.currentTimeMillis();
-                                            SPUtils.setTempertureToServerRecordTime(recordNetTime, device.getAddress());
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            Logger.d("onError");
-                                        }
-
-                                        @Override
-                                        public void onNext(Object o) {
-                                            onCompleted();
-                                        }
-                                    });
-                        }
-                    }
                 }
             }
 
@@ -646,7 +668,8 @@ public class BluetoothService extends Service implements BLEService {
     }
 
     /**
-     *  广播消息
+     * 广播消息
+     *
      * @param action 动作
      */
     private void broadcastUpdate(final String action) {
@@ -656,6 +679,7 @@ public class BluetoothService extends Service implements BLEService {
 
     /**
      * 广播消息
+     *
      * @param action 动作
      * @param device 设备
      */
@@ -676,7 +700,7 @@ public class BluetoothService extends Service implements BLEService {
 
         if (enable) {
             if (!scanning) {
-                synchronized (scanLock){
+                synchronized (scanLock) {
 
                     disconnectAllDevices();
 
@@ -706,22 +730,22 @@ public class BluetoothService extends Service implements BLEService {
     }
 
     @Override
-    public Map<String,Float> getConnectedDevicesValue() {
-        Map<String,Float> map = new TreeMap<String, Float>();
+    public Map<String, Float> getConnectedDevicesValue() {
+        Map<String, Float> map = new TreeMap<String, Float>();
         DeviceHolder holder;
-        for (Map.Entry<String,DeviceHolder> entry :DEVICE_HOLDERS.entrySet()){
+        for (Map.Entry<String, DeviceHolder> entry : DEVICE_HOLDERS.entrySet()) {
             holder = entry.getValue();
 
-            if (holder != null && holder.gatt != null ){
+            if (holder != null && holder.gatt != null) {
                 try {
                     int connectionState = bluetoothManager.getConnectionState(
-                            holder.gatt.getDevice(),BluetoothProfile.GATT);
+                            holder.gatt.getDevice(), BluetoothProfile.GATT);
 
-                    if (connectionState == BluetoothProfile.STATE_CONNECTED){
-                        map.put(entry.getKey(),holder.lastValue);
+                    if (connectionState == BluetoothProfile.STATE_CONNECTED) {
+                        map.put(entry.getKey(), holder.lastValue);
                     }
-                }catch (Exception e){
-                    LogUtil.e(TAG,e.getMessage());
+                } catch (Exception e) {
+                    LogUtil.e(TAG, e.getMessage());
                 }
 
             }
@@ -740,7 +764,7 @@ public class BluetoothService extends Service implements BLEService {
 
         float tempre = random.nextFloat() + s;
 
-        Temperature temperatureBean = new Temperature(System.currentTimeMillis(), tempre,new byte[]{});
+        Temperature temperatureBean = new Temperature(System.currentTimeMillis(), tempre, new byte[]{});
         intent.putExtra(EXTRA_DEVICE, temperatureBean);
         intent.putExtra(PresentDataResponse.EXTRA_PRESENT_DATA, temperatureBean);
         intent.putExtra(EXTRA_ADDRESS, Constant.TEST_DEVICE_NAME_TEMPERATURE);
@@ -751,6 +775,7 @@ public class BluetoothService extends Service implements BLEService {
     /**
      * android 4.3 无法通过扫描过滤含有128位UUID的Service的设备，
      * 只能在LeScanCallback函数中解析uuid过滤
+     *
      * @param advertisedData 广播的数据
      * @return uuid集合
      */
@@ -846,7 +871,7 @@ public class BluetoothService extends Service implements BLEService {
         return intentFilter;
     }
 
-    public  Set<String> getScanningDeviceAddress() {
+    public Set<String> getScanningDeviceAddress() {
         return SCANNING_DEVICE_ADDRESS;
     }
 }

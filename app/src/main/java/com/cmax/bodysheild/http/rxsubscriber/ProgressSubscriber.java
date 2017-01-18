@@ -1,6 +1,8 @@
 package com.cmax.bodysheild.http.rxsubscriber;
 
 
+import android.os.SystemClock;
+
 import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
 import com.cmax.bodysheild.http.rxexception.ErrorManager;
@@ -13,6 +15,7 @@ import rx.Subscriber;
 public abstract class ProgressSubscriber<T> extends Subscriber<T> {
 
     private IStateView iStateView;
+    private long dialogStartTime;
 
     public ProgressSubscriber(IStateView iStateView) {
         this.iStateView = iStateView;
@@ -20,13 +23,21 @@ public abstract class ProgressSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onCompleted() {
-        iStateView.hideProgressDialog();
+       /* if (System.currentTimeMillis()-dialogStartTime<1000){
+            try {
+                Thread.sleep(1000-(System.currentTimeMillis()-dialogStartTime));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }*/
         _onCompleted();
+        iStateView.hideProgressDialog();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        dialogStartTime =System.currentTimeMillis();
         iStateView.showProgressDialog();
         _onStart();
     }

@@ -661,7 +661,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 
             @Override
             public void _onCompleted() {
-
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.access_server_success));
 
             }
         });

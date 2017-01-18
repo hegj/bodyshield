@@ -2,6 +2,7 @@ package com.cmax.bodysheild.util;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
@@ -63,6 +64,23 @@ public class DataUtils {
             user.setImage(imagePath);
             addUserToSp(user);
         }
+    }   public static void saveUserInfo(String  headImageUrl, Activity activity, User user) {
+        if (!TextUtils.isEmpty(headImageUrl)) {
+            user.setImage(headImageUrl);
+            addUserToSp(user);
+        }
+    }
+    public  static  String getUserIdForAddress(String address){
+        List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST,
+                DeviceUser.class);
+        DeviceUser temp = null;
+        for (DeviceUser deviceuser : deviceUsers) {
+            if (deviceuser.getAddress().equalsIgnoreCase(address)) {
+                temp = deviceuser;
+                break;
+            }
+        }
+        return  temp.getUserId();
     }
     
 }

@@ -3,6 +3,7 @@ package com.cmax.bodysheild.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.ImageView;
 
 import com.cmax.bodysheild.R;
 
@@ -59,4 +60,13 @@ public class PortraitUtil {
     public static Bitmap getDefaultPortrait(Context context){
         return BitmapFactory.decodeStream(context.getResources().openRawResource(+R.mipmap.people));
     }
+
+    public static boolean isImageHeadServerSource(String source){
+        if (source.startsWith("http")){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ import com.cmax.bodysheild.base.presenter.BasePresenter;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
+import com.cmax.bodysheild.http.OkHttpApi;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DataUtils;
@@ -88,17 +89,23 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
             @Override
             public void _onNext(UserProfileInfo info) {
                 AppContext.setUserId(info.getId());
-                User user = new User();
-                user.setId(info.getId()+"");
-                user.setUserName(info.getName());
-                user.setPassword(info.getPassword());
-                DataUtils.addDeviceToSp(device,user) ;
-                DataUtils.addUserToSp(user);
+                if (!TextUtils.isEmpty(info.getHeadImg())) {
+                  OkHttpApi.getInstance().requestBitMap(info,activity,device);
+                }else{
+                    User user = new User();
+                    user.setId(info.getId()+"");
+                    user.setUserName(info.getName());
+                    user.setPassword(info.getPassword());
+                    DataUtils.addDeviceToSp(device,user) ;
+                    DataUtils.addUserToSp(user);
+                    IntentUtils.toTemperatureInfoActivity(activity,device);
+                }
+
             }
 
             @Override
             public void _onCompleted() {
-                 IntentUtils.toTemperatureInfoActivity(activity,device);
+                IntentUtils.toTemperatureInfoActivity(activity,device);
 
             }
         });

@@ -8,7 +8,7 @@ public class Url {
     public static final String LOGIN = "ts/user/login.json";
     public static final String REGISTER = "ts/user/register.json";
     public static final String IS_REGISTER = "ts/user/checkName.json";
-    public static final String UPLOAD_HEADIMAGE ="/ts/user/upload/headImg.json";
+    public static    String UPLOAD_HEADIMAGE ="/ts/user/upload/headImg.json";
     public static final String FEEDBACK ="/ts/user/feedback.json";
     public static final String UPLOAD_TEMPERATURE = "/ts/temperature/upload/data.json";
     public static final String DOWNLOAD_TEMPERATURE = "/ts/temperature/load/data.json";

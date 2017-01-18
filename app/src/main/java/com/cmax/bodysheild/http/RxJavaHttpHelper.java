@@ -45,6 +45,7 @@ public class RxJavaHttpHelper {
             };
             return  tTransformer;
         }
+        
     private static <T> Observable<T> createObservable(final T data) {
         return Observable.create(new Observable.OnSubscribe<T>() {
             @Override

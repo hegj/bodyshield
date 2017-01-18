@@ -35,7 +35,7 @@ import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
-import com.cmax.bodysheild.bluetooth.BluetoothManage;
+import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.DeviceType;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
@@ -435,20 +435,20 @@ public class DeviceActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			final String action = intent.getAction();
 
-			if (BluetoothManage.ACTION_BLE_UNSUPPORT.equals(action)) {
+			if (BluetoothService.ACTION_BLE_UNSUPPORT.equals(action)) {
 				//设备不支持BLE
 				Toast.makeText(DeviceActivity.this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-			} else if (BluetoothManage.ACTION_BLUETOOTH_UNSUPPORT.equals(action)) {
+			} else if (BluetoothService.ACTION_BLUETOOTH_UNSUPPORT.equals(action)) {
 				//设备没有蓝牙
 				Toast.makeText(DeviceActivity.this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-			} else if (BluetoothManage.ACTION_BLUETOOTH_UNABLED.equals(action)) {
+			} else if (BluetoothService.ACTION_BLUETOOTH_UNABLED.equals(action)) {
 				//蓝牙没开启
 				Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
-			} else if (BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+			} else if (BluetoothService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 				//发现服务
-			} else if (BluetoothManage.ACTION_GATT_CONNECTED.equals(action)) {
+			} else if (BluetoothService.ACTION_GATT_CONNECTED.equals(action)) {
 				//连接上设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 
@@ -471,7 +471,7 @@ public class DeviceActivity extends BaseActivity {
 
 				}
 
-			} else if (BluetoothManage.ACTION_GATT_DISCONNECTED.equals(action)) {
+			} else if (BluetoothService.ACTION_GATT_DISCONNECTED.equals(action)) {
 				//设备断开
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 
@@ -482,7 +482,7 @@ public class DeviceActivity extends BaseActivity {
 				}
 				//尝试扫描一次
 //				handler.post(scanTask);
-			} else if (BluetoothManage.ACTION_BLE_NEW_DEVICE.equals(action)) {
+			} else if (BluetoothService.ACTION_BLE_NEW_DEVICE.equals(action)) {
 				//发现新设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 				LogUtil.i(TAG, "find new device:" + device.getName());
@@ -505,7 +505,7 @@ public class DeviceActivity extends BaseActivity {
 				}
 				deviceAdapter.notifyDataSetChanged();
 				bleService.connect(bleDevice.getAddress(), bleDevice.getDeviceType());
-			} else if (BluetoothManage.ACTION_BLE_FINISH_SCANNING.equals(action)) {
+			} else if (BluetoothService.ACTION_BLE_FINISH_SCANNING.equals(action)) {
 				//扫描结束
 				Map<String,Float> m = bleService.getConnectedDevicesValue();
 				if(m == null || m.isEmpty()){
@@ -537,14 +537,14 @@ public class DeviceActivity extends BaseActivity {
 
 	private static IntentFilter makeIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(BluetoothManage.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothManage.ACTION_GATT_DISCONNECTED);
-		intentFilter.addAction(BluetoothManage.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothManage.ACTION_BLE_UNSUPPORT);
-		intentFilter.addAction(BluetoothManage.ACTION_BLUETOOTH_UNSUPPORT);
-		intentFilter.addAction(BluetoothManage.ACTION_BLUETOOTH_UNABLED);
-		intentFilter.addAction(BluetoothManage.ACTION_BLE_NEW_DEVICE);
-		intentFilter.addAction(BluetoothManage.ACTION_BLE_FINISH_SCANNING);
+		intentFilter.addAction(BluetoothService.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BluetoothService.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(BluetoothService.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(BluetoothService.ACTION_BLE_UNSUPPORT);
+		intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_UNSUPPORT);
+		intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_UNABLED);
+		intentFilter.addAction(BluetoothService.ACTION_BLE_NEW_DEVICE);
+		intentFilter.addAction(BluetoothService.ACTION_BLE_FINISH_SCANNING);
 		intentFilter.addAction(PresentDataResponse.ACTION_REALTIME_TEMPRETURE);
 
 		return intentFilter;

@@ -31,7 +31,6 @@ import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
-import com.cmax.bodysheild.bluetooth.BluetoothManage;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.response.temperature.MemoryRecordResponse;
 import com.cmax.bodysheild.bluetooth.response.temperature.MemoryStatusResponse;
@@ -175,7 +174,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
 //                }
 //            }
 
-            if (BluetoothManage.ACTION_GATT_DISCONNECTED.equals(action)) {
+            if (BluetoothService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //设备断开
                 if(mask != null){
                     mask.hide();
@@ -636,9 +635,9 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     }
     @OnClick(R.id.synchronizedBtn)
     void synchronizedBtn(View v){
-
+        String time = SPUtils.getTempertureHisoryRecordTime(device.getAddress()) + "";
         HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",
-                SPUtils.getTempertureHisoryRecordTime(device.getAddress())+"")
+                time )
                 .compose(RxJavaHttpHelper.<List<HistoryData>>handleResult())
                 .compose( RxSchedulersHelper.<List<HistoryData>>applyIoTransformer())
                 .subscribe(new ProgressSubscriber<List<HistoryData>>(this) {
@@ -652,7 +651,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
                 for (int i =0 ; i<data.size();i++){
                     HistoryData historyData = data.get(i);
                     dbManager.addHistory(historyData);
-                }   
+                }
                 if (data.size()>0) {
                     SPUtils.setTempertureHisoryRecordTime(data.get(data.size()-1).getTimestamp(),device.getAddress());
                     initChartData(FORMAT1.format(new Date()));

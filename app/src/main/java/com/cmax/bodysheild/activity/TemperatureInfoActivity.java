@@ -259,10 +259,10 @@ public class TemperatureInfoActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (isRegister) {
-            unregisterReceiver(notificationReceiver);
-            isRegister = false;
-        }
+//        if (isRegister) {
+//            unregisterReceiver(notificationReceiver);
+//            isRegister = false;
+//        }
         if(isBind) {
             unbindService(serviceConnection);
 //            unbindService(bluetoothServiceConnection);

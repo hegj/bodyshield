@@ -12,6 +12,7 @@ import android.view.View;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.activity.user.view.UserProfileNameItemView;
+import com.cmax.bodysheild.api.Url;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.bean.cache.User;
@@ -129,9 +130,9 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
         int userId = UIUtils.getUserId();
         File file = new File(resultUri.getPath());
         Map<String ,RequestBody > map = new HashMap<>();
-        map.put("uid",HttpMethods.getInstance().toTextRequestBody(userId+""));
+        Url.UPLOAD_HEADIMAGE= Url.UPLOAD_HEADIMAGE+"?uid="+userId;
         map.put("file\";filename=\""+file.getName(),HttpMethods.getInstance().toImageRequestBody(file));
-        HttpMethods.getInstance().apiService.updateImage(map)
+        HttpMethods.getInstance().apiService.updateImage(Url.UPLOAD_HEADIMAGE,map)
                 .compose(RxJavaHttpHelper.<String>handleResult())  .compose( RxSchedulersHelper.<String>applyIoTransformer())
                 .subscribe(new ProgressSubscriber<String>(this) {
             @Override

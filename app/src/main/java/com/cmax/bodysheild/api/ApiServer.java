@@ -37,13 +37,13 @@ public interface ApiServer {
     @POST( Url.FEEDBACK)
     Observable<BaseRequestData<Object>> feedBack(@FieldMap Map<String, String>map);
     @Multipart
-    @POST(Url.UPLOAD_HEADIMAGE)
-    Observable<BaseRequestData<String>> updateImage(@PartMap Map<String,RequestBody> map);
+    @POST()
+    Observable<BaseRequestData<String>> updateImage(@retrofit2.http.Url String url, @PartMap Map<String,RequestBody> map);
     @FormUrlEncoded
     @POST( Url.UPLOAD_TEMPERATURE)
     Observable<BaseRequestData<Object>> uploadTemperature(@Field("data") String data);
     @FormUrlEncoded
     @POST( Url.DOWNLOAD_TEMPERATURE)
-    Observable<BaseRequestData<List<HistoryData>>> downloadTemperature(@Field("deviceAddress") String deviceAddress, @Field("uid") String uid, @Field("lastTimestamp") String lastTimestamp);
+    Observable<BaseRequestData<List<HistoryData>>> downloadTemperature(  @Field("uid") String uid, @Field("lastTimestamp") String lastTimestamp);
 
 }

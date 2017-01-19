@@ -23,6 +23,7 @@ import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.UIUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -172,7 +173,7 @@ public class UserListActivity extends BaseActivity {
 				temp.setName(device.getName());
 				deviceUsers.add(temp);
 			}
-
+			UIUtils.setUserId(Integer.parseInt(user.getUser().getId()));
 			SharedPreferencesUtil.setList(Constant.DEVICE_USER_LIST, deviceUsers);
 			SharedPreferencesUtil.setStringValue(device.getAddress(), user.getUser().getId());
 

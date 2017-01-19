@@ -19,6 +19,7 @@ import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
+import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
@@ -60,6 +61,7 @@ public class FeedbackActivity extends BaseActivity implements IStateView {
     }
     @OnClick(R.id.saveTextBtn)
     void clickSaveTextBtn(TextView saveTextBtn) {
+        KeyBoardUtils.closeKeybord(etMessage);
         String message = etMessage.getText().toString();
         if (TextUtils.isEmpty(message)){
             ToastUtils.showFailToast(UIUtils.getString(R.string.input_feedback_message));
@@ -80,12 +82,13 @@ public class FeedbackActivity extends BaseActivity implements IStateView {
 
             @Override
             public void _onNext(Object o) {
-                ToastUtils.showSuccessToast(UIUtils.getString(R.string.feedback_success_message));
+                onCompleted();
             }
 
             @Override
             public void _onCompleted() {
                 finish();
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.feedback_success_message));
             }
         });
 

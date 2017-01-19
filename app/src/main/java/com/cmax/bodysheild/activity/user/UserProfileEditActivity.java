@@ -143,6 +143,7 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
             @Override
             public void _onNext(String baseRequestData) {
                 DataUtils.saveUserInfo(bitmap, UserProfileEditActivity.this, user);
+                onCompleted();
             }
 
             @Override

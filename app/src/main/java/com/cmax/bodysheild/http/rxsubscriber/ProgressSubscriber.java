@@ -23,12 +23,15 @@ public abstract class ProgressSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onCompleted() {
-       /* if (System.currentTimeMillis()-dialogStartTime<1000){
+     /*   if (System.currentTimeMillis()-dialogStartTime<1000){
             try {
                 Thread.sleep(1000-(System.currentTimeMillis()-dialogStartTime));
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }finally {
+
             }
+
         }*/
         _onCompleted();
         iStateView.hideProgressDialog();

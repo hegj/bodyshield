@@ -77,6 +77,36 @@ public class DBManager {
         return result;
     }
 
+    public  List<HistoryData> getHistoryData(long time){
+        List<HistoryData> result = new ArrayList<HistoryData>();
+        Cursor c = null;
+        try {
+
+            String sql = new StringBuilder("select * from history_data where  timestamp > ").append(time) .append(" order by timestamp ASC").toString();
+            c = db.rawQuery(sql,null);
+            while (c.moveToNext()) {
+                HistoryData data = new HistoryData();
+                long timestamp = c.getLong(c.getColumnIndex("timestamp"));
+                data.setTimestamp(timestamp);
+                String value = c.getString(c.getColumnIndex("value"));
+                data.setValue(Float.parseFloat(value));
+                String userId = c.getString(c.getColumnIndex("userid"));
+                data.setUid(userId);
+                String address = c.getString(c.getColumnIndex("deviceaddress"));
+                data.setDeviceAddress(address);
+                result.add(data);
+            }
+        }catch (Exception e){
+            Log.i(tag,e.getMessage());
+        }finally {
+            if(c != null){
+                c.close();
+                c = null;
+            }
+        }
+        return result;
+    }
+
 //    public void delete(String timestamp){
 //        String sql = "DELETE FROM history_data where timestamp >= ?";
 //        db.execSQL(sql,new String[]{timestamp});

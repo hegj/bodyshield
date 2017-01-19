@@ -177,8 +177,7 @@ public class RegisterActivity extends BaseActivity implements  BelowMenuPopupWin
                 user.setPassword(userProfileInfo.getPassword());
                 DataUtils.addUserToSp(user);
                 DataUtils.addDeviceToSp(device,user) ;
-
-
+                onCompleted();
 
             }
         });

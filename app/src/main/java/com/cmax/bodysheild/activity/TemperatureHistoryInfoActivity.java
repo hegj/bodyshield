@@ -655,13 +655,19 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
                 }
                 if (data.size()>0) {
                     SPUtils.setTempertureHisoryRecordTime(data.get(data.size()-1).getTimestamp(),device.getAddress());
+                    // 更新数据到服务器时查询数据库的时间条件
+                    if (  SPUtils.getTempertureToServerRecordTime()==0)
+                         SPUtils.setTempertureToServerRecordTime(data.get(data.size()-1).getTimestamp());
+
                     initChartData(FORMAT1.format(new Date()));
+                    ToastUtils.showSuccessToast(UIUtils.getString(R.string.access_server_success));
                 }
+                onCompleted();
             }
 
             @Override
             public void _onCompleted() {
-                ToastUtils.showSuccessToast(UIUtils.getString(R.string.access_server_success));
+
 
             }
         });

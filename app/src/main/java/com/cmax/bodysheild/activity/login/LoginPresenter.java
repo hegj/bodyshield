@@ -114,6 +114,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
                     DataUtils.addDeviceToSp(device,user) ;
                     DataUtils.addUserToSp(user);
                     loginDialog.dismiss();
+                    onCompleted();
                     IntentUtils.toTemperatureInfoActivity(activity,device);
                 }
             }

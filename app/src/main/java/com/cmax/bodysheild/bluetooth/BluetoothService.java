@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cmax.bodysheild.AppContext;
+import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.bean.HistoryData;
 import com.cmax.bodysheild.bean.ble.Temperature;
 import com.cmax.bodysheild.bean.cache.DeviceUser;
@@ -34,6 +35,7 @@ import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
 import com.cmax.bodysheild.dao.DBManager;
 import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.http.HttpMethods;
+import com.cmax.bodysheild.http.RxJavaHttpHelper;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
@@ -162,64 +164,38 @@ public class BluetoothService extends Service implements BLEService {
             public void run() {
                 Logger.d("更新数据");
                 updateTemperatureHistoryDataToServer();
-                UIUtils.getMainThreadHandler().postDelayed(this,1000*30*60);
+                UIUtils.getMainThreadHandler().postDelayed(this, 1000 * 30 * 60);
             }
         }, 3000);
     }
 
     private void updateTemperatureHistoryDataToServer() {
-        if (DEVICE_HOLDERS != null && DEVICE_HOLDERS.size() != 0) {
-            Set<String> addresss = DEVICE_HOLDERS.keySet();
-            if (addresss != null && addresss.size() != 0) {
-                Iterator<String> iterator = addresss.iterator();
-                while (iterator.hasNext()) {
-                    final String address = iterator.next();
-                    String userId = DataUtils.getUserIdForAddress(address);
-                    if (TextUtils.isEmpty(userId)) return;
-                    List<Temperature> temperatureList = dbManager.getHistory(DateUtils.getFormatTime("yyyyMMdd"), address, userId);
-                    List<HistoryData> historyDataList = new ArrayList<>();
-                    for (int i = 0; i < temperatureList.size(); i++) {
-                        Temperature temperature = temperatureList.get(i);
-                        long tempertureToServerRecordTime = SPUtils.getTempertureToServerRecordTime(address);
-                        Logger.d(tempertureToServerRecordTime);
-                            // 如果是在上次更新的时间之后的数据上传到服务器
-                            if (tempertureToServerRecordTime<temperature.getTimestamp()) {
-                                HistoryData historyData = new HistoryData();
-                                historyData.setDeviceAddress(address);
-                                historyData.setTimestamp(temperature.getTimestamp());
-                                historyData.setUid(userId);
-                                historyData.setValue(temperature.getValue());
-                                historyDataList.add(historyData);
+        List<HistoryData> historyDataList= dbManager.getHistoryData( SPUtils.getTempertureToServerRecordTime());
+        if (historyDataList.size() != 0) {
+            String jsonString = JsonUtil.toJsonString(historyDataList);
+            if (!TextUtils.isEmpty(jsonString)) {
+                HttpMethods.getInstance().apiService.uploadTemperature(jsonString).
+                        compose(RxJavaHttpHelper.<Object>handleResult()).
+                        compose(RxSchedulersHelper.applyIoTransformer())
+                        .subscribe(new Subscriber() {
+                            @Override
+                            public void onCompleted() {
+                                Logger.d(" update temperature success");
+                                recordNetTime = System.currentTimeMillis();
+                                Logger.d(recordNetTime);
+                                SPUtils.setTempertureToServerRecordTime(recordNetTime);
                             }
 
-                    }
-                    if (historyDataList.size()!=0) {
-                        String jsonString = JsonUtil.toJsonString(historyDataList);
-                        if (!TextUtils.isEmpty(jsonString)) {
-                            HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
-                                    .subscribe(new Subscriber() {
-                                        @Override
-                                        public void onCompleted() {
-                                            Logger.d(" update temperature success");
-                                            recordNetTime = System.currentTimeMillis();
-                                            Logger.d(recordNetTime);
-                                            SPUtils.setTempertureToServerRecordTime(recordNetTime, address);
-                                        }
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.d("update temperature  onError");
+                            }
 
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            Logger.d("update temperature  onError");
-                                        }
-
-                                        @Override
-                                        public void onNext(Object o) {
-                                            onCompleted();
-                                        }
-                                    });
-
-                        }
-                    }
-                }
+                            @Override
+                            public void onNext(Object o) {
+                                onCompleted();
+                            }
+                        });
             }
         }
     }

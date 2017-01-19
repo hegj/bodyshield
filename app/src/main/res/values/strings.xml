@@ -130,4 +130,5 @@
     <string name="access_server_failed">Access the server failed, please try again</string>
     <string name="access_server_success">The update is successful</string>
     <string name="feedback_loading_message" >Is feedback your problem, please later</string>
+    <string name="feedback_title">feedback</string>
 </resources>

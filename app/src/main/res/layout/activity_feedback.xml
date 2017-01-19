@@ -6,7 +6,7 @@
     android:background="@mipmap/bluebg"
     tools:context="com.cmax.bodysheild.activity.FeedbackActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_bar_height"
@@ -17,17 +17,29 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:id="@+id/backBtn"
             android:layout_width="@dimen/navigation_bar_setting_width"
             android:layout_height="@dimen/navigation_bar_setting_height"
             android:background="@null"
             android:src="@mipmap/jian"/>
+        <TextView
+
+            android:gravity="center_vertical"
+                android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/feedback_title"
+            android:textColor="@color/white"/>
+
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@null"
             android:layout_weight="1"/>
         <TextView
+            android:layout_alignParentRight="true"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="@string/SaveText"
@@ -39,10 +51,11 @@
             android:layout_alignParentEnd="true"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 <LinearLayout
-    android:layout_centerVertical="true"
+    android:layout_marginTop="20dp"
+    android:layout_below="@+id/ll_title"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

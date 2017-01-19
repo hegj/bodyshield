@@ -57,7 +57,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        KeyBoardUtils.openKeybord(userName,this);
+     //   KeyBoardUtils.openKeybord(userName,this);
         loginPresenter.initIntentData(  getIntent() );
 
     }

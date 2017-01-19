@@ -112,9 +112,7 @@ public class BluetoothService extends Service implements BLEService {
     private final String CONNECT_DEVICE_NAME3 = "AB01";
     private final String CONNECT_DEVICE_NAME4 = "AB02";
     private BluetoothManager bluetoothManager;
-
     private long recordTime = 0L;
-
     private DBManager dbManager;
     private long recordNetTime = 0L;
 
@@ -158,16 +156,15 @@ public class BluetoothService extends Service implements BLEService {
                 }
             }, 1000);
         }
+        // 首次进入先更新一次有的数据库数据,
         UIUtils.getMainThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Logger.d("更新数据");
                 updateTemperatureHistoryDataToServer();
-                UIUtils.getMainThreadHandler().postDelayed(this,1000*5*60);
+                UIUtils.getMainThreadHandler().postDelayed(this,1000*30*60);
             }
         }, 3000);
-
-
     }
 
     private void updateTemperatureHistoryDataToServer() {
@@ -184,38 +181,43 @@ public class BluetoothService extends Service implements BLEService {
                     for (int i = 0; i < temperatureList.size(); i++) {
                         Temperature temperature = temperatureList.get(i);
                         long tempertureToServerRecordTime = SPUtils.getTempertureToServerRecordTime(address);
-
+                        Logger.d(tempertureToServerRecordTime);
                             // 如果是在上次更新的时间之后的数据上传到服务器
-                            HistoryData historyData = new HistoryData();
-                            historyData.setDeviceAddress(address);
-                            historyData.setTimestamp(temperature.getTimestamp());
-                            historyData.setUid(userId);
-                            historyData.setValue(temperature.getValue());
-                            historyDataList.add(historyData);
+                            if (tempertureToServerRecordTime<temperature.getTimestamp()) {
+                                HistoryData historyData = new HistoryData();
+                                historyData.setDeviceAddress(address);
+                                historyData.setTimestamp(temperature.getTimestamp());
+                                historyData.setUid(userId);
+                                historyData.setValue(temperature.getValue());
+                                historyDataList.add(historyData);
+                            }
 
                     }
-                    String jsonString = JsonUtil.toJsonString(historyDataList);
-                    if (!TextUtils.isEmpty(jsonString)) {
-                        HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
-                                .subscribe(new Subscriber() {
-                                    @Override
-                                    public void onCompleted() {
-                                        Logger.d(" update temperature success");
-                                        recordNetTime = System.currentTimeMillis();
-                                        SPUtils.setTempertureToServerRecordTime(recordNetTime, address);
-                                    }
+                    if (historyDataList.size()!=0) {
+                        String jsonString = JsonUtil.toJsonString(historyDataList);
+                        if (!TextUtils.isEmpty(jsonString)) {
+                            HttpMethods.getInstance().apiService.uploadTemperature(jsonString).compose(RxSchedulersHelper.applyIoTransformer())
+                                    .subscribe(new Subscriber() {
+                                        @Override
+                                        public void onCompleted() {
+                                            Logger.d(" update temperature success");
+                                            recordNetTime = System.currentTimeMillis();
+                                            Logger.d(recordNetTime);
+                                            SPUtils.setTempertureToServerRecordTime(recordNetTime, address);
+                                        }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.d("update temperature  onError");
-                                    }
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Logger.d("update temperature  onError");
+                                        }
 
-                                    @Override
-                                    public void onNext(Object o) {
-                                        onCompleted();
-                                    }
-                                });
+                                        @Override
+                                        public void onNext(Object o) {
+                                            onCompleted();
+                                        }
+                                    });
 
+                        }
                     }
                 }
             }

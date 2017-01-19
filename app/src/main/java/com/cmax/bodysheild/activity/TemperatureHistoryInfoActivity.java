@@ -636,7 +636,7 @@ public class TemperatureHistoryInfoActivity extends BaseActivity implements View
     @OnClick(R.id.synchronizedBtn)
     void synchronizedBtn(View v){
         String time = SPUtils.getTempertureHisoryRecordTime(device.getAddress()) + "";
-        HttpMethods.getInstance().apiService.downloadTemperature(device.getAddress(), UIUtils.getUserId()+"",
+        HttpMethods.getInstance().apiService.downloadTemperature(  UIUtils.getUserId()+"",
                 time )
                 .compose(RxJavaHttpHelper.<List<HistoryData>>handleResult())
                 .compose( RxSchedulersHelper.<List<HistoryData>>applyIoTransformer())

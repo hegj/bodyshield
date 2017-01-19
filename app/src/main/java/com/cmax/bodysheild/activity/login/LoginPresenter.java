@@ -1,6 +1,7 @@
 package com.cmax.bodysheild.activity.login;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,6 +17,8 @@ import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.OkHttpApi;
+import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
+import com.cmax.bodysheild.http.rxexception.ErrorManager;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DataUtils;
@@ -33,6 +36,8 @@ import org.hybridsquad.android.library.CropParams;
 
 import java.util.List;
 
+import rx.Subscriber;
+
 
 /**
  * Created by Administrator on 2016/11/23 0023.
@@ -45,6 +50,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
     private ILoginView loginView;
     private Bitmap bitmap;
     private Dialog choosePortraitDialog;
+    private ProgressDialog loginDialog;
 
     // @Inject
     public LoginPresenter() {
@@ -79,18 +85,27 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
             loginView.setPasswordError(UIUtils.getString(R.string.password_error_message));
             return;
         }
-
-        loginModel.login(userName, passWord).subscribe(new ProgressSubscriber<UserProfileInfo>(getView()) {
+        if (loginDialog==null)
+        loginDialog = DialogUtils.showProgressDialog(activity, UIUtils.getString(R.string.login_loading));
+        loginDialog.show();
+        loginModel.login(userName, passWord).subscribe(new Subscriber<UserProfileInfo>() {
             @Override
-            public void _onError(String message) {
+            public void onCompleted() {
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                String message= ErrorManager.handleError(new DefaultErrorBundle((Exception) e));
                 ToastUtils.showFailToast(UIUtils.getString(R.string.login_failed));
             }
 
             @Override
-            public void _onNext(UserProfileInfo info) {
+            public void onNext(UserProfileInfo info) {
                 AppContext.setUserId(info.getId());
                 if (!TextUtils.isEmpty(info.getHeadImg())) {
-                  OkHttpApi.getInstance().requestBitMap(info,activity,device);
+                    OkHttpApi.getInstance().requestBitMap(info,activity,device,this,loginDialog);
                 }else{
                     User user = new User();
                     user.setId(info.getId()+"");
@@ -98,15 +113,9 @@ public class LoginPresenter extends BasePresenter<ILoginView>  {
                     user.setPassword(info.getPassword());
                     DataUtils.addDeviceToSp(device,user) ;
                     DataUtils.addUserToSp(user);
+                    loginDialog.dismiss();
                     IntentUtils.toTemperatureInfoActivity(activity,device);
                 }
-
-            }
-
-            @Override
-            public void _onCompleted() {
-                IntentUtils.toTemperatureInfoActivity(activity,device);
-
             }
         });
     }

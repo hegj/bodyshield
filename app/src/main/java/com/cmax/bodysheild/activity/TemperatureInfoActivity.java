@@ -196,7 +196,6 @@ public class TemperatureInfoActivity extends FragmentActivity {
 //                LogIntervalCommand logIntervalCommand = new LogIntervalCommand(device.getAddress(),LogIntervalCommand.ReqeustType.ReadModel);
 //                bleService.executeCommand(logIntervalCommand);
 //                Log.i(TAG,"发送测量间隔命令成功");
-//
 //            }
 //
 //        };

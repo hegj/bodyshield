@@ -72,7 +72,7 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
         user = getIntent().getParcelableExtra(UserListActivity.CURRENT_USER);
         if (user != null) {
             tvUserName.setProfileValue(user.getUserName());
-          bitmap = PortraitUtil.getBitmap(this, user.getImage());
+            bitmap = PortraitUtil.getBitmap(this, user.getImage());
             userImageBtn.setImageBitmap(bitmap);
             tvUserName.setUser(user);
         }
@@ -99,7 +99,8 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     @Override
     protected void initEvent(Bundle savedInstanceState) {
         super.initEvent(savedInstanceState);
-        tvUserName.setProfileDataSuccessListener(new ProfileDataSuccessListener() {
+
+       /* tvUserName.setProfileDataSuccessListener(new ProfileDataSuccessListener() {
             @Override
             public void success(int profileType, User user) {
                 tvUserName.setProfileValue(user.getUserName());
@@ -109,7 +110,7 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
             public void failed() {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -192,4 +193,5 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
             progressDialog.dismiss();
         }
     }
+
 }

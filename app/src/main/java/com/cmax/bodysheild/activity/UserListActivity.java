@@ -210,7 +210,8 @@ public class UserListActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (userAdapter!=null && resultCode==3) {
-			userAdapter.notifyDataSetChanged();
+			userAdapter = new UserAdapter(UserListActivity.this.getLayoutInflater(),userListView,device);
+			userListView.setAdapter(userAdapter);
 		}
 	}
 

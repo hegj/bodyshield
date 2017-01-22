@@ -47,13 +47,13 @@ public abstract class UserProfileItemView extends BaseCustomView {
 
     @Override
     protected void initEvent(Context context) {
-        rootView.setOnClickListener(new OnClickListener() {
+       /* rootView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (profileType==0)return;
                  buildProfileDialog(profileType);
             }
-        });
+        });*/
     }
     public  void setProfileDataSuccessListener( ProfileDataSuccessListener listener){
         profileDataSuccessListener=listener;

@@ -13,10 +13,12 @@
             />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_profile_arrow_right"
             style="@style/UserSettingRightArrowStyle"/>
 
         <TextView
+            android:layout_alignParentRight="true"
             android:id="@+id/tv_profile_value"
             style="@style/ProfileInfoText"
             android:layout_toLeftOf="@id/iv_profile_arrow_right"

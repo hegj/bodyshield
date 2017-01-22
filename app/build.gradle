@@ -77,6 +77,7 @@ dependencies {
     compile rootProject.ext.dependencies["okhttp"]
     compile rootProject.ext.dependencies["oklog3"]
     compile rootProject.ext.dependencies["crop"]
+    //compile rootProject.ext.dependencies["eventbus"]
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.mylhyl:acp:1.1.7'
     //权限管理，6.0必需

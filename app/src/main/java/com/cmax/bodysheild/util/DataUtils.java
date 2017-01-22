@@ -16,6 +16,9 @@ import java.util.List;
  */
 
 public class DataUtils {
+
+
+
     public static void addUserToSp(User user){
         if (user==null)return;
         List<User> users = getUserList();
@@ -27,6 +30,22 @@ public class DataUtils {
             }
         }
         users.add(user);
+        SharedPreferencesUtil.setList(Constant.USER_LIST, users);
+    }
+    public static void editUser(User user){
+          int userIndex=0;
+
+        if (user==null)return;
+        List<User> users = getUserList();
+        for (int i =users.size()-1 ;i>=0;i--){
+            User spUser = users.get(i);
+            if (spUser.getId().equals(user.getId())){
+                userIndex = i;
+                users.remove(i);
+                break;
+            }
+        }
+        users.add(userIndex,user);
         SharedPreferencesUtil.setList(Constant.USER_LIST, users);
     }
 
@@ -62,7 +81,7 @@ public class DataUtils {
         if (bitmap != null) {
             String imagePath = PortraitUtil.writeBitmap(activity, bitmap, user.getImage());
             user.setImage(imagePath);
-            addUserToSp(user);
+            editUser(user);
         }
     }   public static void saveUserInfo(String  headImageUrl, Activity activity, User user) {
         if (!TextUtils.isEmpty(headImageUrl)) {

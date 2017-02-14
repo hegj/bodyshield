@@ -2,7 +2,10 @@ package com.cmax.bodysheild.util;
 
 import android.app.Activity;
 
+import com.cmax.bodysheild.activity.login.LoginModel;
+import com.cmax.bodysheild.activity.login.LoginPresenter;
 import com.cmax.bodysheild.http.HttpMethods;
+import com.orhanobut.logger.Logger;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -14,15 +17,20 @@ import java.util.Map;
  */
 
 public class UMUtils {
-    private static final int THIRD_LOGIN_TYPE_QQ = 1;
-    private static final int THIRD_LOGIN_TYPE_WECHAT = 2;
+    private static final int THIRD_LOGIN_TYPE_WECHAT = 1;
+    private static final int THIRD_LOGIN_TYPE_QQ = 2;
     private static final int THIRD_LOGIN_TYPE_FACEBOOK = 3;
     public static Activity mActivity;
     private UMShareAPI mShareAPI;
     private int thirdLoginType;
+    private LoginPresenter loginPresenter;
 
     private UMUtils() {
         mShareAPI = UMShareAPI.get(mActivity);
+    }
+
+    public void setLoginPresenter(LoginPresenter loginPresenter) {
+        this.loginPresenter=loginPresenter;
     }
 
     private static class SingleUMUtils {
@@ -76,17 +84,22 @@ public class UMUtils {
     };
 
     private void parsedQQLoginData(Map<String, String> data) {
-        String accesstoken = data.get("accesstoken");
+        String openid = data.get("openid");
         String name = data.get("name");
         String uid = data.get("uid");
-        HttpMethods.getInstance().thirdLogin(accesstoken,uid,thirdLoginType+"",name);
+        String iconurl = data.get("iconurl");
+       // "iconurl" -> "http://q.qlogo.cn/qqapp/1105901585/5C1C912FAD3D0E187469027F8A05B324/100"
+        if (loginPresenter!=null){
+            loginPresenter.startThirdLogin(openid,uid,thirdLoginType+"",name,iconurl);
+        }
+
     }
 
     private void parsedWeChatLoginData(Map<String, String> data) {
-        String accesstoken = data.get("accesstoken");
+        String accessToken = data.get("accessToken");
         String name = data.get("name");
         String uid = data.get("unionid");
-        HttpMethods.getInstance().thirdLogin(accesstoken,uid,thirdLoginType+"",name);
+        HttpMethods.getInstance().thirdLogin(accessToken,uid,thirdLoginType+"",name);
     }
 
     private void parsedFaceBookLoginData(Map<String, String> data) {

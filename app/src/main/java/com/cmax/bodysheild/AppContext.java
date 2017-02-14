@@ -59,12 +59,13 @@ public class AppContext extends MultiDexApplication {
             Stetho.initializeWithDefaults(this);
         }
         mHandler = new Handler();
-        Config.DEBUG = false;
+        Config.DEBUG = true;
         UMShareAPI.get(this);
         //  初始化 UM key
         PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
+        PlatformConfig.setQQZone("1105901585","TwjbtG7pmPNqvYik");
         //TODO QQ
-        //TODO FACEBOOK
+
     }
 
     private void initLogger() {

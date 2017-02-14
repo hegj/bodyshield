@@ -45,5 +45,7 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST( Url.DOWNLOAD_TEMPERATURE)
     Observable<BaseRequestData<List<HistoryData>>> downloadTemperature(  @Field("uid") String uid, @Field("lastTimestamp") String lastTimestamp);
-
+    @FormUrlEncoded
+    @POST( Url.THIRD_LOGIN)
+    Observable<BaseRequestData<UserProfileInfo>> thirdLogin(@FieldMap Map<String,String> map);
 }

@@ -68,11 +68,14 @@ public class FeedbackActivity extends BaseActivity implements IStateView {
             return;
         }
         String contact = etContact.getText().toString().trim();
+        if (TextUtils.isEmpty(contact)){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.input_user_contact));
+            return;
+        }
         Map<String,String> map = new HashMap<String, String>() ;
-       // ?uid=3&subject=测试主题&content=测试内容
-        map.put("uid",1+"");
-        map.put("subject",message);
-        map.put("content",contact);
+        map.put("uid",UIUtils.getUserId()+"");
+        map.put("content",message);
+        map.put("contact",contact);
         HttpMethods.getInstance().apiService.feedBack(map) .compose(RxJavaHttpHelper.<Object>handleResult())  .compose( RxSchedulersHelper.<Object>applyIoTransformer())
         .subscribe(new ProgressSubscriber<Object>(this) {
             @Override

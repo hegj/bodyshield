@@ -31,8 +31,8 @@ public class RxJavaHttpHelper {
                                  return Observable.error(new NetworkConnectionException(""));
                             }else if (tBaseRequestData.code ==0){
                                 //创建一个观察者
-                                if (tBaseRequestData==null){
-                                    Logger.d("........");
+                                if (tBaseRequestData.data==null){
+
                                 }
                                 return createObservable(tBaseRequestData.data);
                             }else {

@@ -5,6 +5,8 @@ import com.cmax.bodysheild.http.HttpMethods;
 import com.cmax.bodysheild.http.RxJavaHttpHelper;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 
+import java.util.Map;
+
 import rx.Observable;
 
 /**
@@ -18,6 +20,11 @@ public class LoginModel {
     public   Observable<UserProfileInfo>   login(String userName, String password){
         return HttpMethods.getInstance().apiService.login(userName, password)
                         .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
+                .compose( RxSchedulersHelper.<UserProfileInfo>applyIoTransformer());
+    }
+    public   Observable<UserProfileInfo>  thirdLogin(Map<String,String> map ){
+        return HttpMethods.getInstance().apiService.thirdLogin(map)
+                .compose(RxJavaHttpHelper.<UserProfileInfo>handleResult())
                 .compose( RxSchedulersHelper.<UserProfileInfo>applyIoTransformer());
     }
 }

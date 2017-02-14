@@ -17,6 +17,8 @@ import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
+import com.cmax.bodysheild.util.UMUtils;
+import com.umeng.socialize.UMShareAPI;
 
 import org.hybridsquad.android.library.CropHelper;
 
@@ -52,13 +54,14 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
         basePresenter =loginPresenter;
+        UMUtils.getInstance(this).setLoginPresenter(loginPresenter);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
      //   KeyBoardUtils.openKeybord(userName,this);
-        loginPresenter.initIntentData(  getIntent() );
+        loginPresenter.initIntentData(getIntent());
 
     }
 
@@ -124,7 +127,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     }
     @OnClick(R.id.ib_login_qq )
     void thirdOfQQ(View view){
-        ToastUtils.showFailToast("需要到qq 申请APP的第三方登录的权限");
+        //ToastUtils.showFailToast("需要到qq 申请APP的第三方登录的权限");
+        UMUtils.getInstance(this).thirdLoginOfQQ();
     }
     @OnClick(R.id.ib_login_weixin )
     void thirdofWeixin(View view){
@@ -145,8 +149,12 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void onDestroy() {
         CropHelper.clearCacheDir();
-
         super.onDestroy();
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 
+    }
 }

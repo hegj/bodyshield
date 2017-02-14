@@ -81,4 +81,5 @@ public class HttpMethods {
     public void  thirdLogin(String token ,String uid ,String type,String name){
 
     }
+
 }

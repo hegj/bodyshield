@@ -487,7 +487,6 @@ public class DeviceActivity extends BaseActivity {
 				//发现新设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothService.EXTRA_DEVICE);
 				LogUtil.i(TAG, "find new device:" + device.getName());
-
 				final BLEDevice bleDevice = new BLEDevice();
 				bleDevice.setAddress(device.getAddress());
 				bleDevice.setName(device.getName());

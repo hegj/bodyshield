@@ -255,7 +255,6 @@ public class BluetoothService extends Service implements BLEService {
                     if (!SCANNING_DEVICE_ADDRESS.contains(device.getAddress())) {
                         // 广播发现新设备
                         SCANNING_DEVICE_ADDRESS.add(device.getAddress());
-
                         final Intent intent = new Intent(ACTION_BLE_NEW_DEVICE);
                         intent.putExtra(EXTRA_DEVICE, device);
                         sendBroadcast(intent);

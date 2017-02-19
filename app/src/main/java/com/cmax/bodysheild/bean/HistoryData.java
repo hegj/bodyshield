@@ -7,9 +7,6 @@ public class HistoryData {
     private int id;
     private String deviceAddress;
     private String userId;
-
-
-
     private String uid;
     private long timestamp;
     private float value;

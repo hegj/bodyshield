@@ -241,7 +241,10 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
-     
+/*		Intent intent = new Intent(this,SettingActivity.class);
+		BLEDevice device = new BLEDevice();
+		intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
+		startActivity(intent);*/
 		scanLeDevice(!scanning);
 		// IntentUtils.toEditProfile(this,null);
 		//IntentUtils.toLoginActivity(this,null,null);

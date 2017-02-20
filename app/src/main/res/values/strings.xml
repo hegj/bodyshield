@@ -54,7 +54,9 @@
     <!-- loading-->
     <string name="loading">Processing, please wait...</string>
     
-    <string name="temp_unit_1"><Data><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></Data></string>
+<!--    <string name="temp_unit_1"><Data><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></Data></string>
+    <string name="temp_unit_2"><Data><font color="gray"><b>℃/</b></font><font color="black"><b>℉</b></font></Data></string>-->
+    <string name="temp_unit_1"><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></string>
     <string name="temp_unit_2"><Data><font color="gray"><b>℃/</b></font><font color="black"><b>℉</b></font></Data></string>
     <string name="vibration_on"><Data><font color="black"><b>ON</b></font><font color="gray"><b>/OFF</b></font></Data></string>
     <string name="vibration_off"><Data><font color="gray"><b>ON/</b></font><font color="black"><b>OFF</b></font></Data></string>

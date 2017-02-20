@@ -105,7 +105,8 @@
                     android:textOn="℉"
                     android:id="@+id/switch_unit"
                     android:typeface="monospace" />-->
-                <ToggleButton
+
+  <!--              <ToggleButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="0dp"
@@ -114,7 +115,12 @@
                     android:textOn="@string/temp_unit_2"
                     android:background="@null"
                     android:id="@+id/switch_unit"
-                    android:typeface="monospace" />
+                    android:typeface="monospace" />-->
+
+                 <TextView
+                     android:id="@+id/switch_unit"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content" />
 
             </LinearLayout>
             <LinearLayout
@@ -174,7 +180,7 @@
                         android:gravity="center_vertical">
                         <EditText
                             android:id="@+id/high_fever"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:gravity="right"
@@ -214,7 +220,7 @@
                         android:gravity="center_vertical">
                         <EditText
                             android:id="@+id/low_fever"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:text="36"
@@ -276,6 +282,7 @@
                         android:textOn="On"
                         android:textOff="Off"
                         android:id="@+id/switch_vibration" />-->
+<!--
                     <ToggleButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -286,6 +293,11 @@
                         android:background="@null"
                         android:id="@+id/switch_vibration"
                         android:typeface="monospace" />
+-->                 <TextView
+                    android:id="@+id/switch_vibration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
 
                 </LinearLayout>
             </LinearLayout>

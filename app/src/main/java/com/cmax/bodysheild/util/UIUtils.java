@@ -8,6 +8,8 @@ import android.util.TypedValue;
 import com.cmax.bodysheild.AppContext;
 import com.cmax.bodysheild.R;
 
+import java.util.Locale;
+
 /**
  * Created by Administrator on 2016/12/7 0007.
  */
@@ -50,5 +52,14 @@ public class UIUtils {
 
     public static void setUserId(int id) {
         AppContext.setUserId(id);
+    }
+
+    public static boolean isZh(Context context) {
+        Locale locale = context.getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        if (language.endsWith("zh"))
+            return true;
+        else
+            return false;
     }
 }

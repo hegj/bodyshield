@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -32,8 +33,11 @@ import com.cmax.bodysheild.bluetooth.response.temperature.LogIntervalResponse;
 import com.cmax.bodysheild.bluetooth.response.temperature.MemoryStatusResponse;
 import com.cmax.bodysheild.util.CommonUtil;
 import com.cmax.bodysheild.util.Constant;
+import com.cmax.bodysheild.util.HtmlUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
+import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.widget.LoadingMask;
+import com.orhanobut.logger.Logger;
 
 import java.text.DecimalFormat;
 
@@ -45,19 +49,20 @@ import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity {
     @Bind(R.id.battery_level)
-    TextView  batteryLevel;
-//    @Bind(R.id.switch_unit)
+    TextView batteryLevel;
+    //    @Bind(R.id.switch_unit)
 //    Switch    tempUnit;
     @Bind(R.id.switch_unit)
-    ToggleButton tempUnit;
+    // ToggleButton tempUnit;
+            TextView tempUnit;
     @Bind(R.id.high_fever)
-    EditText  highFever;
+    EditText highFever;
     @Bind(R.id.low_fever)
-    EditText  lowFever;
-//    @Bind(R.id.switch_vibration)
+    EditText lowFever;
+    //    @Bind(R.id.switch_vibration)
 //    Switch    vibration;
     @Bind(R.id.switch_vibration)
-    ToggleButton vibration;
+    TextView vibration;
     @Bind(R.id.backBtn)
     ImageView backBtn;
     @Bind(R.id.alert_interval)
@@ -78,19 +83,19 @@ public class SettingActivity extends BaseActivity {
     String every;
     @BindString(R.string.setting_min)
     String min;
-    private final static String TAG            = SettingActivity.class.getSimpleName();
+    private final static String TAG = SettingActivity.class.getSimpleName();
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.00");
 
-    private              int    unitCode       = 0;   //0是摄氏度，1是华氏度
-    private              float    highFeverValue = 0;
-    private              float    lowFeverValue  = 0;
-    private              int    vibratedCode   = 0;
+    private int unitCode = 0;   //0是摄氏度，1是华氏度
+    private float highFeverValue = 0;
+    private float lowFeverValue = 0;
+    private int vibratedCode = 0;
     private int alertIntervalValue = 1;
     private int measureIntervalValue = 1;
     private int volumeValue = 1;
 
-    private BLEService                   bleService;
-    private ServiceConnection            serviceConnection;
+    private BLEService bleService;
+    private ServiceConnection serviceConnection;
     private BluetoothService.LocalBinder bleBinder;
     private AlertService alertService;
     private ServiceConnection alertServiceConnection;
@@ -99,6 +104,9 @@ public class SettingActivity extends BaseActivity {
     private boolean isRegister = false;
     private BLEDevice device;
     private LoadingMask mask = null;
+    private int tempUnitTag;
+    private int vibratedCodeFlag;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
@@ -111,31 +119,36 @@ public class SettingActivity extends BaseActivity {
         device = extras.getParcelable(TemperatureInfoActivity.EXTRA_DEVICE);
         highFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_HIGHT_FEVER, 39);
         lowFeverValue = SharedPreferencesUtil.getFloatValue(Constant.KEY_LOW_FEVER, 38);
-        unitCode = SharedPreferencesUtil.getIntValue(Constant.KEY_UNIT,0);
-        vibratedCode = SharedPreferencesUtil.getIntValue(Constant.KEY_VIBRATION,0);
+        unitCode = SharedPreferencesUtil.getIntValue(Constant.KEY_UNIT, 0);
+        vibratedCode = SharedPreferencesUtil.getIntValue(Constant.KEY_VIBRATION, 0);
         alertIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_ALERT_INTERVAL, 1);
         measureIntervalValue = SharedPreferencesUtil.getIntValue(Constant.KEY_MEASURE_INTERVAL, 1);
         volumeValue = SharedPreferencesUtil.getIntValue(Constant.KEY_VOLUME, 1);
 
 
-
-        if(0 == unitCode){
-            highFever.setText(""+highFeverValue);
-            lowFever.setText(""+lowFeverValue);
+        if (0 == unitCode) {
+            highFever.setText("" + highFeverValue);
+            lowFever.setText("" + lowFeverValue);
             degHighFever.setText("℃");
             degLowFever.setText("℃");
-            tempUnit.setChecked(false);
-        }else {
-            highFever.setText(""+CommonUtil.centigradeToFahrenheit(highFeverValue));
-            lowFever.setText(""+CommonUtil.centigradeToFahrenheit(lowFeverValue));
+            tempUnitTag = 0;
+            tempUnit.setText(Html.fromHtml("<font color=\"black\"><b>℃</b></font><font color=\"gray\"><b>/℉</b></font>"));
+            //   tempUnit.setChecked(false);
+        } else {
+
+            highFever.setText("" + CommonUtil.centigradeToFahrenheit(highFeverValue));
+            lowFever.setText("" + CommonUtil.centigradeToFahrenheit(lowFeverValue));
             degHighFever.setText("℉");
             degLowFever.setText("℉");
-            tempUnit.setChecked(true);
+            //tempUnit.setChecked(true);
+            tempUnitTag = 1;
+            tempUnit.setText(Html.fromHtml("<font color=\"gray\"><b>℃/</b></font><font color=\"black\"><b>℉</b></font>"));
         }
-        if(0 == vibratedCode){
-            vibration.setChecked(false);
-        }else {
-            vibration.setChecked(true);
+
+        if (0 == vibratedCode) {
+            setIsVibration(false);
+        } else {
+            setIsVibration(true);
         }
         alertInterval.setProgress(alertIntervalValue);
         alertIntervalText.setText(every + alertIntervalValue + min);
@@ -147,11 +160,11 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!isRegister){
+        if (!isRegister) {
             registerReceiver(notificationReceiver, makeIntentFilter());
             isRegister = true;
         }
-        if (!isBind){
+        if (!isBind) {
             bindService(new Intent(SettingActivity.this, BluetoothService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 
             Intent intent = new Intent(this, AlertService.class);
@@ -166,7 +179,7 @@ public class SettingActivity extends BaseActivity {
 //        if(mask != null){
 //            mask.hide();
 //        }
-        if(isBind){
+        if (isBind) {
             unbindService(serviceConnection);
             unbindService(alertServiceConnection);
             isBind = false;
@@ -180,7 +193,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(isBind){
+        if (isBind) {
             unbindService(serviceConnection);
             unbindService(alertServiceConnection);
             isBind = false;
@@ -199,23 +212,30 @@ public class SettingActivity extends BaseActivity {
 //    public void backAndSave(){
 //
 //    }
-    @OnCheckedChanged(R.id.switch_unit)
-    void selectUnit(boolean isChecked) {
-        if (isChecked) {
-            if(0 == unitCode){
+    // @OnCheckedChanged(R.id.switch_unit)
+    @OnClick(R.id.switch_unit)
+    void selectUnit() {
+        if (tempUnitTag == 0) {
+            tempUnitTag = 1;
+            if (0 == unitCode) {
                 String hfv = highFever.getText().toString();
                 String lfv = lowFever.getText().toString();
                 float hfvf = Float.parseFloat(hfv);
                 float lfvf = Float.parseFloat(lfv);
+                Logger.d("----" + CommonUtil.centigradeToFahrenheit(highFeverValue));
                 highFever.setText(DECIMAL_FORMAT.format(CommonUtil.centigradeToFahrenheit(hfvf)));
                 lowFever.setText(DECIMAL_FORMAT.format(CommonUtil.centigradeToFahrenheit(lfvf)));
             }
+            String string = UIUtils.getString(R.string.temp_unit_2);
+            Logger.d(string);
+            tempUnit.setText(Html.fromHtml("<font color=\"gray\"><b>℃/</b></font><font color=\"black\"><b>℉</b></font>"));
             unitCode = 1;
             degHighFever.setText("℉");
             degLowFever.setText("℉");
             Log.i(TAG, "温度单位是华氏度");
         } else {
-            if(1 == unitCode){
+            tempUnitTag = 0;
+            if (1 == unitCode) {
                 String hfv = highFever.getText().toString();
                 String lfv = lowFever.getText().toString();
                 float hfvf = Float.parseFloat(hfv);
@@ -224,33 +244,34 @@ public class SettingActivity extends BaseActivity {
                 lowFever.setText(DECIMAL_FORMAT.format(CommonUtil.fahrenheitToCentigrade(lfvf)));
             }
             unitCode = 0;
+            tempUnit.setText(Html.fromHtml("<font color=\"black\"><b>℃</b></font><font color=\"gray\"><b>/℉</b></font>"));
             degHighFever.setText("℃");
             degLowFever.setText("℃");
             Log.i(TAG, "温度单位是摄氏度");
         }
     }
 
-    @OnCheckedChanged(R.id.switch_vibration)
-    void selectVibrated(boolean isChecked) {
-        if (isChecked) {
-            vibratedCode = 1;
-            Log.i(TAG, "开启了震动告警");
+    @OnClick(R.id.switch_vibration)
+    void selectVibrated() {
+        if (vibratedCodeFlag == 1) {
+            setIsVibration(true);
+            Log.i(TAG, "打开了震动告警");
         } else {
-            vibratedCode = 0;
-            Log.i(TAG,"关闭了震动告警");
+            setIsVibration(false);
+            Log.i(TAG, "关闭了震动告警");
         }
     }
 
 
     @OnClick(R.id.backBtn)
-    void finishActivity(View view){
+    void finishActivity(View view) {
         ContinuousDataCommand continuousDataCommand = new ContinuousDataCommand(device.getAddress(), ContinuousDataCommand.ReqeustType.StartModel);
         bleService.executeCommand(continuousDataCommand);
         finish();
     }
 
     @OnClick(R.id.saveBtn)
-    void save(){
+    void save() {
 //        if(mask == null) {
 //            mask = new LoadingMask(this);
 //        }
@@ -272,31 +293,31 @@ public class SettingActivity extends BaseActivity {
     }
 
     @OnClick(R.id.go_user_guide)
-    void showUserGuide(){
-        Intent intent = new Intent(this,UserGuideActivity.class);
+    void showUserGuide() {
+        Intent intent = new Intent(this, UserGuideActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.go_feedback)
-    void showFeedback(){
-        Intent intent = new Intent(this,FeedbackActivity.class);
+    void showFeedback() {
+        Intent intent = new Intent(this, FeedbackActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.go_about_us)
-    void showAboutUs(){
+    void showAboutUs() {
         Intent intent = new Intent(this, AboutUsActivity.class);
         startActivity(intent);
     }
 
 
-
     @Override
-    protected void initView(Bundle savedInstanceState){
+    protected void initView(Bundle savedInstanceState) {
 
     }
+
     @Override
-    protected void initEvent(Bundle savedInstanceState){
+    protected void initEvent(Bundle savedInstanceState) {
         /*告警间隔设置*/
         alertInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             /**
@@ -304,11 +325,12 @@ public class SettingActivity extends BaseActivity {
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(0 == seekBar.getProgress()){
+                if (0 == seekBar.getProgress()) {
                     seekBar.setProgress(1);
                 }
-                Log.i(TAG,"拖动停止");
+                Log.i(TAG, "拖动停止");
             }
+
             /**
              * 拖动条开始拖动的时候调用
              */
@@ -316,6 +338,7 @@ public class SettingActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Log.i(TAG, "开始拖动");
             }
+
             /**
              * 拖动条进度改变的时候调用
              */
@@ -333,11 +356,12 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int value = seekBar.getProgress();
-                if(0 == seekBar.getProgress()){
+                if (0 == seekBar.getProgress()) {
                     seekBar.setProgress(1);
                 }
-                Log.i(TAG,"拖动停止,值为："+value);
+                Log.i(TAG, "拖动停止,值为：" + value);
             }
+
             /**
              * 拖动条开始拖动的时候调用
              */
@@ -345,6 +369,7 @@ public class SettingActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Log.i(TAG, "开始拖动");
             }
+
             /**
              * 拖动条进度改变的时候调用
              */
@@ -362,8 +387,9 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int value = seekBar.getProgress();
-                Log.i(TAG,"拖动停止,值为："+value);
+                Log.i(TAG, "拖动停止,值为：" + value);
             }
+
             /**
              * 拖动条开始拖动的时候调用
              */
@@ -371,6 +397,7 @@ public class SettingActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Log.i(TAG, "开始拖动");
             }
+
             /**
              * 拖动条进度改变的时候调用
              */
@@ -405,7 +432,6 @@ public class SettingActivity extends BaseActivity {
                 Context.BIND_AUTO_CREATE);
 
 
-
         alertServiceConnection = new ServiceConnection() {
 
             @Override
@@ -426,10 +452,10 @@ public class SettingActivity extends BaseActivity {
 
     }
 
-    private void saveParams(){
+    private void saveParams() {
         highFeverValue = Float.valueOf(highFever.getText().toString());
         lowFeverValue = Float.valueOf(lowFever.getText().toString());
-        if(1 == unitCode){
+        if (1 == unitCode) {
             highFeverValue = CommonUtil.fahrenheitToCentigrade(highFeverValue);
             lowFeverValue = CommonUtil.fahrenheitToCentigrade(lowFeverValue);
         }
@@ -437,13 +463,13 @@ public class SettingActivity extends BaseActivity {
         measureIntervalValue = measureInterval.getProgress();
         volumeValue = volume.getProgress();
 
-        SharedPreferencesUtil.setFloatValue(Constant.KEY_HIGHT_FEVER,highFeverValue);
-        SharedPreferencesUtil.setFloatValue(Constant.KEY_LOW_FEVER,lowFeverValue);
+        SharedPreferencesUtil.setFloatValue(Constant.KEY_HIGHT_FEVER, highFeverValue);
+        SharedPreferencesUtil.setFloatValue(Constant.KEY_LOW_FEVER, lowFeverValue);
         SharedPreferencesUtil.setIntValue(Constant.KEY_UNIT, unitCode);
         SharedPreferencesUtil.setIntValue(Constant.KEY_VIBRATION, vibratedCode);
-        SharedPreferencesUtil.setIntValue(Constant.KEY_ALERT_INTERVAL,alertIntervalValue);
-        SharedPreferencesUtil.setIntValue(Constant.KEY_MEASURE_INTERVAL,measureIntervalValue);
-        SharedPreferencesUtil.setIntValue(Constant.KEY_VOLUME,volumeValue);
+        SharedPreferencesUtil.setIntValue(Constant.KEY_ALERT_INTERVAL, alertIntervalValue);
+        SharedPreferencesUtil.setIntValue(Constant.KEY_MEASURE_INTERVAL, measureIntervalValue);
+        SharedPreferencesUtil.setIntValue(Constant.KEY_VOLUME, volumeValue);
         alertService.refresh(); //刷新告警服务的信息
     }
 
@@ -494,5 +520,29 @@ public class SettingActivity extends BaseActivity {
 //        intentFilter.addAction(LogIntervalResponse.ACTION_LOG_INTERVAL);
 
         return intentFilter;
+    }
+
+    public void setIsVibration(boolean flag) {
+        if (!flag) {
+            //关闭
+            vibratedCodeFlag = 1;
+            vibratedCode = 0;
+            if (UIUtils.isZh(this)) {
+                // 中文
+                vibration.setText(Html.fromHtml("<font color=\"gray\"><b>开/</b></font><font color=\"black\"><b>关</b></font>"));
+            } else {
+                vibration.setText(Html.fromHtml("<font color=\"gray\"><b>ON/</b></font><font color=\"black\"><b>OFF</b></font>"));
+            }
+        } else {
+            //打开
+            vibratedCodeFlag = 0;
+            vibratedCode = 1;
+            if (UIUtils.isZh(this)) {
+                // 中文
+                vibration.setText(Html.fromHtml("<font color=\"black\"><b>开</b></font><font color=\"gray\"><b>/关</b></font>"));
+            } else {
+                vibration.setText(Html.fromHtml("<font color=\"black\"><b>ON</b></font><font color=\"gray\"><b>/OFF</b></font>"));
+            }
+        }
     }
 }

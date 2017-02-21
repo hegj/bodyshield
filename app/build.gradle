@@ -15,7 +15,14 @@ android {
         multiDexEnabled true
         multiDexEnabled true
     }
-
+    signingConfigs {
+        release {
+            storeFile file("bodyshield_key.jks")
+            storePassword "123456"
+            keyAlias "bodyshield"
+            keyPassword "123456"
+        }
+    }
     lintOptions {
         disable 'InvalidPackage'
         abortOnError false
@@ -31,6 +38,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug{
+            signingConfig signingConfigs.release
         }
     }
 }

@@ -61,8 +61,8 @@ public class AppContext extends MultiDexApplication {
         mHandler = new Handler();
         Config.DEBUG = true;
         UMShareAPI.get(this);
-        //  初始化 UM key
-        PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
+        //  初始化 UM key          wx6820badb9b53d57e
+        PlatformConfig.setWeixin("wx6820badb9b53d57e", "29a599f85938de9f9c21f4ed559c3d6e");
         PlatformConfig.setQQZone("1105901585","TwjbtG7pmPNqvYik");
         //TODO QQ
 

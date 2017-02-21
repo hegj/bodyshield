@@ -132,7 +132,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     }
     @OnClick(R.id.ib_login_weixin )
     void thirdofWeixin(View view){
-        ToastUtils.showFailToast("需要到微信申请APP的第三方登录的权限");
+        UMUtils.getInstance(this).thirdLoginOfWeChat();
     }
     @OnClick(R.id.ib_login_facebook )
     void thirdOfFacebook(View view){
@@ -149,6 +149,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @Override
     protected void onDestroy() {
         CropHelper.clearCacheDir();
+        UMUtils.mActivity=null;
         super.onDestroy();
     }
     @Override

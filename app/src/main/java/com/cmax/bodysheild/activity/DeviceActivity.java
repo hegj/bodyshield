@@ -245,9 +245,9 @@ public class DeviceActivity extends BaseActivity {
 		BLEDevice device = new BLEDevice();
 		intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
 		startActivity(intent);*/
-		scanLeDevice(!scanning);
+		//	scanLeDevice(!scanning);
 		// IntentUtils.toEditProfile(this,null);
-		//IntentUtils.toLoginActivity(this,null,null);
+		IntentUtils.toLoginActivity(this,null,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {

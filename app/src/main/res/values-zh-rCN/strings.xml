@@ -121,4 +121,12 @@
     <string name="access_server_failed">访问服务器失败,请重试</string>
     <string name="access_server_success">更新成功</string>
     <string name="feedback_title">意见反馈</string>
+    <string name="login_please_input_country_code">请输入国家号</string>
+    <string name="login_text_verification_code">验证码</string>
+    <string name="login_input_verification_code">输入验证码</string>
+    <string name="login_get_captcha">获取验证码</string>
+    <string name="login_please_input_captcha_code_warning">请输入验证码</string>
+    <string name="login_please_input_get_captcha_code_warning">请获取验证码</string>
+    <string name="login_please_input_correct_captcha_code_warning">请输入正确的验证码</string>
+    <string name="profile_change_password">修改密码</string>
 </resources>

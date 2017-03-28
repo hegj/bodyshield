@@ -36,13 +36,17 @@ public class UMUtils {
         this.loginPresenter = loginPresenter;
     }
 
+    public   void onPause() {
+        if (thirdLoginProgressDialog!=null && thirdLoginProgressDialog.isShowing())
+            thirdLoginProgressDialog.dismiss();
+    }
+
     private static class SingleUMUtils {
         private static final UMUtils INSTANCE = new UMUtils();
     }
 
     //获取单例
-    public static UMUtils getInstance(Activity activity) {
-        mActivity = activity;
+    public static UMUtils getInstance() {
         return UMUtils.SingleUMUtils.INSTANCE;
     }
 

@@ -3,12 +3,14 @@ package com.cmax.bodysheild.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.TypedValue;
 
 import com.cmax.bodysheild.AppContext;
-import com.cmax.bodysheild.R;
 
 import java.util.Locale;
+
+import static com.cmax.bodysheild.util.StringUtils.isMatch;
 
 /**
  * Created by Administrator on 2016/12/7 0007.
@@ -61,5 +63,14 @@ public class UIUtils {
             return true;
         else
             return false;
+    }
+    /**
+     * 是否是电话号码
+     */
+    public static boolean isPhoneNumber(String phoneNumber) {
+        if (TextUtils.isEmpty(phoneNumber))return  false;
+        //String format = "^(1(([357][0-9])|(47)|[8][0126789]))\\d{8}$";
+        String format = "^[1][3,4,5,7,8][0-9]{9}$";
+        return isMatch(format, phoneNumber);
     }
 }

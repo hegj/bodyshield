@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 按钮按下的状态  -->
+    <item android:drawable="@drawable/edittext_selected" android:state_focused="true"></item>
+    <!-- 按钮松开的状态  -->
+    <item android:drawable="@drawable/edittext_nomal" android:state_focused="false"></item>
+
+</selector>

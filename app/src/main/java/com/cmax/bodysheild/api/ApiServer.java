@@ -2,21 +2,18 @@ package com.cmax.bodysheild.api;
 
 import com.cmax.bodysheild.base.bean.BaseRequestData;
 import com.cmax.bodysheild.bean.HistoryData;
+import com.cmax.bodysheild.bean.SendMessageInfo;
 import com.cmax.bodysheild.bean.UserProfileInfo;
 
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import rx.Observable;
 
@@ -48,4 +45,10 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST( Url.THIRD_LOGIN)
     Observable<BaseRequestData<UserProfileInfo>> thirdLogin(@FieldMap Map<String,String> map);
+    @POST(Url.SEND_CAPTCHA)
+    @FormUrlEncoded
+    Observable<BaseRequestData<SendMessageInfo>> sendVerifyCode(@Field("mobile") String mobile);
+    @POST(Url.CHANGE_PASSWORD)
+    @FormUrlEncoded
+    Observable<BaseRequestData<Object>> changePassword(@Field("name")String username,@Field("Password") String password);
 }

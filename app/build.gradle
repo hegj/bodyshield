@@ -65,7 +65,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.5'
@@ -96,15 +96,17 @@ dependencies {
     /*
 
 
-      compile rootProject.ext.dependencies["okhttp"]
+              compile rootProject.ext.dependencies["okhttp"]
 
-     provided rootProject.ext.dependencies["auto-value-gson"]
-     compile rootProject.ext.dependencies["sqlbrite"]
-         apt rootProject.ext.dependencies["auto-value"]
-         provided rootProject.ext.dependencies["auto-value"]
-         apt rootProject.ext.dependencies["auto-value-gson"]*/
+             provided rootProject.ext.dependencies["auto-value-gson"]
+             compile rootProject.ext.dependencies["sqlbrite"]
+                 apt rootProject.ext.dependencies["auto-value"]
+                 provided rootProject.ext.dependencies["auto-value"]
+                 apt rootProject.ext.dependencies["auto-value-gson"]*/
     compile files('libs/SocialSDK_facebook.jar')
     compile files('libs/SocialSDK_QQ_Simplify.jar')
     compile files('libs/SocialSDK_twitter.jar')
     compile files('libs/SocialSDK_WeChat_Simplify.jar')
+    compile files('libs/commons-beanutils-1.7.0.jar')
+    compile files('libs/org.apache.httpcomponents.httpclient_4.3.5.jar')
 }

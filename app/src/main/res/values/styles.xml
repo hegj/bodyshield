@@ -132,4 +132,26 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <!-- EditText的样式抽取 -->
+    <style name="EditTextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textCursorDrawable">@drawable/et_cursor</item>
+        <item name="android:background">@drawable/edittext_selector</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="InputStyle">
+        <!-- 底部线 默认颜色 -->
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <!-- 底部线 EditText激活时颜色 -->
+        <item name="colorControlActivated">@color/blue</item>
+        <!-- 设置光标 -->
+        <item name="android:textCursorDrawable">@drawable/et_cursor</item>
+    </style>
+
 </resources>

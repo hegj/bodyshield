@@ -67,7 +67,6 @@ public class OkHttpApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //我写的这个例子是请求一个图片
                 //response的body是图片的byte字节
                 byte[] bytes = response.body().bytes();
                 //response.body().close();
@@ -90,5 +89,4 @@ public class OkHttpApi {
         });
         return bmp;
     }
-
 }

@@ -15,10 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +34,10 @@ import com.cmax.bodysheild.bean.cache.DeviceUser;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.bluetooth.BLEService;
 import com.cmax.bodysheild.bluetooth.BluetoothService;
-import com.cmax.bodysheild.bluetooth.BluetoothService;
 import com.cmax.bodysheild.bluetooth.DeviceType;
 import com.cmax.bodysheild.bluetooth.command.temperature.ContinuousDataCommand;
 import com.cmax.bodysheild.bluetooth.command.temperature.TimeDataCommand;
 import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
-import com.cmax.bodysheild.listeners.SimpleDialogListeners;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
@@ -55,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 
@@ -245,9 +240,10 @@ public class DeviceActivity extends BaseActivity {
 		BLEDevice device = new BLEDevice();
 		intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
 		startActivity(intent);*/
-		//	scanLeDevice(!scanning);
-		// IntentUtils.toEditProfile(this,null);
-		IntentUtils.toLoginActivity(this,null,null);
+		//scanLeDevice(!scanning);
+		IntentUtils.toEditProfile(this,null);
+		//	IntentUtils.toLoginActivity(this,null,null);
+		// IntentUtils.toRegisterActivity(this,null);
 	}
 
 	private void scanLeDevice(final boolean enable) {

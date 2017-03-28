@@ -106,6 +106,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
             @Override
             public void onNext(UserProfileInfo info) {
+                if (info==null){
+                    onError(null);
+                    return;
+                }
                 handleLoginUserData(this, info);
             }
 

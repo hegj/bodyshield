@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:background="@mipmap/bluebg"
     android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/rlTitle"
         android:layout_width="match_parent"
@@ -37,12 +47,15 @@
     <LinearLayout
         android:id="@+id/ll_content"
         android:layout_below="@+id/rlTitle"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
+
+
+
         <EditText
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -55,7 +68,7 @@
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColorHint="#C1DEFD"
             android:gravity="center"/>
 
@@ -64,7 +77,7 @@
     <EditText
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/userPassword"
         android:layout_width="match_parent"
@@ -74,7 +87,7 @@
         android:background="@drawable/edittext_bg_1"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="@color/white"
         android:textColorHint="#C1DEFD"
         android:gravity="center"/>
@@ -83,7 +96,7 @@
 
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/userSex"
             android:layout_width="match_parent"
@@ -92,7 +105,7 @@
             android:background="@drawable/edittext_bg_1"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:textColorHint="#C1DEFD"
             android:gravity="center"/>
@@ -100,7 +113,7 @@
 
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/userAge"
             android:layout_width="match_parent"
@@ -109,7 +122,7 @@
             android:background="@drawable/edittext_bg_1"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:textColorHint="#C1DEFD"
             android:gravity="center"/>
@@ -117,7 +130,25 @@
 
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/userCountryCode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/login_please_input_country_code"
+            android:background="@drawable/edittext_bg_1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textColorHint="#C1DEFD"
+            android:gravity="center"/>
+
+        <EditText
+
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/userMobile"
             android:layout_width="match_parent"
@@ -126,10 +157,57 @@
             android:background="@drawable/edittext_bg_1"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:textColorHint="#C1DEFD"
             android:gravity="center"/>
+
+        <LinearLayout
+            android:background="@drawable/edittext_bg_1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="40dp">
+
+            <TextView
+
+                android:layout_weight="1.4"
+                android:layout_marginLeft="15dp"
+                android:gravity="left|center_vertical"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:text="@string/login_text_verification_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+            <EditText
+                android:id="@+id/etGetVerifyCode"
+                android:layout_weight="2.2"
+                android:layout_marginLeft="5dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:hint="@string/login_input_verification_code"
+                android:background="@null"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="#C1DEFD"
+                android:gravity="center_vertical|left"/>
+
+            <TextView
+                android:id="@+id/tvGetVerifyCode"
+                android:layout_weight="2"
+                android:layout_marginLeft="15dp"
+                android:gravity="left|center_vertical"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/login_get_captcha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
 
         <TextView
         android:id="@+id/tvLogin"
@@ -156,5 +234,7 @@
         android:text="@string/register_has_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

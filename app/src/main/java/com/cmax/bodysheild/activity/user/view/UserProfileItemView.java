@@ -14,7 +14,6 @@ import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseCustomView;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.listeners.ProfileDataSuccessListener;
-import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
 import butterknife.Bind;
@@ -47,13 +46,13 @@ public abstract class UserProfileItemView extends BaseCustomView {
 
     @Override
     protected void initEvent(Context context) {
-       /* rootView.setOnClickListener(new OnClickListener() {
+        rootView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (profileType==0)return;
                  buildProfileDialog(profileType);
             }
-        });*/
+        });
     }
     public  void setProfileDataSuccessListener( ProfileDataSuccessListener listener){
         profileDataSuccessListener=listener;

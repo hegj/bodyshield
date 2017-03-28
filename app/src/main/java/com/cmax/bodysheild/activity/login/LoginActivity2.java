@@ -54,7 +54,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
         basePresenter =loginPresenter;
-        UMUtils.getInstance(this).setLoginPresenter(loginPresenter);
+        UMUtils.mActivity=this;
+        UMUtils.getInstance().setLoginPresenter(loginPresenter);
     }
 
     @Override
@@ -128,11 +129,11 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
     @OnClick(R.id.ib_login_qq )
     void thirdOfQQ(View view){
         //ToastUtils.showFailToast("需要到qq 申请APP的第三方登录的权限");
-        UMUtils.getInstance(this).thirdLoginOfQQ();
+        UMUtils.getInstance().thirdLoginOfQQ();
     }
     @OnClick(R.id.ib_login_weixin )
     void thirdofWeixin(View view){
-        UMUtils.getInstance(this).thirdLoginOfWeChat();
+        UMUtils.getInstance().thirdLoginOfWeChat();
     }
     @OnClick(R.id.ib_login_facebook )
     void thirdOfFacebook(View view){
@@ -152,6 +153,13 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
         UMUtils.mActivity=null;
         super.onDestroy();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UMUtils.getInstance().onPause();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

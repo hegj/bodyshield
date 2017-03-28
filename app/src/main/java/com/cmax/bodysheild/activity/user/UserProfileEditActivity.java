@@ -21,7 +21,6 @@ import com.cmax.bodysheild.http.RxJavaHttpHelper;
 import com.cmax.bodysheild.http.rxschedulers.RxSchedulersHelper;
 import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
 import com.cmax.bodysheild.listeners.CropPickListeners;
-import com.cmax.bodysheild.listeners.ProfileDataSuccessListener;
 import com.cmax.bodysheild.util.CropUtils;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
@@ -99,18 +98,6 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     @Override
     protected void initEvent(Bundle savedInstanceState) {
         super.initEvent(savedInstanceState);
-
-       /* tvUserName.setProfileDataSuccessListener(new ProfileDataSuccessListener() {
-            @Override
-            public void success(int profileType, User user) {
-                tvUserName.setProfileValue(user.getUserName());
-            }
-
-            @Override
-            public void failed() {
-
-            }
-        });*/
     }
 
     @Override

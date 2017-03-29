@@ -12,9 +12,11 @@ import android.view.View;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.UserListActivity;
 import com.cmax.bodysheild.activity.user.view.UserProfileNameItemView;
+import com.cmax.bodysheild.activity.user.view.UserProfilePasswordItemView;
 import com.cmax.bodysheild.api.Url;
 import com.cmax.bodysheild.base.BaseActivity;
 import com.cmax.bodysheild.base.view.IStateView;
+import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.HttpMethods;
 import com.cmax.bodysheild.http.RxJavaHttpHelper;
@@ -50,13 +52,14 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     CircleImageView userImageBtn;
     @Bind(R.id.tv_user_name)
     UserProfileNameItemView tvUserName;
-  /*  @Bind(R.id.tv_user_phone)
-    UserProfileItemView tvUserPhone;*/
+   @Bind(R.id.tv_user_phone)
+   UserProfilePasswordItemView tvUserPhone;
 
     private Bitmap bitmap;
     private Dialog mCropParamsDialog;
     private Uri resultUri;
     private ProgressDialog progressDialog;
+    private BLEDevice device;
 
     @Override
     protected int getLayoutId() {
@@ -69,11 +72,17 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         user = getIntent().getParcelableExtra(UserListActivity.CURRENT_USER);
+        device = getIntent().getParcelableExtra("device");
         if (user != null) {
             tvUserName.setProfileValue(user.getUserName());
             bitmap = PortraitUtil.getBitmap(this, user.getImage());
             userImageBtn.setImageBitmap(bitmap);
             tvUserName.setUser(user);
+            tvUserPhone.setUser(user);
+        }
+        if (device!=null){
+            tvUserPhone.setDevice(device);
+
         }
 
     }
@@ -98,6 +107,12 @@ public class UserProfileEditActivity extends BaseActivity implements CropPickLis
     @Override
     protected void initEvent(Bundle savedInstanceState) {
         super.initEvent(savedInstanceState);
+       /* tvUserPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentUtils.toEditPassWord(UserProfileEditActivity.this,user,device);
+            }
+        });*/
     }
 
     @Override

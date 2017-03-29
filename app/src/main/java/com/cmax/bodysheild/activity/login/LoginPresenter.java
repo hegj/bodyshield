@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
-import com.cmax.bodysheild.AppContext;
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
@@ -19,23 +17,15 @@ import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.http.OkHttpApi;
 import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
 import com.cmax.bodysheild.http.rxexception.ErrorManager;
-import com.cmax.bodysheild.http.rxsubscriber.ProgressSubscriber;
-import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.PortraitUtil;
-import com.cmax.bodysheild.util.SharedPreferencesUtil;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
-import org.hybridsquad.android.library.BitmapUtil;
-import org.hybridsquad.android.library.CropHandler;
-import org.hybridsquad.android.library.CropParams;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import rx.Subscriber;
@@ -139,7 +129,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     private void handleLoginUserData(Subscriber<UserProfileInfo> subscriber, UserProfileInfo info) {
-        AppContext.setUserId(info.getId());
+        UIUtils.setUserId(info.getId());
+        UIUtils.setUserPhone(info.getMobile());
         if (!TextUtils.isEmpty(info.getHeadImg())) {
             OkHttpApi.getInstance().requestBitMap(info, activity, device, subscriber, loginDialog);
         } else {
@@ -147,6 +138,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             user.setId(info.getId() + "");
             user.setUserName(info.getName());
             user.setPassword(info.getPassword());
+            user.setPhone(info.getMobile());
             DataUtils.addDeviceToSp(device, user);
             DataUtils.addUserToSp(user);
             loginDialog.dismiss();

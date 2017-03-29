@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 
@@ -174,6 +173,7 @@ public class UserListActivity extends BaseActivity {
 				deviceUsers.add(temp);
 			}
 			UIUtils.setUserId(Integer.parseInt(user.getUser().getId()));
+			UIUtils.setUserPhone(user.getUser().getPhone());
 			SharedPreferencesUtil.setList(Constant.DEVICE_USER_LIST, deviceUsers);
 			SharedPreferencesUtil.setStringValue(device.getAddress(), user.getUser().getId());
 
@@ -199,7 +199,7 @@ public class UserListActivity extends BaseActivity {
             }
         }
         if(user!=null){
-			IntentUtils.toEditProfile(this,user);
+			IntentUtils.toEditProfile(this,user,device);
         } else{
             Toast.makeText(this, R.string.not_selected_user, Toast.LENGTH_SHORT).show();
         }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.ImageView;
 
 import com.cmax.bodysheild.bean.UserProfileInfo;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
@@ -18,10 +17,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-
-import okhttp3.Callback;
 import okhttp3.Response;
 import rx.Subscriber;
 
@@ -80,6 +78,7 @@ public class OkHttpApi {
                 user.setId(info.getId() + "");
                 user.setUserName(info.getName());
                 user.setPassword(info.getPassword());
+                user.setPhone(info.getMobile());
                 DataUtils.addDeviceToSp(device, user);
                 DataUtils.addUserToSp(user);
                 loginDialog.dismiss();

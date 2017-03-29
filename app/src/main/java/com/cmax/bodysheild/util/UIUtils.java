@@ -31,25 +31,28 @@ public class UIUtils {
      */
     public static Resources getResource() {
         return getContext().getResources();
-    }  public static int getResourceColor(int c) {
+    }
+
+    public static int getResourceColor(int c) {
         return getContext().getResources().getColor(c);
     }
 
     public static int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getContext(). getResources().getDisplayMetrics());
+                getContext().getResources().getDisplayMetrics());
     }
+
     public static Handler getMainThreadHandler() {
         return AppContext.getMainHandler();
     }
 
 
     public static String getString(int res) {
-        return   getContext().getString(res);
+        return getContext().getString(res);
     }
 
-    public static  int getUserId(){
-     return    AppContext.getUserId();
+    public static int getUserId() {
+        return AppContext.getUserId();
     }
 
     public static void setUserId(int id) {
@@ -64,13 +67,22 @@ public class UIUtils {
         else
             return false;
     }
+
     /**
      * 是否是电话号码
      */
     public static boolean isPhoneNumber(String phoneNumber) {
-        if (TextUtils.isEmpty(phoneNumber))return  false;
+        if (TextUtils.isEmpty(phoneNumber)) return false;
         //String format = "^(1(([357][0-9])|(47)|[8][0126789]))\\d{8}$";
         String format = "^[1][3,4,5,7,8][0-9]{9}$";
         return isMatch(format, phoneNumber);
+    }
+
+    public static void setUserPhone(String mobile) {
+        AppContext.setUserPhone(mobile);
+    }
+
+    public static String getUserPhone() {
+        return AppContext.getUserPhone();
     }
 }

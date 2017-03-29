@@ -18,43 +18,49 @@ import java.util.List;
 public class DataUtils {
 
 
-
-    public static void addUserToSp(User user){
-        if (user==null)return;
+    public static void addUserToSp(User user) {
+        if (user == null) return;
         List<User> users = getUserList();
         Iterator<User> iterator = users.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             User spUser = iterator.next();
-            if (spUser.getId().equals(user.getId())){
+            if (spUser.getId().equals(user.getId())) {
                 iterator.remove();
             }
         }
         users.add(user);
         SharedPreferencesUtil.setList(Constant.USER_LIST, users);
     }
-    public static void editUser(User user){
-          int userIndex=0;
 
-        if (user==null)return;
+    public static void editUser(User user) {
+        int userIndex = 0;
+
+        if (user == null) return;
         List<User> users = getUserList();
-        for (int i =users.size()-1 ;i>=0;i--){
+        for (int i = users.size() - 1; i >= 0; i--) {
             User spUser = users.get(i);
-            if (spUser.getId().equals(user.getId())){
+            if (spUser.getId().equals(user.getId())) {
                 userIndex = i;
                 users.remove(i);
                 break;
             }
         }
-        users.add(userIndex,user);
+        users.add(userIndex, user);
         SharedPreferencesUtil.setList(Constant.USER_LIST, users);
     }
 
-    public static   List<User> getUserList(){
-      return SharedPreferencesUtil.getList(Constant.USER_LIST,
+    public static List<User> getUserList() {
+        return SharedPreferencesUtil.getList(Constant.USER_LIST,
                 User.class);
     }
+
+    public static void setUserList(List<User> users) {
+        SharedPreferencesUtil.setList(Constant.USER_LIST,
+                users);
+    }
+
     public static void addDeviceToSp(BLEDevice device, User user) {
-        if (device==null)return;
+        if (device == null) return;
         List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST,
                 DeviceUser.class);
         DeviceUser temp = null;
@@ -83,13 +89,16 @@ public class DataUtils {
             user.setImage(imagePath);
             editUser(user);
         }
-    }   public static void saveUserInfo(String  headImageUrl, Activity activity, User user) {
+    }
+
+    public static void saveUserInfo(String headImageUrl, Activity activity, User user) {
         if (!TextUtils.isEmpty(headImageUrl)) {
             user.setImage(headImageUrl);
             addUserToSp(user);
         }
     }
-    public  static  String getUserIdForAddress(String address){
+
+    public static String getUserIdForAddress(String address) {
         List<DeviceUser> deviceUsers = SharedPreferencesUtil.getList(Constant.DEVICE_USER_LIST,
                 DeviceUser.class);
         DeviceUser temp = null;
@@ -99,7 +108,14 @@ public class DataUtils {
                 break;
             }
         }
-        return  temp.getUserId();
+        return temp.getUserId();
     }
-    
+
+    public static void removeUser(User user) {
+        List<User> users = getUserList();
+        if (users.contains(user)) {
+            users.remove(user);
+        }
+        setUserList(users);
+    }
 }

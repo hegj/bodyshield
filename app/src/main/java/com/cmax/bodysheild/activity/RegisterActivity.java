@@ -106,7 +106,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
         super.initData(savedInstanceState);
         registerModel = new RegisterModel();
         device = getIntent().getParcelableExtra(TemperatureInfoActivity.EXTRA_DEVICE);
-        KeyBoardUtils.openKeybord(userName, this);
+        //KeyBoardUtils.openKeybord(userName, this);
 
     }
 
@@ -129,8 +129,12 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
     void tvGetVerifyCode(View view) {
         String mobile = userMobile.getText().toString().trim();
         String countryCode = userCountryCode.getText().toString();
-        if (!StringUtils.isPhoneNumber(mobile)) {
+        if (TextUtils.isEmpty(mobile) ){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
+            return;
+        }
+        if (!StringUtils.isPhoneNumber(mobile)){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_correct_warning));
             return;
         }
         if (TextUtils.isEmpty(countryCode)){
@@ -153,6 +157,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
                 tvGetVerifyCode.setTextColor(UIUtils.getResourceColor(R.color.thin_gray));
                 tvGetVerifyCode.setClickable(false);
                 countDown();
+                onCompleted();
 
             }
 
@@ -180,7 +185,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
             @Override
             public void onNext(Integer integer) {
                if (UIUtils.isZh(RegisterActivity.this)){
-                   tvGetVerifyCode.setText(integer + "后获取");
+                   tvGetVerifyCode.setText(integer + "秒后获取");
                }else{
                    tvGetVerifyCode.setText(integer + "seconds");
 
@@ -209,7 +214,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
             ToastUtils.showFailToast(UIUtils.getString(R.string.age_error_message));
             return;
         }
-        if (!TextUtils.isEmpty(userMobil) ){
+        if (TextUtils.isEmpty(userMobil) ){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
             return;
         }
@@ -227,7 +232,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_get_captcha_code_warning));
             return;
         }
-        if (captcha.equals(captcha2)){
+        if (!captcha.equals(captcha2)){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_correct_captcha_code_warning));
             return;
         }
@@ -279,6 +284,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
                 user.setId(userProfileInfo.getId() + "");
                 user.setUserName(userProfileInfo.getName());
                 user.setPassword(userProfileInfo.getPassword());
+                user.setPhone(userProfileInfo.getMobile());
                 DataUtils.addUserToSp(user);
                 DataUtils.addDeviceToSp(device, user);
                 onCompleted();
@@ -340,7 +346,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
 
     @Override
     public void showProgressDialog() {
-        progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.register_loading));
+        progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.loading));
     }
 
     @Override

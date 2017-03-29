@@ -142,4 +142,7 @@
     <string name="login_please_input_correct_captcha_code_warning">Please enter the correct captcha</string>
     <string name="profile_change_password">Change  password</string>
     <string name="login_please_input_mobile_correct_warning">Please enter a correct phone number</string>
+    <string name="edit_profile_password_phone_warning">Please enter the binding mobile phone number when registering</string>
+    <string name="login_please_input_new_password_warning">Please enter your new password</string>
+    <string name="edit_password_success">Modify password successfully, please login again</string>
 </resources>

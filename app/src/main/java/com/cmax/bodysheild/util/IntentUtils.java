@@ -7,11 +7,11 @@ import android.os.Build;
 
 import com.cmax.bodysheild.activity.FeedbackActivity;
 import com.cmax.bodysheild.activity.RegisterActivity;
-import com.cmax.bodysheild.activity.SettingActivity;
 import com.cmax.bodysheild.activity.TemperatureInfoActivity;
+import com.cmax.bodysheild.activity.user.UserEditPasswordActivity;
 import com.cmax.bodysheild.activity.UserListActivity;
-import com.cmax.bodysheild.activity.user.UserProfileEditActivity;
 import com.cmax.bodysheild.activity.login.LoginActivity2;
+import com.cmax.bodysheild.activity.user.UserProfileEditActivity;
 import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
 
@@ -41,9 +41,10 @@ public class IntentUtils {
         activity.finish();
     }
 
-    public static void toEditProfile( Activity activity, User user) {
+    public static void toEditProfile(Activity activity, User user, BLEDevice device) {
         Intent intent = new Intent(activity, UserProfileEditActivity.class);
         intent.putExtra(UserListActivity.CURRENT_USER, user);
+        intent.putExtra("device", device);
         activity.startActivityForResult(intent,2);
 
     }    public static void toFeedBack( Activity activity ) {
@@ -63,5 +64,13 @@ public class IntentUtils {
             localIntent.putExtra("com.android.settings.ApplicationPkgName",activity. getPackageName());
         }
         activity.startActivity(localIntent);
+    }
+
+
+    public static void toEditPassWord(Activity activity, User user, BLEDevice device) {
+        Intent intent = new Intent(activity,UserEditPasswordActivity.class);
+        intent.putExtra("user",user);
+        intent.putExtra("device", device);
+        activity.startActivity(intent);
     }
 }

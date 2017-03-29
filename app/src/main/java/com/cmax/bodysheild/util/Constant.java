@@ -26,4 +26,6 @@ public class Constant {
     public static final String TEST_DEVICE_NAME_TEMPERATURE = "90:2C:C7:02:7F:FF";
     public static final String KEY_TEMPERTURE_RECORD_TIME = "temperture_record_time";
     public static final String KEY_TEMPERTURE_RECORD_NET_TIME ="temperture_record_net_time" ;
+    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_USER_PHONE = "user_phone";
 }

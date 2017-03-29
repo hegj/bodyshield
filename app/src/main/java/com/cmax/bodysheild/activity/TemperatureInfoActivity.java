@@ -17,8 +17,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -250,6 +248,7 @@ public class TemperatureInfoActivity extends FragmentActivity {
                 Bitmap bm = PortraitUtil.getBitmap(this,userImage);
                 userImageBtn.setImageBitmap(bm);
                 UIUtils.setUserId(Integer.parseInt(id));
+
                 break;
             }
         }

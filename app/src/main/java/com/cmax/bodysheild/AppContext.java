@@ -3,7 +3,6 @@
  */
 package com.cmax.bodysheild;
 
-import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -14,10 +13,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.cmax.bodysheild.enums.AppModel;
 import com.cmax.bodysheild.exception.CrashHandler;
-/*import com.cmax.bodysheild.inject.component.AppComponent;
-
-import com.cmax.bodysheild.inject.component.DaggerAppComponent;
-import com.cmax.bodysheild.inject.module.AppModule;*/
+import com.cmax.bodysheild.util.SPUtils;
 import com.facebook.stetho.Stetho;
 import com.github.mikephil.charting.data.LineData;
 import com.orhanobut.logger.LogLevel;
@@ -27,6 +23,11 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
 import org.apache.commons.lang3.StringUtils;
+
+/*import com.cmax.bodysheild.inject.component.AppComponent;
+
+import com.cmax.bodysheild.inject.component.DaggerAppComponent;
+import com.cmax.bodysheild.inject.module.AppModule;*/
 
 public class AppContext extends MultiDexApplication {
 
@@ -130,10 +131,17 @@ public class AppContext extends MultiDexApplication {
     }
 
     public static void setUserId(int id) {
-        uid = id;
+        SPUtils.setUserId(id);
     }
 
     public static int getUserId() {
-        return uid;
+        return SPUtils.getUserId();
+    }
+    public static void setUserPhone(String phone) {
+        SPUtils.setUserPhone(phone);
+    }
+
+    public static String getUserPhone() {
+        return SPUtils.getUserPhone();
     }
 }

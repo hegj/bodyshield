@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseCustomView;
+import com.cmax.bodysheild.bean.ble.BLEDevice;
 import com.cmax.bodysheild.bean.cache.User;
 import com.cmax.bodysheild.listeners.ProfileDataSuccessListener;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
 import butterknife.Bind;
@@ -36,6 +38,8 @@ public abstract class UserProfileItemView extends BaseCustomView {
     protected EditProfileDialog.Builder builder;
     protected User user;
     ProfileDataSuccessListener profileDataSuccessListener;
+    private BLEDevice device;
+
     public UserProfileItemView(Context context) {
         super(context);
     }
@@ -45,12 +49,17 @@ public abstract class UserProfileItemView extends BaseCustomView {
     }
 
     @Override
-    protected void initEvent(Context context) {
+    protected void initEvent(final Context context) {
         rootView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (profileType==0)return;
-                 buildProfileDialog(profileType);
+                if (profileType==2){
+                    IntentUtils.toEditPassWord((Activity) context, user, device);
+                }
+                else {
+                    buildProfileDialog(profileType);
+                }
             }
         });
     }
@@ -114,5 +123,9 @@ public abstract class UserProfileItemView extends BaseCustomView {
 
     public void setUser(User user) {
         this.user =user;
+    }
+
+    public void setDevice(BLEDevice device) {
+        this.device = device;
     }
 }

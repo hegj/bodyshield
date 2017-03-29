@@ -13,11 +13,15 @@ public class User implements Parcelable {
 	String userName;
     String image;
 
+
+    public String phone;
+
     public User(Parcel in) {
         id = in.readString();
         userName = in.readString();
         image = in.readString();
         password = in.readString();
+        phone = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -91,5 +95,14 @@ public class User implements Parcelable {
         dest.writeString(userName);
         dest.writeString(image);
         dest.writeString(password);
+        dest.writeString(phone);
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

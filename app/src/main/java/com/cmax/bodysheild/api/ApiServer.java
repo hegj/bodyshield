@@ -50,5 +50,5 @@ public interface ApiServer {
     Observable<BaseRequestData<SendMessageInfo>> sendVerifyCode(@Field("mobile") String mobile);
     @POST(Url.CHANGE_PASSWORD)
     @FormUrlEncoded
-    Observable<BaseRequestData<Object>> changePassword(@Field("name")String username,@Field("Password") String password);
+    Observable<BaseRequestData<Object>> changePassword(@Field("name")String username,@Field("newPassword") String password);
 }

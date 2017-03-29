@@ -79,7 +79,12 @@ public abstract class UserProfileItemView extends BaseCustomView {
         }
         builder.setContext((Activity) context);
         editProfileDialog = builder.create();
+        itemStatus(builder);
         editProfileDialog.show();
+    }
+
+    public void itemStatus(EditProfileDialog.Builder builder) {
+
     }
 
     protected abstract void itemSetConfig(EditProfileDialog.Builder builder, int profileType) ;

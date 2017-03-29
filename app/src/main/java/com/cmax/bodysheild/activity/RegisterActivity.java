@@ -129,14 +129,15 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
     void tvGetVerifyCode(View view) {
         String mobile = userMobile.getText().toString().trim();
         String countryCode = userCountryCode.getText().toString();
-        if (TextUtils.isEmpty(countryCode)){
-            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_country_code));
-            return;
-        }
         if (!StringUtils.isPhoneNumber(mobile)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
             return;
         }
+        if (TextUtils.isEmpty(countryCode)){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_country_code));
+            return;
+        }
+
         tvGetVerifyCode.setClickable(false);
         mobile= countryCode+"-"+mobile;
         registerModel.sendVerifyCode(mobile).subscribe(new ProgressSubscriber<SendMessageInfo>(this) {
@@ -208,8 +209,12 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
             ToastUtils.showFailToast(UIUtils.getString(R.string.age_error_message));
             return;
         }
-        if (!TextUtils.isEmpty(userMobil) && (!StringUtils.isPhoneNumber(userMobil))) {
+        if (!TextUtils.isEmpty(userMobil) ){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
+            return;
+        }
+        if (!StringUtils.isPhoneNumber(userMobil)){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_correct_warning));
             return;
         }
         String captcha2 = etGetVerifyCode.getText().toString();

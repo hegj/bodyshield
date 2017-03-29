@@ -141,4 +141,5 @@
     <string name="login_please_input_get_captcha_code_warning">Please get captcha</string>
     <string name="login_please_input_correct_captcha_code_warning">Please enter the correct captcha</string>
     <string name="profile_change_password">Change  password</string>
+    <string name="login_please_input_mobile_correct_warning">Please enter a correct phone number</string>
 </resources>

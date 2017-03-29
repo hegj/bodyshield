@@ -129,4 +129,5 @@
     <string name="login_please_input_get_captcha_code_warning">请获取验证码</string>
     <string name="login_please_input_correct_captcha_code_warning">请输入正确的验证码</string>
     <string name="profile_change_password">修改密码</string>
+    <string name="login_please_input_mobile_correct_warning">请输入正确的手机号</string>
 </resources>

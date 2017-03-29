@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cmax.bodysheild.R;
@@ -55,11 +56,17 @@ public class UserProfilePasswordItemView extends UserProfileItemView implements 
 
     @Override
     protected void itemSetConfig(EditProfileDialog.Builder builder, int profileType) {
-        View view = View.inflate(UIUtils.getContext(), R.layout.view_user_profile_phone, null);
-        builder.setContentView(view);
+        //View view = View.inflate(UIUtils.getContext(), R.layout.view_user_profile_phone, null);
+       // builder.setContentView(view);
         builder.setTitle(UIUtils.getString(R.string.profile_change_password));
         builder.setDialogType(EditProfileDialog.TYPE4);
 
+    }
+
+    @Override
+    public void itemStatus(EditProfileDialog.Builder builder) {
+        super.itemStatus(builder);
+         ViewGroup view = builder.rootView;
         etPhone = (TextInputEditText) view.findViewById(R.id.et_phone);
         etUserPassword = (TextInputEditText) view.findViewById(R.id.et_userPassword);
         etUserCountryCode = (TextInputEditText) view.findViewById(et_userCountryCode);
@@ -91,8 +98,12 @@ public class UserProfilePasswordItemView extends UserProfileItemView implements 
             return;
         }
 
-        if (!TextUtils.isEmpty(userMobil) && (!StringUtils.isPhoneNumber(userMobil))) {
+        if (!TextUtils.isEmpty(userMobil)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
+            return;
+        }
+        if (!StringUtils.isPhoneNumber(userMobil)){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_correct_warning));
             return;
         }
         String captcha2 = etCode.getText().toString();
@@ -114,15 +125,14 @@ public class UserProfilePasswordItemView extends UserProfileItemView implements 
     public void tvGetVerifyCode() {
         String mobile = etPhone.getText().toString().trim();
         String countryCode = etUserCountryCode.getText().toString();
-        if (TextUtils.isEmpty(countryCode)) {
-            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_country_code));
-            return;
-        }
         if (!StringUtils.isPhoneNumber(mobile)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
             return;
         }
-
+        if (TextUtils.isEmpty(countryCode)) {
+            ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_country_code));
+            return;
+        }
         mobile = countryCode + "-" + mobile;
         registerModel.sendVerifyCode(mobile).subscribe(new ProgressSubscriber<SendMessageInfo>(this) {
             @Override

@@ -47,6 +47,7 @@ public class EditProfileDialog extends Dialog {
         private TextInputEditText edMessage;
         private String edTextHint;
         private int dialogType;
+        public ViewGroup rootView;
 
         public Builder setContext(Activity context) {
             this.context = context;
@@ -106,16 +107,16 @@ public class EditProfileDialog extends Dialog {
 
         // 构建整个dialog
         public EditProfileDialog create() {
-            ViewGroup view = (ViewGroup) View.inflate(context, R.layout.dialog_edit_profile, null);
+            rootView = (ViewGroup) View.inflate(context, R.layout.dialog_edit_profile, null);
             final EditProfileDialog editProfileDialog = new EditProfileDialog(context);
             editProfileDialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
-            editProfileDialog.addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            editProfileDialog.addContentView(rootView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             if (!TextUtils.isEmpty(title)) {
-                TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
+                TextView tvTitle = (TextView) rootView.findViewById(R.id.tv_title);
                 tvTitle.setText(title);
             }
-            TextView tvMessage = (TextView) view.findViewById(R.id.tv_message);
-            edMessage = (TextInputEditText) view.findViewById(R.id.et_message);
+            TextView tvMessage = (TextView) rootView.findViewById(R.id.tv_message);
+            edMessage = (TextInputEditText) rootView.findViewById(R.id.et_message);
             if (dialogType == TYPE1) {
                 edMessage.setVisibility(View.VISIBLE);
                 tvMessage.setText(textMessage);
@@ -131,21 +132,24 @@ public class EditProfileDialog extends Dialog {
                 }
             } else if (dialogType == TYPE4) {
                 // 自定义布局
-                LinearLayout llMessage = (LinearLayout) view.findViewById(R.id.ll_message);
+                LinearLayout llPassword = (LinearLayout) rootView.findViewById(R.id.ll_password);
+                llPassword.setVisibility(View.VISIBLE);
+
+              /*  LinearLayout llMessage = (LinearLayout) view.findViewById(R.id.ll_message);
                 LinearLayout rl_message = (LinearLayout) view.findViewById(R.id.rl_message);
                 rl_message.removeView(llMessage);
                // llMessage.removeAllViews();
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 llMessage.setOrientation(LinearLayout.VERTICAL);
-                view.addView(contentView, 0,params);
-                rl_message.addView(llMessage,0);
+                llMessage.addView(contentView, 0,params);
+                rl_message.addView(llMessage,0);*/
 
             } else {
                 edMessage.setVisibility(View.VISIBLE);
                 tvMessage.setText(textMessage);
             }
 
-            TextView tvPositive = (TextView) view.findViewById(R.id.tv_positive);
+            TextView tvPositive = (TextView) rootView.findViewById(R.id.tv_positive);
             if (TextUtils.isEmpty(prositiveText)) {
                 tvPositive.setVisibility(View.GONE);
             } else {
@@ -157,7 +161,7 @@ public class EditProfileDialog extends Dialog {
                     }
                 });
             }
-            TextView tvNegative = (TextView) view.findViewById(R.id.tv_negative);
+            TextView tvNegative = (TextView) rootView.findViewById(R.id.tv_negative);
             if (TextUtils.isEmpty(negativeText)) {
                 tvNegative.setVisibility(View.GONE);
             } else {
@@ -169,7 +173,7 @@ public class EditProfileDialog extends Dialog {
                     }
                 });
             }
-            editProfileDialog.setContentView(view);
+            editProfileDialog.setContentView(rootView);
             return editProfileDialog;
         }
     }

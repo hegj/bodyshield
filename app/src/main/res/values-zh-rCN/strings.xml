@@ -45,6 +45,7 @@
 
     <!-- loading-->
     <string name="loading">数据同步中，请稍后</string>
+    <string name="loading2">请稍后</string>
 
     <string name="temp_unit_1"><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></string>
     <string name="temp_unit_2"><font color="gray"><b>℃/</b></font><font color="black"><b>℉</b></font></string>
@@ -120,10 +121,12 @@
     <string name="confirm">确定</string>
     <string name="access_server_failed">访问服务器失败,请重试</string>
     <string name="access_server_success">更新成功</string>
+    <string name="save_server_success">修改密码成功</string>
     <string name="feedback_title">意见反馈</string>
     <string name="login_please_input_country_code">请输入国家号</string>
     <string name="login_text_verification_code">验证码</string>
     <string name="login_input_verification_code">输入验证码</string>
+    <string name="register_please_input_country_code">国家号</string>
     <string name="login_get_captcha">获取验证码</string>
     <string name="login_please_input_captcha_code_warning">请输入验证码</string>
     <string name="login_please_input_get_captcha_code_warning">请获取验证码</string>
@@ -133,4 +136,11 @@
     <string name="edit_profile_password_phone_warning">请输入注册时绑定的手机号码</string>
     <string name="login_please_input_new_password_warning">请输入您的新密码</string>
     <string name="edit_password_success">修改密码成功,请重新登录</string>
+    <string name="login_forget_the_password">忘记密码</string>
+    <string name="login_third_party_account">  第三方账号登录  </string>
+    <string name="edit_password">修改密码</string>
+    <string name="edit_text_verification_code">填写用户名获取验证码</string>
+    <string name="edit_please_input_username_warning">Please fill in the user name to access authentication code</string>
+    <string name="register_please_input_country_code2">请输入国家号</string>
+    <string name="edit_password_captcha_sucssess">验证码已发送到注册时填入的手机号码</string>
 </resources>

@@ -152,6 +152,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
 
             @Override
             public void _onNext(SendMessageInfo sendMessageInfo) {
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.edit_password_captcha_sucssess));
                 captcha=  sendMessageInfo.captcha;
                 tvGetVerifyCode.setText(UIUtils.getString(R.string.login_get_captcha));
                 tvGetVerifyCode.setTextColor(UIUtils.getResourceColor(R.color.thin_gray));
@@ -214,6 +215,12 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
             ToastUtils.showFailToast(UIUtils.getString(R.string.age_error_message));
             return;
         }
+        String countryCode = userCountryCode.getText().toString();
+
+        if (TextUtils.isEmpty(countryCode) ){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.register_please_input_country_code2));
+            return;
+        }
         if (TextUtils.isEmpty(userMobil) ){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
             return;
@@ -242,7 +249,7 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
         map.put("password", password);
         map.put("sex", sex + "");
         map.put("age", TextUtils.isEmpty(userAge) ? "0" : userAge);
-        map.put("mobile", TextUtils.isEmpty(userMobil) ? "" : userMobil);
+        map.put("mobile", TextUtils.isEmpty(userMobil) || TextUtils.isEmpty(countryCode) ? "" : countryCode+"-"+userMobil);
 
         final ProgressDialog progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.register_loading));
         progressDialog.show();
@@ -346,7 +353,9 @@ public class RegisterActivity extends BaseActivity implements BelowMenuPopupWind
 
     @Override
     public void showProgressDialog() {
-        progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.loading));
+        if (progressDialog==null)
+        progressDialog = DialogUtils.showProgressDialog(RegisterActivity.this, UIUtils.getString(R.string.loading2));
+        progressDialog.show();
     }
 
     @Override

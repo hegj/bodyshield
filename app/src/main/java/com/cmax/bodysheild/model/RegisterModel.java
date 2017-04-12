@@ -40,4 +40,12 @@ public class RegisterModel {
                 .compose(RxJavaHttpHelper.<Object>handleResult())
                 .compose(RxSchedulersHelper.applyIoTransformer());
     }
+
+    public Observable<SendMessageInfo> sendVerifyCodeByUserName(String userName) {
+        return HttpMethods.getInstance().apiService.sendVerifyCodeByUserName(userName)
+                .compose(RxJavaHttpHelper.<SendMessageInfo>handleResult())
+                .compose(RxSchedulersHelper.<SendMessageInfo>applyIoTransformer());
+
+    }
+
 }

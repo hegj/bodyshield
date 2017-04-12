@@ -6,15 +6,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.cmax.bodysheild.R;
 import com.cmax.bodysheild.base.BaseActivity;
-import com.cmax.bodysheild.base.BaseMvpActivity;
 import com.cmax.bodysheild.inject.component.ActivityComponent;
 import com.cmax.bodysheild.util.DialogUtils;
-import com.cmax.bodysheild.util.IntentUtils;
-import com.cmax.bodysheild.util.KeyBoardUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
 import com.cmax.bodysheild.util.UMUtils;
@@ -28,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/11/23 0023.
  */
-public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILoginView{
+public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILoginView {
 
     @Bind(R.id.userName)
     EditText userName;
@@ -44,7 +40,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @Override
     protected void setActivityComponent(ActivityComponent activityComponent) {
-       activityComponent.inject(this);
+        activityComponent.inject(this);
     }
 
     @Override
@@ -53,15 +49,15 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
         loginDialog = DialogUtils.showProgressDialog(this, UIUtils.getString(R.string.login_loading));
         loginPresenter = new LoginPresenter();
         loginPresenter.setActivity(this);
-        basePresenter =loginPresenter;
-        UMUtils.mActivity=this;
+        basePresenter = loginPresenter;
+        UMUtils.mActivity = this;
         UMUtils.getInstance().setLoginPresenter(loginPresenter);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-     //   KeyBoardUtils.openKeybord(userName,this);
+        //   KeyBoardUtils.openKeybord(userName,this);
         loginPresenter.initIntentData(getIntent());
 
     }
@@ -88,7 +84,7 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @Override
     public void setPassWord(String passWord) {
-        userPassword .setText(passWord);
+        userPassword.setText(passWord);
     }
 
     @Override
@@ -118,39 +114,50 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @Override
     public void setPortraitBitmap(Bitmap bitmap) {
-      //  portrait.setImageBitmap(bitmap);
+        //  portrait.setImageBitmap(bitmap);
     }
 
-    @OnClick(R.id.tvRegister )
-    void register(View view){
+    @OnClick(R.id.tvRegister)
+    void register(View view) {
         loginPresenter.toRegisterActivity();
 
     }
-    @OnClick(R.id.ib_login_qq )
-    void thirdOfQQ(View view){
+
+    @OnClick(R.id.ib_login_qq)
+    void thirdOfQQ(View view) {
         //ToastUtils.showFailToast("需要到qq 申请APP的第三方登录的权限");
         UMUtils.getInstance().thirdLoginOfQQ();
     }
-    @OnClick(R.id.ib_login_weixin )
-    void thirdofWeixin(View view){
+
+    @OnClick(R.id.ib_login_weixin)
+    void thirdofWeixin(View view) {
         UMUtils.getInstance().thirdLoginOfWeChat();
     }
-    @OnClick(R.id.ib_login_facebook )
-    void thirdOfFacebook(View view){
+
+    @OnClick(R.id.ib_login_facebook)
+    void thirdOfFacebook(View view) {
         ToastUtils.showFailToast("需要到Facebook申请APP的第三方登录的权限");
     }
+
     @OnClick(R.id.tvLogin)
-    void login(View view){
-            loginPresenter.startLogin();
+    void login(View view) {
+        loginPresenter.startLogin();
     }
+
     @OnClick(R.id.backBtn)
-    void finishActivity(View view){
+    void finishActivity(View view) {
         finish();
     }
+
+    @OnClick(R.id.tvForgetPassword)
+    void forgetPassword(View view) {
+        loginPresenter.forgetPassword();
+    }
+
     @Override
     protected void onDestroy() {
         CropHelper.clearCacheDir();
-        UMUtils.mActivity=null;
+        UMUtils.mActivity = null;
         super.onDestroy();
     }
 

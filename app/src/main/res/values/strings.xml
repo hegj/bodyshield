@@ -53,7 +53,8 @@
 
     <!-- loading-->
     <string name="loading">Processing, please wait...</string>
-    
+    <string name="loading2">please wait...</string>
+
 <!--    <string name="temp_unit_1"><Data><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></Data></string>
     <string name="temp_unit_2"><Data><font color="gray"><b>℃/</b></font><font color="black"><b>℉</b></font></Data></string>-->
     <string name="temp_unit_1"><font color="black"><b>℃</b></font><font color="gray"><b>/℉</b></font></string>
@@ -131,9 +132,11 @@
     <string name="confirm">confirm</string>
     <string name="access_server_failed">Access the server failed, please try again</string>
     <string name="access_server_success">The update is successful</string>
+    <string name="save_server_success">Change the password successfully</string>
     <string name="feedback_loading_message" >Is feedback your problem, please later</string>
     <string name="feedback_title">feedback</string>
     <string name="login_please_input_country_code">Please enter the national  phone area code</string>
+    <string name="register_please_input_country_code">countryCode</string>
     <string name="login_text_verification_code">captcha</string>
     <string name="login_input_verification_code"> input captcha</string>
     <string name="login_get_captcha">get captcha</string>
@@ -145,4 +148,11 @@
     <string name="edit_profile_password_phone_warning">Please enter the binding mobile phone number when registering</string>
     <string name="login_please_input_new_password_warning">Please enter your new password</string>
     <string name="edit_password_success">Modify password successfully, please login again</string>
+    <string name="login_forget_the_password">forget the password</string>
+    <string name="login_third_party_account">  third party account  </string>
+    <string name="edit_password">change password</string>
+    <string name="edit_text_verification_code">input user name get captcha</string>
+    <string name="edit_please_input_username_warning">Please fill in the user name to access authentication code</string>
+    <string name="register_please_input_country_code2">Please enter the country</string>
+    <string name="edit_password_captcha_sucssess">captcha has been sent to fill in the mobile phone number when registering</string>
 </resources>

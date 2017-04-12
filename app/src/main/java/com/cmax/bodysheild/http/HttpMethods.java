@@ -8,9 +8,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -39,7 +37,11 @@ public class HttpMethods {
 
     private HttpMethods() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.connectTimeout(12, TimeUnit.SECONDS);
+
+        httpClientBuilder .connectTimeout(60, TimeUnit.SECONDS)       //设置连接超时
+                .readTimeout(60, TimeUnit.SECONDS)          //设置读超时
+                .writeTimeout(60,TimeUnit.SECONDS)          //设置写超时
+                .retryOnConnectionFailure(true) ;        //是否自动重连
         httpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

@@ -1,8 +1,6 @@
 package com.cmax.bodysheild.http.rxsubscriber;
 
 
-import android.os.SystemClock;
-
 import com.cmax.bodysheild.base.view.IStateView;
 import com.cmax.bodysheild.http.rxexception.DefaultErrorBundle;
 import com.cmax.bodysheild.http.rxexception.ErrorManager;

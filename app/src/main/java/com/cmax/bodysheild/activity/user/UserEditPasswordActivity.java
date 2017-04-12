@@ -18,7 +18,6 @@ import com.cmax.bodysheild.model.RegisterModel;
 import com.cmax.bodysheild.util.DataUtils;
 import com.cmax.bodysheild.util.DialogUtils;
 import com.cmax.bodysheild.util.RxUtils;
-import com.cmax.bodysheild.util.StringUtils;
 import com.cmax.bodysheild.util.ToastUtils;
 import com.cmax.bodysheild.util.UIUtils;
 
@@ -79,7 +78,37 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
     }
 
     public void tvGetVerifyCode() {
-        String mobile = etPhone.getText().toString().trim();
+
+        String userName = etUserName.getText().toString().trim();
+        if (TextUtils.isEmpty(userName) ){
+            ToastUtils.showFailToast(UIUtils.getString(R.string.edit_text_verification_code));
+            return;
+        }
+        registerModel.sendVerifyCodeByUserName(userName).subscribe(new ProgressSubscriber<SendMessageInfo>(this) {
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showFailToast(UIUtils.getString(R.string.network_server_error_message));
+            }
+
+            @Override
+            public void _onNext(SendMessageInfo sendMessageInfo) {
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.edit_password_captcha_sucssess));
+                captcha = sendMessageInfo.captcha;
+                tvSendCode.setText(UIUtils.getString(R.string.login_get_captcha));
+                tvSendCode.setTextColor(UIUtils.getResourceColor(R.color.thin_gray));
+                tvSendCode.setClickable(false);
+                countDown();
+                onCompleted();
+
+            }
+
+            @Override
+            public void _onCompleted() {
+
+            }
+        });
+      /*  String mobile = etPhone.getText().toString().trim();
         String countryCode = etUserCountryCode.getText().toString();
         if (TextUtils.isEmpty(mobile) ){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
@@ -89,9 +118,11 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_correct_warning));
             return;
         }
-        if (!UIUtils.getUserPhone().equals(mobile)){
-            ToastUtils.showFailToast(UIUtils.getString(R.string.edit_profile_password_phone_warning));
-            return;
+        if (!TextUtils.isEmpty(UIUtils.getUserPhone())) {
+            if (!UIUtils.getUserPhone().equals(mobile)) {
+                ToastUtils.showFailToast(UIUtils.getString(R.string.edit_profile_password_phone_warning));
+                return;
+            }
         }
         if (TextUtils.isEmpty(countryCode)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_country_code));
@@ -121,7 +152,7 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
             public void _onCompleted() {
 
             }
-        });
+        });*/
     }
 
     private void countDown() {
@@ -151,9 +182,13 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
             }
         });
     }
+    @OnClick(R.id.backBtn)
+    public  void back(){
+        finish();
+    }
     @OnClick(R.id.tvSave)
     public void save() {
-        final String userMobil = etPhone.getText().toString().trim();
+     //   final String userMobil = etPhone.getText().toString().trim();
         String username = etUserName.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.username_error_message));
@@ -165,18 +200,20 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
             return;
         }
 
-        if (TextUtils.isEmpty(userMobil)) {
+       /* if (TextUtils.isEmpty(userMobil)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_warning));
             return;
         }
-        if (!UIUtils.getUserPhone().equals(userMobil)){
-            ToastUtils.showFailToast(UIUtils.getString(R.string.edit_profile_password_phone_warning));
-            return;
+        if (!TextUtils.isEmpty(UIUtils.getUserPhone())) {
+            if (!UIUtils.getUserPhone().equals(userMobil)) {
+                ToastUtils.showFailToast(UIUtils.getString(R.string.edit_profile_password_phone_warning));
+                return;
+            }
         }
         if (!StringUtils.isPhoneNumber(userMobil)){
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_mobile_correct_warning));
             return;
-        }
+        }*/
         String captcha2 = etCode.getText().toString();
         if (TextUtils.isEmpty(captcha2)) {
             ToastUtils.showFailToast(UIUtils.getString(R.string.login_please_input_captcha_code_warning));
@@ -198,9 +235,11 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
 
             @Override
             public void _onNext(Object o) {
-                ToastUtils.showSuccessToast(UIUtils.getString(R.string.access_server_success));
-                user.setPassword(password);
-                DataUtils.addUserToSp(user);
+                ToastUtils.showSuccessToast(UIUtils.getString(R.string.save_server_success));
+                if (user!=null) {
+                    user.setPassword(password);
+                    DataUtils.addUserToSp(user);
+                }
                 finish();
                // IntentUtils.toLoginActivity(UserEditPasswordActivity.this,user,device);
             }
@@ -215,7 +254,7 @@ public class UserEditPasswordActivity extends BaseActivity  implements IStateVie
     @Override
     public void showProgressDialog() {
         if (progressDialog==null)
-            progressDialog = DialogUtils.showProgressDialog(this, UIUtils.getString(R.string.loading));
+            progressDialog = DialogUtils.showProgressDialog(this, UIUtils.getString(R.string.loading2));
         progressDialog.show();
     }
 

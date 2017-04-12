@@ -183,4 +183,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             }
         });
     }
+
+    public void forgetPassword() {
+        IntentUtils.toEditPassWord(activity, currentUser, device);
+
+    }
 }

@@ -51,4 +51,7 @@ public interface ApiServer {
     @POST(Url.CHANGE_PASSWORD)
     @FormUrlEncoded
     Observable<BaseRequestData<Object>> changePassword(@Field("name")String username,@Field("newPassword") String password);
+    @POST(Url.SEND_CAPTCHA_BY_USERNAME)
+    @FormUrlEncoded
+    Observable<BaseRequestData<SendMessageInfo>> sendVerifyCodeByUserName(@Field("userName")String userName);
 }

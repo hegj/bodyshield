@@ -255,7 +255,7 @@
 
                     <SeekBar
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="12dp"
                         android:progressDrawable="@drawable/seekbar_progress"
                         android:thumb="@null"
                         android:id="@+id/volume"
@@ -338,12 +338,13 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="25dp">
                         <SeekBar
                             android:id="@+id/alert_interval"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="15dp"
                             android:progressDrawable="@drawable/seekbar_progress"
                             android:thumb="@null"
                             android:progress="50"
@@ -372,6 +373,7 @@
                     android:layout_height="40dp"
                     android:src="@mipmap/alarm"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -397,12 +399,13 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="25dp">
                         <SeekBar
                             android:id="@+id/measure_interval"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="15dp"
                             android:progressDrawable="@drawable/seekbar_progress"
                             android:thumb="@null"
                             android:layout_weight="1" />

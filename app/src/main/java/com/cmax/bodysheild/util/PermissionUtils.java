@@ -2,17 +2,11 @@ package com.cmax.bodysheild.util;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AppOpsManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-
 
 import com.mylhyl.acp.Acp;
 import com.mylhyl.acp.AcpListener;
@@ -89,7 +83,7 @@ public class PermissionUtils {
     public static void askCamera(Activity activity,PermissionListener listener ){
         isCancle=true;
         permissionDesc = "选择头像需要您设置权限,否则选择不了头像"+"\n"+"请点击申请,在应用信息界面的权限管理中同意\"读写手机存储的权限\"";
-        performRequestPermissions(activity,permissionDesc,2,listener,isCancle, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        performRequestPermissions(activity,permissionDesc,2,listener,isCancle, Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE);
     }
     /**
      * group:android.permission-group.STORAGE

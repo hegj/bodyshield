@@ -1,13 +1,14 @@
 package com.cmax.bodysheild.util;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import com.cmax.bodysheild.R;
@@ -16,7 +17,9 @@ import com.orhanobut.logger.Logger;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-import java.util.List;
+
+import static com.cmax.bodysheild.util.FileUtils.getCacheFile;
+import static com.cmax.bodysheild.util.FileUtils.getDiskCacheDir;
 
 /**
  * Created by Administrator on 2016/12/19 0019.
@@ -31,7 +34,9 @@ public class CropUtils {
     private   static   int mRatio;
     public static final int REQUEST_SELECT_PICTURE = 0x01;
     private static final int REQUEST_CAMERA = 0x02;
-
+    private static File cameraFile;
+    private static String cachPath;
+    private static File cacheFile;
     private static  Uri uri;
     private static int resultSizeWidth;
     private static int resultSizeheight;
@@ -64,10 +69,7 @@ public class CropUtils {
             PermissionUtils.askCamera(activity,new PermissionUtils.PermissionListener() {
                 @Override
                 public void onGranted() {
-                    Uri cacheUri = getCameraCacheUri();
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                            .putExtra(MediaStore.EXTRA_OUTPUT, cacheUri);
-                    activity.startActivityForResult(intent, REQUEST_CAMERA);
+                    openCamera(activity);
                 }
 
                 @Override
@@ -91,7 +93,7 @@ public class CropUtils {
             } else if (requestCode == UCrop.REQUEST_CROP) {
                 cropPickListeners.cropResult(data);
             } else if (requestCode == REQUEST_CAMERA) {
-                startCropActivity(context, uri);
+                startCropActivity(context, Uri.fromFile(cameraFile));
             }
         }
         if (resultCode == UCrop.RESULT_ERROR) {
@@ -171,4 +173,25 @@ public class CropUtils {
         if (permisstionDialog!=null && permisstionDialog.isShowing())permisstionDialog.dismiss();
         permisstionDialog=null;
     }
+
+    public static void openCamera(Activity activity) {
+        cachPath= getDiskCacheDir()+ "/crop_image.jpg";
+        cacheFile =getCacheFile(new File(getDiskCacheDir()),"crop_image.jpg");
+        cameraFile = getCacheFile(new File(getDiskCacheDir()), "avatar.jpg");
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(cameraFile);
+        } else {
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(activity, "com.cmax.bodysheild.fileprovider", cameraFile);
+
+        }
+        // 启动相机程序
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        activity.startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
 }

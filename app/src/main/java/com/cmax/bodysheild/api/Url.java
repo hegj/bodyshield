@@ -15,4 +15,5 @@ public class Url {
     public static final String DOWNLOAD_TEMPERATURE = "temperature/load/data.json";
     public static final String THIRD_LOGIN="user/third/login.json";
     public static final String SEND_CAPTCHA="captcha/send/v1.json";
+    public static final String SEND_CAPTCHA_BY_USERNAME="captcha/sendByUserName/v1.json";
 }

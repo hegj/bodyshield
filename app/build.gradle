@@ -105,8 +105,6 @@ dependencies {
                  apt rootProject.ext.dependencies["auto-value-gson"]*/
     compile files('libs/SocialSDK_facebook.jar')
     compile files('libs/SocialSDK_QQ_Simplify.jar')
-    compile files('libs/SocialSDK_twitter.jar')
     compile files('libs/SocialSDK_WeChat_Simplify.jar')
-    compile files('libs/commons-beanutils-1.7.0.jar')
-    compile files('libs/org.apache.httpcomponents.httpclient_4.3.5.jar')
+
 }

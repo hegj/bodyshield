@@ -3,10 +3,8 @@ package com.cmax.bodysheild.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-import com.cmax.bodysheild.activity.login.LoginModel;
 import com.cmax.bodysheild.activity.login.LoginPresenter;
 import com.cmax.bodysheild.http.HttpMethods;
-import com.orhanobut.logger.Logger;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -67,6 +65,7 @@ public class UMUtils {
     public void thirdLoginOfFaceBook() {
 
         thirdLoginType = THIRD_LOGIN_TYPE_FACEBOOK;
+        //UMShareAPI.get(mActivity).doOauthVerify(mActivity,  SHARE_MEDIA.FACEBOOK, umAuthListener);
         mShareAPI.getPlatformInfo(mActivity, SHARE_MEDIA.FACEBOOK, umAuthListener);
     }
 
@@ -129,7 +128,11 @@ public class UMUtils {
     private void parsedFaceBookLoginData(Map<String, String> data) {
         String name = data.get("name");
         String uid = data.get("uid");
-        HttpMethods.getInstance().thirdLogin("", uid, thirdLoginType + "", name);
+        String linkUri = data.get("linkUri");
+
+        if (loginPresenter != null) {
+            loginPresenter.startThirdLogin(uid, uid, thirdLoginType + "", name, linkUri);
+        }
     }
 
     public void initThirdLoginProgressDialog() {

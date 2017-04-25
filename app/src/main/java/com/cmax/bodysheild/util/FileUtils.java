@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class FileUtils {
 
-    public  static File getAppPictureDir(String fileName){
+   public  static File getAppPictureDir(String fileName){
         File appRootDir = getAppRootDir();
         File file = new File(appRootDir,fileName);
         if (!file.exists())file.mkdirs();

@@ -155,4 +155,5 @@
     <string name="edit_please_input_username_warning">Please fill in the user name to access authentication code</string>
     <string name="register_please_input_country_code2">Please enter the country</string>
     <string name="edit_password_captcha_sucssess">captcha has been sent to fill in the mobile phone number when registering</string>
+    <string name="facebook_app_id">1028389817293450</string>
 </resources>

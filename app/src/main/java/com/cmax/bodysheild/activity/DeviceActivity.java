@@ -40,6 +40,7 @@ import com.cmax.bodysheild.bluetooth.command.temperature.TimeDataCommand;
 import com.cmax.bodysheild.bluetooth.response.temperature.PresentDataResponse;
 import com.cmax.bodysheild.util.Constant;
 import com.cmax.bodysheild.util.DialogUtils;
+import com.cmax.bodysheild.util.IntentUtils;
 import com.cmax.bodysheild.util.LogUtil;
 import com.cmax.bodysheild.util.PermissionUtils;
 import com.cmax.bodysheild.util.SharedPreferencesUtil;
@@ -235,13 +236,15 @@ public class DeviceActivity extends BaseActivity {
 	 */
 	@OnClick(R.id.scanTextBtn)
 	void clickScanText(TextView scanTextView) {
+
+
 	/*	Intent intent = new Intent(this,SettingActivity.class);
 		BLEDevice device = new BLEDevice();
 		intent.putExtra(TemperatureInfoActivity.EXTRA_DEVICE, device);
 		startActivity(intent);*/
-		 scanLeDevice(!scanning);
+		// scanLeDevice(!scanning);
 		//IntentUtils.toEditProfile(this,null,null);
-		//	IntentUtils.toLoginActivity(this,null,null);
+			IntentUtils.toLoginActivity(this,null,null);
 		// IntentUtils.toRegisterActivity(this,null);
 	}
 

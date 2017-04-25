@@ -136,7 +136,8 @@ public class LoginActivity2 extends BaseActivity<LoginPresenter> implements ILog
 
     @OnClick(R.id.ib_login_facebook)
     void thirdOfFacebook(View view) {
-        ToastUtils.showFailToast("需要到Facebook申请APP的第三方登录的权限");
+        UMUtils.getInstance().thirdLoginOfFaceBook();
+        //ToastUtils.showFailToast("需要到Facebook申请APP的第三方登录的权限");
     }
 
     @OnClick(R.id.tvLogin)

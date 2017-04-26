@@ -244,7 +244,7 @@ public class DeviceActivity extends BaseActivity {
 		startActivity(intent);*/
 		// scanLeDevice(!scanning);
 		//IntentUtils.toEditProfile(this,null,null);
-			IntentUtils.toLoginActivity(this,null,null);
+		IntentUtils.toLoginActivity(this,null,null);
 		// IntentUtils.toRegisterActivity(this,null);
 	}
 

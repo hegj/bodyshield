@@ -143,4 +143,5 @@
     <string name="edit_please_input_username_warning">Please fill in the user name to access authentication code</string>
     <string name="register_please_input_country_code2">请输入国家号</string>
     <string name="edit_password_captcha_sucssess">验证码已发送到注册时填入的手机号码</string>
+    <string name="facebook_app_id">1028389817293450</string>
 </resources>

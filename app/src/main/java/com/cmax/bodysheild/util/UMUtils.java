@@ -5,9 +5,9 @@ import android.app.ProgressDialog;
 
 import com.cmax.bodysheild.activity.login.LoginPresenter;
 import com.cmax.bodysheild.http.HttpMethods;
-import com.umeng.socialize.Config;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UmengTool;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
@@ -51,13 +51,13 @@ public class UMUtils {
 
 
     public void thirdLoginOfQQ() {
-        initThirdLoginProgressDialog();
+
         thirdLoginType = THIRD_LOGIN_TYPE_QQ;
         mShareAPI.getPlatformInfo(mActivity, SHARE_MEDIA.QQ, umAuthListener);
     }
 
     public void thirdLoginOfWeChat() {
-        initThirdLoginProgressDialog();
+
         thirdLoginType = THIRD_LOGIN_TYPE_WECHAT;
         mShareAPI.getPlatformInfo(mActivity, SHARE_MEDIA.WEIXIN, umAuthListener);
     }
@@ -66,14 +66,19 @@ public class UMUtils {
 
         thirdLoginType = THIRD_LOGIN_TYPE_FACEBOOK;
         //UMShareAPI.get(mActivity).doOauthVerify(mActivity,  SHARE_MEDIA.FACEBOOK, umAuthListener);
-        mShareAPI.getPlatformInfo(mActivity, SHARE_MEDIA.FACEBOOK, umAuthListener);
+        mShareAPI.doOauthVerify(mActivity, SHARE_MEDIA.FACEBOOK, umAuthListener);
+        UmengTool.getSignature(mActivity);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            initThirdLoginProgressDialog();
+        }
+
+        @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            if (thirdLoginProgressDialog!=null)
-            thirdLoginProgressDialog.dismiss();
+
             switch (thirdLoginType) {
                 case THIRD_LOGIN_TYPE_QQ:
                     parsedQQLoginData(data);
@@ -84,7 +89,10 @@ public class UMUtils {
                 case THIRD_LOGIN_TYPE_FACEBOOK:
                     parsedFaceBookLoginData(data);
                     break;
+
             }
+            if (thirdLoginProgressDialog!=null)
+                thirdLoginProgressDialog.dismiss();
         }
 
         @Override
@@ -136,7 +144,7 @@ public class UMUtils {
     }
 
     public void initThirdLoginProgressDialog() {
-        Config.dialogSwitch = false;
+
         if (thirdLoginProgressDialog == null) {
             thirdLoginProgressDialog = DialogUtils.showProgressDialog(mActivity, "授权中,请稍后");
         }
